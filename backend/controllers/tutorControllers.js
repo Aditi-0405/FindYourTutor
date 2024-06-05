@@ -111,9 +111,29 @@ const getMyChatsTutor = async (req, res) => {
     res.status(500).json({ message: 'Internal Server Error' });
   }
 };
+const getMessagesTutor = async (req, res) => {
+  const { tutorId , studentId} = req.params;
 
+  try {
+    let tutorChat = await TutorChat.findOne({ tutorId });
+    if (!tutorChat) {
+      return res.status(404).json({ message: 'User Not Found' });
+    }
+    else{
+      let messages=[]
+      if (tutorChat.chats.has(studentId)) {
+        messages=tutorChat.chats.get(studentId)
+      }
+      res.status(200).json(messages);
+    }
+    
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'Internal Server Error' });
+  }
+};
 
 
 module.exports = {
-  updateTutorProfile,subjectsInterested, sendMessageFromTutorToStudent,getMyChatsTutor,
+  updateTutorProfile,subjectsInterested, sendMessageFromTutorToStudent,getMyChatsTutor,getMessagesTutor
 };

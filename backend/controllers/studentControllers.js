@@ -108,8 +108,31 @@ const getMyChatsStudent = async (req, res) => {
   }
 };
 
+const getMessagesStudent = async (req, res) => {
+  const {studentId, tutorId } = req.params;
+
+  try {
+    let studentChat = await StudentChat.findOne({ studentId });
+    if (!studentChat) {
+      return res.status(404).json({ message: 'User Not Found' });
+    }
+    else{
+      let messages=[]
+      if (studentChat.chats.has(tutorId)) {
+        messages=studentChat.chats.get(tutorId)
+      }
+      res.status(200).json(messages);
+    }
+    
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'Internal Server Error' });
+  }
+};
+
+
 
   module.exports = {
-    updateStudentProfile,getSubjectsTaughtByTutor,sendMessageFromStudentToTutor, getMyChatsStudent
+    updateStudentProfile,getSubjectsTaughtByTutor,sendMessageFromStudentToTutor, getMyChatsStudent, getMessagesStudent
   };
   
