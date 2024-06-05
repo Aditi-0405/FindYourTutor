@@ -133,7 +133,39 @@ const getMessagesTutor = async (req, res) => {
   }
 };
 
+const getStudentsInterestedInSubjects = async (req, res) => {
+  const { tutorId } = req.params;
+
+  try {
+    const tutorProfile = await TutorProfile.findOne({ tutorId });
+    if (!tutorProfile) {
+      return res.status(404).json({ message: 'Tutor profile not found' });
+    }
+    const subjectsTaught = Array.from(tutorProfile.subjectsTaught.keys());
+    const students = await StudentProfile.find();
+    console.log(students)
+    const interestedStudents = students.filter(student => {
+      return student.subjectsInterested.some(subject => subjectsTaught.includes(subject));
+    });
+
+    res.status(200).json(interestedStudents);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'Internal Server Error' });
+  }
+};
+const getAllStudents = async (req, res) => {
+
+  try {
+    const students = await StudentProfile.find();
+    res.status(200).json(students);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'Internal Server Error' });
+  }
+};
 
 module.exports = {
-  updateTutorProfile,subjectsInterested, sendMessageFromTutorToStudent,getMyChatsTutor,getMessagesTutor
+  updateTutorProfile,subjectsInterested, sendMessageFromTutorToStudent,getMyChatsTutor,getMessagesTutor,
+  getStudentsInterestedInSubjects, getAllStudents
 };
