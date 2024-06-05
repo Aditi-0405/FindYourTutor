@@ -2,17 +2,12 @@ const mongoose = require('mongoose');
 
 const messageSchema = new mongoose.Schema({
   message: { type: String, required: true },
-  timestamp: { type: Date, default: Date.now }
+  timestamp: { type: Date, default: Date.now },
+  isSentBySelf:{type: Boolean, default: false}
 });
-
-const chatSchema = new mongoose.Schema({
-  senderId: { type: mongoose.Schema.Types.ObjectId, ref: 'Tutor' },
-  messages: [messageSchema]
-});
-
 const studentChatSchema = new mongoose.Schema({
   studentId: { type: mongoose.Schema.Types.ObjectId, ref: 'Student', unique: true, required: true },
-  chats: [chatSchema]
+  chats: { type: Map, of: [messageSchema], default: {} }
 });
 
 module.exports = mongoose.model('StudentChat', studentChatSchema);
