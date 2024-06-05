@@ -90,9 +90,26 @@ const sendMessageFromStudentToTutor = async (req, res) => {
     res.status(500).json({ message: 'Internal Server Error' });
   }
 };
+const getMyChatsStudent = async (req, res) => {
+  const { studentId } = req.params;
+
+  try {
+    const studentChats = await StudentChat.findOne({ studentId: studentId });
+    if (!studentChats) {
+      return res.status(404).json({ message: 'No chats found for the tutor' });
+    }
+    const chatsArray = Array.from(studentChats.chats, ([tutorId, messages]) => ({ tutorId, messages }));
+    const tutorIds = chatsArray.map(chat => chat.tutorId);
+    const tutors = await TutorProfile.find({ tutorId: { $in: tutorIds } }, 'tutorId name');
+    res.status(200).json(tutors);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'Internal Server Error' });
+  }
+};
 
 
   module.exports = {
-    updateStudentProfile,getSubjectsTaughtByTutor,sendMessageFromStudentToTutor
+    updateStudentProfile,getSubjectsTaughtByTutor,sendMessageFromStudentToTutor, getMyChatsStudent
   };
   

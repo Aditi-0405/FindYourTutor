@@ -10,7 +10,7 @@ const registerStudent = async (req, res) => {
     const student = new Student({ username, email, password });
     await student.save();
 
-    const studentProfile = new StudentProfile({ studentId: student._id });
+    const studentProfile = new StudentProfile({ studentId: student._id, name:student.username });
     await studentProfile.save();
 
     res.status(201).json({ message: 'Student registered successfully', student });
@@ -27,7 +27,7 @@ const registerTutor = async (req, res) => {
     const tutor = new Tutor({ username, email, password });
     await tutor.save();
 
-    const tutorProfile = new TutorProfile({ tutorId: tutor._id });
+    const tutorProfile = new TutorProfile({ tutorId: tutor._id, name:tutor.username });
     await tutorProfile.save();
 
     res.status(201).json({ message: 'Tutor registered successfully', tutor });
