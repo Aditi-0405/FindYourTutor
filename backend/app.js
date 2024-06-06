@@ -12,7 +12,8 @@ const {registerStudent, registerTutor} = require('./auth/register')
 const {updateTutorProfile, subjectsInterested, sendMessageFromTutorToStudent,getMyChatsTutor,getMessagesTutor,
   getStudentsInterestedInSubjects, getAllStudents, filterStudents} = require('./controllers/tutorControllers')
 const {updateStudentProfile, getSubjectsTaughtByTutor, sendMessageFromStudentToTutor, 
-  getMyChatsStudent, getMessagesStudent, getAllTutors, getTutorsTeachingSubjects, filterTutors} = require('./controllers/studentControllers')
+  getMyChatsStudent, getMessagesStudent, getTutorsTeachingSubjects} = require('./controllers/studentControllers')
+const{getAllTutors,filterTutors}= require('./controllers/general')
 
 
 connectDB().then(() => {
@@ -39,3 +40,5 @@ app.get('/api/tutor/getAllStudents', getAllStudents)
 app.get('/api/tutor/getAllStudents', getAllTutors)
 app.get('/api/tutor/filterStudents', filterStudents)
 app.get('/api/student/filterTutors', filterTutors)
+app.get('/api/general/getAllTutors', getAllTutors)
+app.get('/api/general/filterTutors', filterTutors)
