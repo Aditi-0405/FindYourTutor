@@ -165,7 +165,39 @@ const getAllStudents = async (req, res) => {
   }
 };
 
+const filterStudents = async (req, res) => {
+  const { subjects, class: studentClass, minRating, location } = req.query;
+
+  try {
+    let query = {};
+
+    if (subjects) {
+      query.subjectsInterested = { $in: subjects.split(',') };
+    }
+
+    if (studentClass) {
+      query.class = { $in: studentClass.split(',') };
+    }
+
+    if (minRating) {
+      query.rating = { $gte: parseInt(minRating) };
+    }
+
+    if (location) {
+      query.location = { $regex: location, $options: 'i' };
+    }
+
+    const students = await StudentProfile.find(query);
+
+    res.status(200).json(students);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'Internal Server Error' });
+  }
+};
+
+
 module.exports = {
   updateTutorProfile,subjectsInterested, sendMessageFromTutorToStudent,getMyChatsTutor,getMessagesTutor,
-  getStudentsInterestedInSubjects, getAllStudents
+  getStudentsInterestedInSubjects, getAllStudents, filterStudents
 };

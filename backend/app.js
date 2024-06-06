@@ -10,9 +10,9 @@ app.use(cors());
 
 const {registerStudent, registerTutor} = require('./auth/register')
 const {updateTutorProfile, subjectsInterested, sendMessageFromTutorToStudent,getMyChatsTutor,getMessagesTutor,
-  getStudentsInterestedInSubjects, getAllStudents} = require('./controllers/tutorControllers')
+  getStudentsInterestedInSubjects, getAllStudents, filterStudents} = require('./controllers/tutorControllers')
 const {updateStudentProfile, getSubjectsTaughtByTutor, sendMessageFromStudentToTutor, 
-  getMyChatsStudent, getMessagesStudent, getAllTutors, getTutorsTeachingSubjects} = require('./controllers/studentControllers')
+  getMyChatsStudent, getMessagesStudent, getAllTutors, getTutorsTeachingSubjects, filterTutors} = require('./controllers/studentControllers')
 
 
 connectDB().then(() => {
@@ -37,3 +37,5 @@ app.get('/api/tutor/getStudentsInterestedInSubjects/:tutorId', getStudentsIntere
 app.get('/api/student/getTutorsTeachingSubjects/:studentId', getTutorsTeachingSubjects)
 app.get('/api/tutor/getAllStudents', getAllStudents)
 app.get('/api/tutor/getAllStudents', getAllTutors)
+app.get('/api/tutor/filterStudents', filterStudents)
+app.get('/api/student/filterTutors', filterTutors)

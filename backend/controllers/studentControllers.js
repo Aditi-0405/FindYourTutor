@@ -4,33 +4,33 @@ const TutorChat = require('../models/Chats/Tutor-chat');
 const StudentChat = require('../models/Chats/Student-chat');
 
 const updateStudentProfile = async (req, res) => {
-    const { studentId } = req.params;
-    const { bio, subjectsInterested, class: studentClass, location, contactInfo } = req.body;
-  
-    try {
-      const studentProfile = await StudentProfile.findOne({ studentId });
-      if (!studentProfile) {
-        return res.status(404).json({ message: 'Student profile not found' });
-      }
-      studentProfile.bio = bio !== undefined ? bio : studentProfile.bio;
-      studentProfile.class = studentClass !== undefined ? studentClass : studentProfile.class;
-      studentProfile.location = location !== undefined ? location : studentProfile.location;
-      studentProfile.contactInfo = contactInfo !== undefined ? contactInfo : studentProfile.contactInfo;
-      if (subjectsInterested !== undefined) {
-        subjectsInterested.forEach(subject => {
-            subject=subject.toLowerCase()
-          if (!studentProfile.subjectsInterested.includes(subject)) {
-            studentProfile.subjectsInterested.push(subject);
-          }
-        });
-      }
-      await studentProfile.save();
-      res.status(200).json(studentProfile);
-    } catch (error) {
-      console.error(error);
-      res.status(500).json({ message: 'Internal Server Error' });
+  const { studentId } = req.params;
+  const { bio, subjectsInterested, class: studentClass, location, contactInfo } = req.body;
+
+  try {
+    const studentProfile = await StudentProfile.findOne({ studentId });
+    if (!studentProfile) {
+      return res.status(404).json({ message: 'Student profile not found' });
     }
-  };
+    studentProfile.bio = bio !== undefined ? bio : studentProfile.bio;
+    studentProfile.class = studentClass !== undefined ? studentClass : studentProfile.class;
+    studentProfile.location = location !== undefined ? location : studentProfile.location;
+    studentProfile.contactInfo = contactInfo !== undefined ? contactInfo : studentProfile.contactInfo;
+    if (subjectsInterested !== undefined) {
+      subjectsInterested.forEach(subject => {
+        subject = subject.toLowerCase()
+        if (!studentProfile.subjectsInterested.includes(subject)) {
+          studentProfile.subjectsInterested.push(subject);
+        }
+      });
+    }
+    await studentProfile.save();
+    res.status(200).json(studentProfile);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'Internal Server Error' });
+  }
+};
 
 const getSubjectsTaughtByTutor = async (req, res) => {
   const { tutorId } = req.params;
@@ -78,8 +78,8 @@ const sendMessageFromStudentToTutor = async (req, res) => {
     if (!studentChat.chats.has(tutorId)) {
       studentChat.chats.set(tutorId, []);
     }
-    
-    studentChat.chats.get(tutorId).push({ message, timestamp: new Date(), isSentBySelf:true });
+
+    studentChat.chats.get(tutorId).push({ message, timestamp: new Date(), isSentBySelf: true });
 
     await studentChat.save();
 
@@ -109,21 +109,21 @@ const getMyChatsStudent = async (req, res) => {
 };
 
 const getMessagesStudent = async (req, res) => {
-  const {studentId, tutorId } = req.params;
+  const { studentId, tutorId } = req.params;
 
   try {
     let studentChat = await StudentChat.findOne({ studentId });
     if (!studentChat) {
       return res.status(404).json({ message: 'User Not Found' });
     }
-    else{
-      let messages=[]
+    else {
+      let messages = []
       if (studentChat.chats.has(tutorId)) {
-        messages=studentChat.chats.get(tutorId)
+        messages = studentChat.chats.get(tutorId)
       }
       res.status(200).json(messages);
     }
-    
+
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: 'Internal Server Error' });
@@ -138,7 +138,7 @@ const getTutorsTeachingSubjects = async (req, res) => {
     if (!studentProfile) {
       return res.status(404).json({ message: 'Student profile not found' });
     }
-    const subjectsInterested =studentProfile.subjectsInterested
+    const subjectsInterested = studentProfile.subjectsInterested
     const tutors = await TutorProfile.find();
     const matchingTutors = tutors.filter(tutor => {
       const subjectsTaught = Array.from(tutor.subjectsTaught.keys());
@@ -162,9 +162,58 @@ const getAllTutors = async (req, res) => {
     res.status(500).json({ message: 'Internal Server Error' });
   }
 };
+const filterTutors = async (req, res) => {
+  const { subjects, class: studentClass, minRating, location } = req.query;
 
-  module.exports = {
-    updateStudentProfile,getSubjectsTaughtByTutor,sendMessageFromStudentToTutor, getMyChatsStudent, 
-    getMessagesStudent, getAllTutors, getTutorsTeachingSubjects
-  };
-  
+  try {
+    let query = {};
+
+    if (subjects || studentClass) {
+      const subjectsArray = subjects ? subjects.split(',') : [];
+      const classArray = studentClass ? studentClass.split(',') : [];
+
+      if (subjectsArray.length > 0 && classArray.length > 0) {
+        query.$or = subjectsArray.map(subject => ({
+          $and: [
+            { [`subjectsTaught.${subject}`]: { $exists: true } },
+            { [`subjectsTaught.${subject}`]: { $in: classArray } }
+          ]
+        }));
+      } 
+      else if(subjectsArray.length > 0){
+        query.$or = subjectsArray.map(subject => ({
+          $and: [
+            { [`subjectsTaught.${subject}`]: { $exists: true } },
+          ]
+        }));
+      }
+      else if(classArray.length>0) {
+        const allTutors = await TutorProfile.find();
+        const allSubjectsTaught = allTutors.map(tutor => Array.from(tutor.subjectsTaught.keys())).flat();
+        query.$or = allSubjectsTaught.map(subject =>({
+          $and: [
+            { [`subjectsTaught.${subject}`]: { $in: classArray } }
+          ]
+        }))
+      }
+    }
+    if (minRating) {
+      query.rate = { $gte: parseInt(minRating) };
+    }
+
+    if (location) {
+      query.location = { $regex: location, $options: 'i' };
+    }
+
+    const tutors = await TutorProfile.find(query);
+    res.status(200).json(tutors);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'Internal Server Error' });
+  }
+};
+
+module.exports = {
+  updateStudentProfile, getSubjectsTaughtByTutor, sendMessageFromStudentToTutor, getMyChatsStudent,
+  getMessagesStudent, getAllTutors, getTutorsTeachingSubjects, filterTutors
+};
