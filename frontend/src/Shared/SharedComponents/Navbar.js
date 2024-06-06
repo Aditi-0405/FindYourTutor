@@ -1,13 +1,21 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import '../SharedStyling/Navbar.css';
 
-const Navbar = ({ isLoggedIn }) => {
+const Navbar = ({ isLoggedIn, setIsLoggedIn }) => {
   const [isCollapsed, setIsCollapsed] = useState(true);
+  const navigate = useNavigate();
 
   const toggleNavbar = () => {
     setIsCollapsed(!isCollapsed);
   };
+
+  const handleLogout = () => {
+    localStorage.clear();
+    setIsLoggedIn(false);
+    navigate('/');
+  };
+  const role = localStorage.getItem('role')
 
   return (
     <nav className="navbar navbar-expand-lg">
@@ -26,23 +34,31 @@ const Navbar = ({ isLoggedIn }) => {
             </li>
             {isLoggedIn ? (
               <>
+                {role === 'student' && (
+                  <>
+                    <li className="nav-item">
+                      <Link className="nav-link" to="/dashboard">Student Dashboard</Link>
+                    </li>
+                    <li className="nav-item">
+                      <Link className="nav-link" to="/profile">Student Profile</Link>
+                    </li>
+                  </>
+                )}
+                {role === 'tutor' && (
+                  <>
+                    <li className="nav-item">
+                      <Link className="nav-link" to="/tutor-dashboard">Tutor Dashboard</Link>
+                    </li>
+                    <li className="nav-item">
+                      <Link className="nav-link" to="/tutor-profile">Tutor Profile</Link>
+                    </li>
+                  </>
+                )}
                 <li className="nav-item">
-                  <Link className="nav-link" to="/dashboard">Dashboard</Link>
+                  <Link className="nav-link" to="/help">Help</Link>
                 </li>
                 <li className="nav-item">
-                  <Link className="nav-link" to="/profile">Profile</Link>
-                </li>
-                <li className="nav-item">
-                  <Link className="nav-link" to="/messages">Messages</Link>
-                </li>
-                <li className="nav-item">
-                  <Link className="nav-link" to="/notifications">Notifications</Link>
-                </li>
-                <li className="nav-item">
-                  <Link className="nav-link" to="/settings">Settings</Link>
-                </li>
-                <li className="nav-item">
-                  <Link className="nav-link" to="/logout">Logout</Link>
+                  <Link className="nav-link" onClick={handleLogout}>Logout</Link>
                 </li>
               </>
             ) : (
@@ -67,9 +83,6 @@ const Navbar = ({ isLoggedIn }) => {
                 </li>
               </>
             )}
-            <li className="nav-item">
-              <Link className="nav-link" to="/help">Help</Link>
-            </li>
           </ul>
         </div>
       </div>

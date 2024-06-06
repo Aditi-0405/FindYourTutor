@@ -12,7 +12,7 @@ const App = () => {
 
   return (
     <div>
-      <Navbar isLoggedIn={isLoggedIn} />
+      <Navbar isLoggedIn={isLoggedIn} setIsLoggedIn={setIsLoggedIn} />
       <div className="content">
         <Routes>
           <Route path="/" element={<Home />} />
