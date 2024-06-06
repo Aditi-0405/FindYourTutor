@@ -9,6 +9,7 @@ app.use(cors());
 
 
 const {registerStudent, registerTutor} = require('./auth/register')
+const {studentLogin, tutorLogin} = require('./auth/login')
 const {updateTutorProfile, subjectsInterested, sendMessageFromTutorToStudent,getMyChatsTutor,getMessagesTutor,
   getStudentsInterestedInSubjects, getAllStudents, filterStudents} = require('./controllers/tutorControllers')
 const {updateStudentProfile, getSubjectsTaughtByTutor, sendMessageFromStudentToTutor, 
@@ -22,8 +23,10 @@ connectDB().then(() => {
   });
 });
 
-app.post('/register/tutor', registerTutor)
-app.post('/register/student', registerStudent)
+app.post('/api/register/tutor', registerTutor)
+app.post('/api/register/student', registerStudent)
+app.post('/api/login/tutor', tutorLogin)
+app.post('/api/login/student', studentLogin)
 app.patch('/api/tutor/updateTutorProfile/:tutorId', updateTutorProfile)
 app.patch('/api/student/updateStudentProfile/:studentId', updateStudentProfile)
 app.get('/api/student/getSubjectsTaughtByTutor/:tutorId', getSubjectsTaughtByTutor)

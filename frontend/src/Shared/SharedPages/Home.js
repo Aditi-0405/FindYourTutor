@@ -44,6 +44,7 @@ const Home = () => {
     }
   };
 
+  
   return (
     <div className="home-container">
       <div className="filter-container">

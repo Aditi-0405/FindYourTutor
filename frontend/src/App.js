@@ -8,8 +8,7 @@ import LoginStudent from './Students/StudentPages/Login';
 import LoginTutor from './Tutors/TutorPages/Login';
 
 const App = () => {
-  // Assume you have a way to determine if a user is logged in
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(localStorage.getItem('userId') !== null);
 
   return (
     <div>
@@ -19,9 +18,8 @@ const App = () => {
           <Route path="/" element={<Home />} />
           <Route path="/register-student" element={<RegisterStudent />} />
           <Route path="/register-tutor" element={<RegisterTutor />} />
-          <Route path="/login-student" element={<LoginStudent />} />
-          <Route path="/login-tutor" element={<LoginTutor />} />
-          {/* Add more routes as needed */}
+          <Route path="/login-student" element={<LoginStudent setIsLoggedIn={setIsLoggedIn}/>} />
+          <Route path="/login-tutor" element={<LoginTutor setIsLoggedIn={setIsLoggedIn}/>} />
         </Routes>
       </div>
     </div>

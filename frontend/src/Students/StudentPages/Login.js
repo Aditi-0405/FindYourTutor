@@ -1,58 +1,56 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
+
 import '../../Shared/SharedStyling/Form.css';
 
-const LoginStudent = () => {
-  const [formData, setFormData] = useState({
-    email: '',
-    password: ''
-  });
-  const [message, setMessage] = useState('');
+const StudentLogin = ({ setIsLoggedIn }) => {
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [error, setError] = useState('');
+  const navigate = useNavigate();
 
-  const { email, password } = formData;
-
-  const onChange = e => setFormData({ ...formData, [e.target.name]: e.target.value });
-
-  const onSubmit = async e => {
-    e.preventDefault();
+  const handleLogin = async () => {
     try {
-      const res = await fetch('/api/login-student', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(formData)
-      });
-      const data = await res.json();
-      if (res.status === 200) {
-        setMessage('Login successful');
+      const response = await axios.post( `http://localhost:5000/api/login/student`, { email, password });
+      localStorage.setItem('token', response.data.token);
+      localStorage.setItem('userId', response.data.userId);
+      localStorage.setItem('studentEmail', `${response.data.email}`);
+      localStorage.setItem('role', 'student');
+      setIsLoggedIn(true);
+      navigate('/');
+    } catch (err) {
+      if (err.response && err.response.status === 401) {
+        setError('Invalid email or password');
       } else {
-        setMessage(data.message);
+        setError('We are currently experiencing technical difficulties. Please try again later.');
       }
-    } catch (error) {
-      console.error(error);
-      setMessage('Internal Server Error');
     }
   };
 
   return (
     <div className="form-container">
       <h2>Student Login</h2>
-      <form onSubmit={onSubmit}>
-        <div className="form-group">
-          <label>Email</label>
-          <input type="email" name="email" value={email} onChange={onChange} required />
-        </div>
-        <div className="form-group">
-          <label>Password</label>
-          <input type="password" name="password" value={password} onChange={onChange} required />
-        </div>
-        <button className="form-button" type="submit">Login</button>
-      </form>
-      <div className='switch'><Link to={'/register-student'}>Register</Link></div>
-      {message && <p className="error-message">{message}</p>}
+      {error && <p className="error-message">{error}</p>}
+      <div className="form-group">
+        <input
+          type="email"
+          placeholder="Enter Email"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+        />
+      </div>
+      <div className="form-group">
+        <input
+          type="password"
+          placeholder="Enter Password"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+        />
+      </div>
+      <button onClick={handleLogin} className="form-button">Login</button>
     </div>
   );
 };
 
-export default LoginStudent;
+export default StudentLogin;
