@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import '../../Shared/SharedStyling/Form.css';
+import '../../Shared/SharedStyling/FormStyles.css';
 
 const RegisterTutor = () => {
   const [formData, setFormData] = useState({

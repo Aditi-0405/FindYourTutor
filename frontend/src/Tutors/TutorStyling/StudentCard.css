@@ -1,0 +1,32 @@
+
+.student-card {
+    background-color: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    margin: 10px;
+    font-family: 'Arial', sans-serif;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+  }
+  
+  .student-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+  }
+  
+  .student-card__name {
+    font-size: 1.5rem;
+    color: #333333;
+    margin-bottom: 10px;
+  }
+  
+  .student-card__info {
+    font-size: 1rem;
+    color: #666666;
+    margin-bottom: 8px;
+  }
+  
+  .student-card__info strong {
+    color: #333333;
+  }
+  

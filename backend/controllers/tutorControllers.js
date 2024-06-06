@@ -179,9 +179,6 @@ const filterStudents = async (req, res) => {
       query.class = { $in: studentClass.split(',') };
     }
 
-    if (minRating) {
-      query.rating = { $gte: parseInt(minRating) };
-    }
 
     if (location) {
       query.location = { $regex: location, $options: 'i' };

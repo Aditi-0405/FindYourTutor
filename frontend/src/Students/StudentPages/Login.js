@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
-import '../../Shared/SharedStyling/Form.css';
+import '../../Shared/SharedStyling/FormStyles.css';
 
 const StudentLogin = ({ setIsLoggedIn }) => {
   const [email, setEmail] = useState('');
@@ -18,7 +18,7 @@ const StudentLogin = ({ setIsLoggedIn }) => {
       localStorage.setItem('studentEmail', `${response.data.email}`);
       localStorage.setItem('role', 'student');
       setIsLoggedIn(true);
-      navigate('/');
+      navigate('/tutor-dashboard');
     } catch (err) {
       if (err.response && err.response.status === 401) {
         setError('Invalid email or password');

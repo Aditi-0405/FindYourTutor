@@ -6,7 +6,7 @@ import RegisterStudent from './Students/StudentPages/Register';
 import RegisterTutor from './Tutors/TutorPages/Register';
 import LoginStudent from './Students/StudentPages/Login';
 import LoginTutor from './Tutors/TutorPages/Login';
-
+import TutorDashboard from './Tutors/TutorPages/TutorDashboard';
 const App = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(localStorage.getItem('userId') !== null);
 
@@ -20,6 +20,7 @@ const App = () => {
           <Route path="/register-tutor" element={<RegisterTutor />} />
           <Route path="/login-student" element={<LoginStudent setIsLoggedIn={setIsLoggedIn}/>} />
           <Route path="/login-tutor" element={<LoginTutor setIsLoggedIn={setIsLoggedIn}/>} />
+          <Route path="/tutor-dashboard" element={<TutorDashboard/>} />
         </Routes>
       </div>
     </div>

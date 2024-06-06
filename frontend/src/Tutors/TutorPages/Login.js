@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
-import '../../Shared/SharedStyling/Form.css';
+import '../../Shared/SharedStyling/FormStyles.css';
 
 const LoginTutor = ({ setIsLoggedIn }) => {
   const [email, setEmail] = useState('');
