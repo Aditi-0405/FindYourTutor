@@ -143,7 +143,6 @@ const getStudentsInterestedInSubjects = async (req, res) => {
     }
     const subjectsTaught = Array.from(tutorProfile.subjectsTaught.keys());
     const students = await StudentProfile.find();
-    console.log(students)
     const interestedStudents = students.filter(student => {
       return student.subjectsInterested.some(subject => subjectsTaught.includes(subject));
     });

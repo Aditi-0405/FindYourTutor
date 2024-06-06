@@ -11,11 +11,15 @@ const Navbar = ({ isLoggedIn, setIsLoggedIn }) => {
   };
 
   const handleLogout = () => {
-    localStorage.clear();
+    localStorage.removeItem('userId');
+    localStorage.removeItem('role');
+    localStorage.removeItem('token');
+    localStorage.removeItem('username');
     setIsLoggedIn(false);
     navigate('/');
   };
-  const role = localStorage.getItem('role')
+
+  const role = localStorage.getItem('role');
 
   return (
     <nav className="navbar navbar-expand-lg">
@@ -58,7 +62,7 @@ const Navbar = ({ isLoggedIn, setIsLoggedIn }) => {
                   <Link className="nav-link" to="/help">Help</Link>
                 </li>
                 <li className="nav-item">
-                  <Link className="nav-link" onClick={handleLogout}>Logout</Link>
+                  <button onClick={handleLogout} className="nav-link logout-btn">Logout</button>
                 </li>
               </>
             ) : (

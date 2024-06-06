@@ -9,7 +9,6 @@ const StudentCard = ({ student }) => {
       <p className="student-card__info"><strong>Location:</strong> {student.location}</p>
       <p className="student-card__info"><strong>Subjects Interested:</strong> {student.subjectsInterested.join(', ')}</p>
       <p className="student-card__info"><strong>Class:</strong> {student.class}</p>
-      <p className="student-card__info"><strong>Rating:</strong> {student.rating}</p>
     </div>
   );
 };

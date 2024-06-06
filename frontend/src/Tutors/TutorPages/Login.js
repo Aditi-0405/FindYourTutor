@@ -18,7 +18,7 @@ const LoginTutor = ({ setIsLoggedIn }) => {
       localStorage.setItem('tutorEmail', `${response.data.email}`);
       localStorage.setItem('role', 'tutor');
       setIsLoggedIn(true);
-      navigate('/');
+      navigate('/tutor-dashboard');
     } catch (err) {
       if (err.response && err.response.status === 401) {
         setError('Invalid email or password');

@@ -13,11 +13,12 @@ const TutorDashboard = () => {
     minRating: '',
     location: ''
   });
+  const tutorId = localStorage.getItem('userId')
 
   useEffect(() => {
     const fetchStudents = async () => {
       try {
-        const response = await axios.get('http://localhost:5000/api/tutor/getAllStudents');
+        const response = await axios.get(`http://localhost:5000/api/tutor/getStudentsInterestedInSubjects/${tutorId}`);
         setStudents(response.data);
         setLoading(false);
       } catch (error) {
