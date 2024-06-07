@@ -17,16 +17,13 @@ const updateTutorProfile = async (req, res) => {
     tutorProfile.bio = bio !== undefined ? bio : tutorProfile.bio;
     tutorProfile.location = location !== undefined ? location : tutorProfile.location;
     tutorProfile.contactInfo = contactInfo !== undefined ? contactInfo : tutorProfile.contactInfo;
+    console.log(subjectsTaught)
+    console.log(tutorProfile.subjectsTaught)
     if (subjectsTaught) {
+      tutorProfile.subjectsTaught={}
       for (let [subject, classes] of Object.entries(subjectsTaught)) {
         subject = subject.toLowerCase();
-        if (tutorProfile.subjectsTaught.has(subject)) {
-          const existingClasses = tutorProfile.subjectsTaught.get(subject);
-          const updatedClasses = Array.from(new Set([...existingClasses, ...classes]));
-          tutorProfile.subjectsTaught.set(subject, updatedClasses);
-        } else {
-          tutorProfile.subjectsTaught.set(subject, classes);
-        }
+        tutorProfile.subjectsTaught.set(subject, classes);
       }
     }
 
@@ -70,7 +67,7 @@ const sendMessageFromTutorToStudent = async (req, res) => {
     if (!studentChat.chats.has(tutorId)) {
       studentChat.chats.set(tutorId, []);
     }
-    
+
     studentChat.chats.get(tutorId).push({ message, timestamp: new Date() });
 
     await studentChat.save();
@@ -83,7 +80,7 @@ const sendMessageFromTutorToStudent = async (req, res) => {
       tutorChat.chats.set(studentId, []);
     }
 
-    tutorChat.chats.get(studentId).push({ message, timestamp: new Date(), isSentBySelf:true });
+    tutorChat.chats.get(studentId).push({ message, timestamp: new Date(), isSentBySelf: true });
 
     await tutorChat.save();
 
@@ -112,21 +109,21 @@ const getMyChatsTutor = async (req, res) => {
   }
 };
 const getMessagesTutor = async (req, res) => {
-  const { tutorId , studentId} = req.params;
+  const { tutorId, studentId } = req.params;
 
   try {
     let tutorChat = await TutorChat.findOne({ tutorId });
     if (!tutorChat) {
       return res.status(404).json({ message: 'User Not Found' });
     }
-    else{
-      let messages=[]
+    else {
+      let messages = []
       if (tutorChat.chats.has(studentId)) {
-        messages=tutorChat.chats.get(studentId)
+        messages = tutorChat.chats.get(studentId)
       }
       res.status(200).json(messages);
     }
-    
+
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: 'Internal Server Error' });
@@ -195,7 +192,7 @@ const filterStudents = async (req, res) => {
 const myProfileTutor = async (req, res) => {
   try {
     const { tutorId } = req.params;
-    const tutor = await TutorProfile.findOne({tutorId});
+    const tutor = await TutorProfile.findOne({ tutorId });
     if (!tutor) {
       return res.status(404).json({ message: 'Tutor not found' });
     }
@@ -207,6 +204,6 @@ const myProfileTutor = async (req, res) => {
 }
 
 module.exports = {
-  updateTutorProfile,subjectsInterested, sendMessageFromTutorToStudent,getMyChatsTutor,getMessagesTutor,
+  updateTutorProfile, subjectsInterested, sendMessageFromTutorToStudent, getMyChatsTutor, getMessagesTutor,
   getStudentsInterestedInSubjects, getAllStudents, filterStudents, myProfileTutor
 };

@@ -16,14 +16,7 @@ const updateStudentProfile = async (req, res) => {
     studentProfile.class = studentClass !== undefined ? studentClass : studentProfile.class;
     studentProfile.location = location !== undefined ? location : studentProfile.location;
     studentProfile.contactInfo = contactInfo !== undefined ? contactInfo : studentProfile.contactInfo;
-    if (subjectsInterested !== undefined) {
-      subjectsInterested.forEach(subject => {
-        subject = subject.toLowerCase()
-        if (!studentProfile.subjectsInterested.includes(subject)) {
-          studentProfile.subjectsInterested.push(subject);
-        }
-      });
-    }
+    studentProfile.subjectsInterested = subjectsInterested !== undefined ? subjectsInterested : studentProfile.subjectsInterested;
     await studentProfile.save();
     res.status(200).json(studentProfile);
   } catch (error) {
@@ -215,12 +208,12 @@ const filterTutors = async (req, res) => {
 
 const myProfileStudent = async (req, res) => {
   try {
-    const { tutorId } = req.params;
-    const tutor = await TutorProfile.findOne({tutorId});
-    if (!tutor) {
-      return res.status(404).json({ message: 'Tutor not found' });
+    const { studentId } = req.params;
+    const student = await StudentProfile.findOne({studentId});
+    if (!student) {
+      return res.status(404).json({ message: 'Student not found' });
     }
-    res.status(200).json(tutor);
+    res.status(200).json(student);
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: 'Internal Server Error' });
