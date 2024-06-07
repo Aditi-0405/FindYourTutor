@@ -1,0 +1,25 @@
+.profile-container {
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    font-family: 'Arial', sans-serif;
+  }
+  
+  .profile-container h2 {
+    text-align: center;
+    color: #333333;
+    margin-bottom: 20px;
+  }
+  
+  .profile-container p {
+    margin-bottom: 10px;
+    color: #666666;
+  }
+  
+  .profile-container strong {
+    color: #333333;
+  }
+  

@@ -41,10 +41,10 @@ const Navbar = ({ isLoggedIn, setIsLoggedIn }) => {
                 {role === 'student' && (
                   <>
                     <li className="nav-item">
-                      <Link className="nav-link" to="/dashboard">Student Dashboard</Link>
+                      <Link className="nav-link" to="/student-dashboard">Student Dashboard</Link>
                     </li>
                     <li className="nav-item">
-                      <Link className="nav-link" to="/profile">Student Profile</Link>
+                      <Link className="nav-link" to="/student-profile">Student Profile</Link>
                     </li>
                   </>
                 )}
