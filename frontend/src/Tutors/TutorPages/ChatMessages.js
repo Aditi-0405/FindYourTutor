@@ -25,7 +25,8 @@ const ChatMessagesTutor = () => {
 
     socket.emit('joinRoom', { studentId, tutorId });
 
-    socket.on('receiveMessage', (messageData) => {
+    socket.on('receiveMessage', async (messageData) => {
+      const response = await axios.patch(`http://localhost:5000/incrementNotifications/student/${studentId}`);
       setMessages((prevMessages) => [...prevMessages, messageData]);
     });
 

@@ -2,7 +2,8 @@ const TutorProfile = require('../models/Profile/Tutor-profile');
 const StudentProfile = require('../models/Profile/Student-profile');
 const TutorChat = require('../models/Chats/Tutor-chat');
 const StudentChat = require('../models/Chats/Student-chat');
-
+const tutorNotifications = require('../models/Notifications/TutorNotifications');
+const studentNotifications = require('../models/Notifications/StudentNotifications');
 
 const getAllTutors = async (req, res) => {
 
@@ -65,7 +66,113 @@ const filterTutors = async (req, res) => {
       res.status(500).json({ message: 'Internal Server Error' });
     }
   };
+
+  const getNotificationsStudent = async (req, res) => {
+    const { studentId } = req.params;
+  
+    try {
+      let notification = await studentNotifications.findOne({ studentId });
+      if (!notification) {
+        notification = new studentNotifications({ studentId });
+      }
+      await notification.save()
+      res.status(200).json(notification);
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ message: 'Internal Server Error' });
+    }
+  };
+  const getNotificationsTutor = async (req, res) => {
+    const { tutorId } = req.params;
+  
+    try {
+      let notification = await tutorNotifications.findOne({ tutorId });
+      if (!notification) {
+        console.log("notification was null")
+        notification = new tutorNotifications({tutorId})
+      }
+      await notification.save()
+      res.status(200).json(notification);
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ message: 'Internal Server Error' });
+    }
+  };
+  const updateNotificationsTutor = async (req, res) => {
+    const { tutorId } = req.params;
+  
+    try {
+      let notification = await tutorNotifications.findOne({ tutorId });
+      if (!notification) {
+        notification = new tutorNotifications({tutorId})
+      }
+      else{
+        notification.count = 0;
+      }
+      await notification.save();
+      res.status(200).json(notification);
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ message: 'Internal Server Error' });
+    }
+  };
+  const updateNotificationsStudent = async (req, res) => {
+    const { studentId } = req.params;
+  
+    try {
+      let notification = await studentNotifications.findOne({ studentId });
+      if (!notification) {
+        notification = new studentNotifications({ studentId });
+      }
+      else{
+        notification.count =0;
+      }
+      await notification.save();
+      res.status(200).json(notification);
+
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ message: 'Internal Server Error' });
+    }
+  };
+  const incrementNotificationsStudent = async (req, res) => {
+    const { studentId } = req.params;
+  
+    try {
+      let notification = await studentNotifications.findOne({ studentId });
+      if (!notification) {
+        notification = new studentNotifications({ studentId });
+      }
+      console.log(notification.count)
+      notification.count = notification.count+1;
+      console.log(notification.count);
+      await notification.save();
+      res.status(200).json(notification);
+
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ message: 'Internal Server Error' });
+    }
+  };
+  const incrementNotificationsTutor = async (req, res) => {
+    const { tutorId } = req.params;
+  
+    try {
+      let notification = await tutorNotifications.findOne({ tutorId });
+      if (!notification) {
+        notification = new tutorNotifications({ tutorId });
+      }
+      notification.count = notification.count+1;
+      await notification.save();
+      res.status(200).json(notification);
+
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ message: 'Internal Server Error' });
+    }
+  };
   
 module.exports = {
-getAllTutors, filterTutors
+getAllTutors, filterTutors, getNotificationsStudent,getNotificationsTutor, updateNotificationsTutor, updateNotificationsStudent, 
+incrementNotificationsStudent, incrementNotificationsTutor
 };

@@ -4,7 +4,6 @@ const cors = require('cors');
 const { createServer } = require('http');
 const { Server } = require('socket.io');
 const connectDB = require('./db/connect');
-
 const app = express();
 const server = createServer(app);
 
@@ -28,7 +27,8 @@ const {
   updateStudentProfile, getSubjectsTaughtByTutor, sendMessageFromStudentToTutor, 
   getMyChatsStudent, getMessagesStudent, getTutorsTeachingSubjects, myProfileStudent 
 } = require('./controllers/studentControllers');
-const { getAllTutors, filterTutors } = require('./controllers/general');
+const { getAllTutors, filterTutors, getNotificationsTutor, getNotificationsStudent,
+   updateNotificationsStudent, updateNotificationsTutor , incrementNotificationsStudent, incrementNotificationsTutor} = require('./controllers/general');
 
 connectDB().then(() => {
   server.listen(5000, () => {
@@ -79,3 +79,9 @@ app.get('/api/general/getAllTutors', getAllTutors);
 app.get('/api/general/filterTutors', filterTutors);
 app.get('/api/tutor/my-profile/:tutorId', myProfileTutor);
 app.get('/api/student/my-profile/:studentId', myProfileStudent);
+app.get('/notifications/student/:studentId',getNotificationsStudent )
+app.get('/notifications/tutor/:tutorId',getNotificationsTutor )
+app.patch('/updateNotifications/student/:studentId',updateNotificationsStudent )
+app.patch('/updateNotifications/tutor/:tutorId',updateNotificationsTutor )
+app.patch('/incrementNotifications/student/:studentId',incrementNotificationsStudent )
+app.patch('/incrementNotifications/tutor/:tutorId',incrementNotificationsTutor )

@@ -3,7 +3,7 @@ import axios from 'axios';
 import { Link } from 'react-router-dom';
 import '../../Shared/SharedStyling/ChatList.css'; 
 
-const ChatsListTutor = () => {
+const ChatsListTutor = ({ setUnread }) => {
   const [students, setStudents] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -15,6 +15,9 @@ const ChatsListTutor = () => {
       try {
         const response = await axios.get(`http://localhost:5000/api/tutor/getMyChats/${tutorId}`);
         setStudents(response.data);
+        await axios.patch(`http://localhost:5000/updateNotifications/tutor/${tutorId}`);
+        
+        setUnread(0);
         setLoading(false);
       } catch (error) {
         console.error(error);
@@ -24,7 +27,7 @@ const ChatsListTutor = () => {
     };
 
     fetchChats();
-  }, [tutorId]);
+  }, [tutorId, setUnread]);
 
   return (
     <div className="chats-list-container"> 

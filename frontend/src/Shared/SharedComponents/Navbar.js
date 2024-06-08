@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import '../SharedStyling/Navbar.css';
 
-const Navbar = ({ isLoggedIn, setIsLoggedIn }) => {
+const Navbar = ({ isLoggedIn, setIsLoggedIn, unread }) => {
   const [isCollapsed, setIsCollapsed] = useState(true);
   const navigate = useNavigate();
 
@@ -47,7 +47,7 @@ const Navbar = ({ isLoggedIn, setIsLoggedIn }) => {
                       <Link className="nav-link" to="/student-profile">Student Profile</Link>
                     </li>
                     <li className="nav-item">
-                      <Link className="nav-link" to="/chat-list-student">Chats</Link>
+                      <Link className="nav-link" to="/chat-list-student">Chats {unread >= 0 && <span className="badge badge-pill badge-danger">{unread}</span>}</Link>
                     </li>
                   </>
                 )}
@@ -60,7 +60,7 @@ const Navbar = ({ isLoggedIn, setIsLoggedIn }) => {
                       <Link className="nav-link" to="/tutor-profile">Tutor Profile</Link>
                     </li>
                     <li className="nav-item">
-                      <Link className="nav-link" to="/chat-list-tutor">Chats</Link>
+                      <Link className="nav-link" to="/chat-list-tutor">Chats {unread >= 0 && <span className="badge badge-pill badge-danger">{unread}</span>}</Link>
                     </li>
                   </>
                 )}

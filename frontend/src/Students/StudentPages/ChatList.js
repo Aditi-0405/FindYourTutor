@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
-import '../../Shared/SharedStyling/ChatList.css'; 
+import '../../Shared/SharedStyling/ChatList.css';
 
-const ChatsListStudent = () => {
+const ChatsListStudent = ({ setUnread }) => {
   const [tutors, setTutors] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -15,6 +15,9 @@ const ChatsListStudent = () => {
       try {
         const response = await axios.get(`http://localhost:5000/api/student/getMyChats/${studentId}`);
         setTutors(response.data);
+        await axios.patch(`http://localhost:5000/updateNotifications/student/${studentId}`);
+        
+        setUnread(0);
         setLoading(false);
       } catch (error) {
         console.error(error);
@@ -24,7 +27,7 @@ const ChatsListStudent = () => {
     };
 
     fetchChats();
-  }, [studentId]);
+  }, [studentId, setUnread]);
 
   return (
     <div className="chats-list-container"> 
