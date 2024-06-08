@@ -28,7 +28,9 @@ const {
   getMyChatsStudent, getMessagesStudent, getTutorsTeachingSubjects, myProfileStudent 
 } = require('./controllers/studentControllers');
 const { getAllTutors, filterTutors, getNotificationsTutor, getNotificationsStudent,
-   updateNotificationsStudent, updateNotificationsTutor , incrementNotificationsStudent, incrementNotificationsTutor} = require('./controllers/general');
+   updateNotificationsStudent, updateNotificationsTutor , incrementNotificationsStudent,
+    incrementNotificationsTutor, getIndividualNotificationsTutor, getIndividualNotificationsStudent,updateStudentNotifications,
+    updateTutorNotifications, resetStudentNotifications, resetTutorNotifications} = require('./controllers/general');
 
 connectDB().then(() => {
   server.listen(5000, () => {
@@ -85,3 +87,9 @@ app.patch('/updateNotifications/student/:studentId',updateNotificationsStudent )
 app.patch('/updateNotifications/tutor/:tutorId',updateNotificationsTutor )
 app.patch('/incrementNotifications/student/:studentId',incrementNotificationsStudent )
 app.patch('/incrementNotifications/tutor/:tutorId',incrementNotificationsTutor )
+app.get('/getIndividualNotificationsTutor/:tutorId/student/:studentId',getIndividualNotificationsTutor )
+app.get('/getIndividualNotificationsStudent/:studentId/tutor/:tutorId',getIndividualNotificationsStudent )
+app.patch('/updateStudentNotifications/:studentId/tutor/:tutorId',updateStudentNotifications )
+app.patch('/updateTutorNotifications/:tutorId/student/:studentId',updateTutorNotifications )
+app.patch('/resetTutorNotifications/:tutorId/student/:studentId',resetTutorNotifications )
+app.patch('/resetStudentNotifications/:studentId/tutor/:tutorId',resetStudentNotifications )
