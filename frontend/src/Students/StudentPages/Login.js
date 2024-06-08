@@ -18,7 +18,7 @@ const StudentLogin = ({ setIsLoggedIn }) => {
       localStorage.setItem('studentEmail', `${response.data.email}`);
       localStorage.setItem('role', 'student');
       setIsLoggedIn(true);
-      navigate('/tutor-dashboard');
+      navigate('/student-dashboard');
     } catch (err) {
       if (err.response && err.response.status === 401) {
         setError('Invalid email or password');

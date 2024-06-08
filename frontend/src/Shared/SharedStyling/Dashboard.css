@@ -1,4 +1,3 @@
-
 .dashboard-container {
   display: flex;
   flex-direction: column;
@@ -12,6 +11,9 @@
 
 .filter-container {
   margin-bottom: 20px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
 }
 
 .filter-container label {
@@ -25,7 +27,7 @@
   border-radius: 3px;
 }
 
-.filter-container button {
+.filter-button {
   padding: 5px 10px;
   background-color: #007bff;
   color: #fff;
@@ -34,18 +36,23 @@
   cursor: pointer;
 }
 
-.filter-container button:hover {
+.filter-button:hover {
   background-color: #0056b3;
 }
 
-.tutor-list {
+.list-container {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
   gap: 20px;
 }
 
-.tutor-list h2 {
+.list-container h2 {
   text-align: center;
   color: #333333;
   margin-bottom: 20px;
+}
+
+.loading-message, .error-message {
+  text-align: center;
+  color: #ff0000;
 }

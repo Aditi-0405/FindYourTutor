@@ -1,24 +1,23 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import StudentCard from '../TutorComponents/StudentCard';
+import TutorCard from '../StudentComponents/TutorCard';
 import '../../Shared/SharedStyling/Dashboard.css';
 
-const TutorDashboard = () => {
-  const [students, setStudents] = useState([]);
+const StudentDashboard = () => {
+  const [tutors, setTutors] = useState([]);
   const [loading, setLoading] = useState(true);
   const [filters, setFilters] = useState({
     subjects: '',
-    class: '',
-    minRating: '',
-    location: ''
+    location: '',
+    minRating: ''
   });
-  const tutorId = localStorage.getItem('userId');
+  const studentId = localStorage.getItem('userId');
 
   useEffect(() => {
-    const fetchStudents = async () => {
+    const fetchTutors = async () => {
       try {
-        const response = await axios.get(`http://localhost:5000/api/tutor/getStudentsInterestedInSubjects/${tutorId}`);
-        setStudents(response.data);
+        const response = await axios.get(`http://localhost:5000/api/student/getTutorsTeachingSubjects/${studentId}`);
+        setTutors(response.data);
         setLoading(false);
       } catch (error) {
         console.error(error);
@@ -26,8 +25,8 @@ const TutorDashboard = () => {
       }
     };
 
-    fetchStudents();
-  }, [tutorId]);
+    fetchTutors();
+  }, [studentId]);
 
   const handleFilterChange = (filterName, value) => {
     setFilters({ ...filters, [filterName]: value });
@@ -35,10 +34,10 @@ const TutorDashboard = () => {
 
   const applyFilters = async () => {
     try {
-      const response = await axios.get('http://localhost:5000/api/tutor/filterStudents', {
+      const response = await axios.get('http://localhost:5000/api/student/filterTutors', {
         params: filters
       });
-      setStudents(response.data);
+      setTutors(response.data);
     } catch (error) {
       console.error(error);
     }
@@ -50,22 +49,22 @@ const TutorDashboard = () => {
         <label htmlFor="subjects">Subjects:</label>
         <input type="text" id="subjects" value={filters.subjects} onChange={(e) => handleFilterChange('subjects', e.target.value)} />
         
-        <label htmlFor="class">Class:</label>
-        <input type="text" id="class" value={filters.class} onChange={(e) => handleFilterChange('class', e.target.value)} />
-        
         <label htmlFor="location">Location:</label>
         <input type="text" id="location" value={filters.location} onChange={(e) => handleFilterChange('location', e.target.value)} />
         
+        <label htmlFor="minRating">Minimum Rating:</label>
+        <input type="number" id="minRating" value={filters.minRating} onChange={(e) => handleFilterChange('minRating', e.target.value)} />
+        
         <button onClick={applyFilters} className="filter-button">Apply Filters</button>
       </div>
-      <h2>Students</h2>
+      <h2>Tutors</h2>
 
       <div className="list-container">
         {loading ? (
           <p className="loading-message">Loading...</p>
         ) : (
-          students.map(student => (
-            <StudentCard key={student._id} student={student} />
+          tutors.map(tutor => (
+            <TutorCard key={tutor._id} tutor={tutor} />
           ))
         )}
       </div>
@@ -73,4 +72,4 @@ const TutorDashboard = () => {
   );
 };
 
-export default TutorDashboard;
+export default StudentDashboard;
