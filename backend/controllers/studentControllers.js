@@ -103,7 +103,6 @@ const getMyChatsStudent = async (req, res) => {
 
 const getMessagesStudent = async (req, res) => {
   const { studentId, tutorId } = req.params;
-
   try {
     let studentChat = await StudentChat.findOne({ studentId });
     if (!studentChat) {

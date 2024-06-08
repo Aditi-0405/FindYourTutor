@@ -1,0 +1,33 @@
+.chats-list-container {
+    margin-top: 20px;
+    padding: 20px;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    font-family: Arial, sans-serif;
+  }
+  
+  .chats-list-container h2 {
+    color: #333333;
+    margin-bottom: 20px;
+  }
+  
+  .chats-list-container ul {
+    list-style: none;
+    padding: 0;
+  }
+  
+  .chats-list-container li {
+    margin-bottom: 10px;
+  }
+  
+  .chats-list-container a {
+    color: #007bff;
+    text-decoration: none;
+    transition: color 0.3s ease;
+  }
+  
+  .chats-list-container a:hover {
+    color: #0056b3;
+  }
+  

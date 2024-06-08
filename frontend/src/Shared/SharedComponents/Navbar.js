@@ -46,6 +46,9 @@ const Navbar = ({ isLoggedIn, setIsLoggedIn }) => {
                     <li className="nav-item">
                       <Link className="nav-link" to="/student-profile">Student Profile</Link>
                     </li>
+                    <li className="nav-item">
+                      <Link className="nav-link" to="/chat-list-student">Chats</Link>
+                    </li>
                   </>
                 )}
                 {role === 'tutor' && (
@@ -55,6 +58,9 @@ const Navbar = ({ isLoggedIn, setIsLoggedIn }) => {
                     </li>
                     <li className="nav-item">
                       <Link className="nav-link" to="/tutor-profile">Tutor Profile</Link>
+                    </li>
+                    <li className="nav-item">
+                      <Link className="nav-link" to="/chat-list-tutor">Chats</Link>
                     </li>
                   </>
                 )}
