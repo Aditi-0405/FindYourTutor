@@ -16,6 +16,7 @@ const ChatMessagesStudent = () => {
       try {
         const response = await axios.get(`http://localhost:5000/api/student/getMessages/${studentId}/tutor/${tutorId}`);
         setMessages(response.data);
+        await axios.patch(`http://localhost:5000/resetStudentNotifications/${studentId}/tutor/${tutorId}`);
       } catch (error) {
         console.error(error);
       }
@@ -67,9 +68,3 @@ const ChatMessagesStudent = () => {
 };
 
 export default ChatMessagesStudent;
-
-
-
-
-
-

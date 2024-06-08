@@ -14,7 +14,12 @@ const ChatsListStudent = ({ setUnread }) => {
     const fetchChats = async () => {
       try {
         const response = await axios.get(`http://localhost:5000/api/student/getMyChats/${studentId}`);
-        setTutors(response.data);
+        const updatedTutors = await Promise.all(response.data.map(async tutor => {
+          const unreadResponse = await axios.get(`http://localhost:5000/getIndividualNotificationsStudent/${studentId}/tutor/${tutor.tutorId}`);
+          console.log(unreadResponse)
+          return { ...tutor, unreadCount: unreadResponse.data.unreadCount };
+        }));
+        setTutors(updatedTutors);
         await axios.patch(`http://localhost:5000/updateNotifications/student/${studentId}`);
         
         setUnread(0);
@@ -40,7 +45,7 @@ const ChatsListStudent = ({ setUnread }) => {
         <ul>
           {tutors.map(tutor => (
             <li key={tutor.tutorId}>
-              <Link to={`/chat-messages-student/${tutor.tutorId}`}>{tutor.name}</Link>
+              <Link to={`/chat-messages-student/${tutor.tutorId}`}>{tutor.name} ({tutor.unreadCount})</Link>
             </li>
           ))}
         </ul>

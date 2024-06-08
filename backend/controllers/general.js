@@ -172,31 +172,30 @@ const filterTutors = async (req, res) => {
     const { tutorId, studentId } = req.params;
   
     try {
-      console.log(tutorId)
+      console.log(tutorId);
       const notifications = await tutorNotifications.findOne({ tutorId });
-      
+  
       if (!notifications) {
         return res.status(404).json({ message: 'Tutor notifications not found' });
       }
   
       const individualChatCounts = notifications.individualChatCount;
-  
-      const countForStudent = individualChatCounts[studentId] ? individualChatCounts[studentId].count : 0;
+      const mapKeys = Array.from(individualChatCounts.keys());
 
+      const countForStudent = mapKeys.includes(studentId) ? individualChatCounts.get(studentId).count : 0;
+  
       const response = {
         tutorId: notifications.tutorId,
         studentId,
         unreadCount: countForStudent
       };
-
+  
       res.status(200).json(response);
     } catch (error) {
       console.error(error);
       res.status(500).json({ message: 'Internal Server Error' });
     }
   };
-  
-  
 
   const getIndividualNotificationsStudent = async (req, res) => {
     const { tutorId, studentId } = req.params;
@@ -209,9 +208,12 @@ const filterTutors = async (req, res) => {
       }
   
       const individualChatCounts = notifications.individualChatCount;
+      const mapKeys = Array.from(individualChatCounts.keys());
 
-      const countForTutor = individualChatCounts[tutorId] ? individualChatCounts[tutorId].count : 0;
-
+      const countForTutor = mapKeys.includes(tutorId)
+        ? individualChatCounts.get(tutorId).count
+        : 0;
+  
       const response = {
         studentId: notifications.studentId,
         tutorId,
@@ -224,6 +226,7 @@ const filterTutors = async (req, res) => {
       res.status(500).json({ message: 'Internal Server Error' });
     }
   };
+  
 
 const updateStudentNotifications = async (req, res) => {
     const { studentId, tutorId } = req.params;

@@ -45,9 +45,9 @@ const App = () => {
     fetchUnreadCount();
   }, [isLoggedIn]);
 
-  if (unread === null) {
-    return <div>Loading...</div>;
-  }
+  // if (isLoggedIn && unread === null) {
+  //   return <div>Loading...</div>;
+  // }
 
   return (
     <div>
