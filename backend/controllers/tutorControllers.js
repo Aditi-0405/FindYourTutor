@@ -17,8 +17,6 @@ const updateTutorProfile = async (req, res) => {
     tutorProfile.bio = bio !== undefined ? bio : tutorProfile.bio;
     tutorProfile.location = location !== undefined ? location : tutorProfile.location;
     tutorProfile.contactInfo = contactInfo !== undefined ? contactInfo : tutorProfile.contactInfo;
-    console.log(subjectsTaught)
-    console.log(tutorProfile.subjectsTaught)
     if (subjectsTaught) {
       tutorProfile.subjectsTaught={}
       for (let [subject, classes] of Object.entries(subjectsTaught)) {
@@ -81,7 +79,6 @@ const sendMessageFromTutorToStudent = async (req, res) => {
     }
 
     tutorChat.chats.get(studentId).push({ message, timestamp: new Date(), isSentBySelf: true });
-
     await tutorChat.save();
 
     res.status(200).json({ message: 'Message sent successfully' });

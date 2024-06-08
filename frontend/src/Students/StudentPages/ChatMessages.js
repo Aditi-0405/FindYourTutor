@@ -1,6 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useParams } from 'react-router-dom';
+import io from 'socket.io-client';
+
+const socket = io('http://localhost:5000');
 
 const ChatMessagesStudent = () => {
   const [messages, setMessages] = useState([]);
@@ -19,13 +22,22 @@ const ChatMessagesStudent = () => {
     };
 
     fetchMessages();
+
+    socket.emit('joinRoom', { studentId, tutorId });
+
+    socket.on('receiveMessage', (messageData) => {
+      setMessages((prevMessages) => [...prevMessages, messageData]);
+    });
+
+    return () => {
+      socket.off('receiveMessage');
+    };
   }, [studentId, tutorId]);
 
   const handleMessageSend = async () => {
     try {
       await axios.patch(`http://localhost:5000/api/student/sendMessageFromStudentToTutor/${studentId}/tutor/${tutorId}`, { message: newMessage });
-      const response = await axios.get(`http://localhost:5000/api/student/getMessages/${studentId}/tutor/${tutorId}`);
-      setMessages(response.data);
+      socket.emit('sendMessage', { studentId, tutorId, message: newMessage });
       setNewMessage('');
     } catch (error) {
       console.error(error);
@@ -37,8 +49,8 @@ const ChatMessagesStudent = () => {
       <div>
         <h2>Messages</h2>
         <ul>
-          {messages.map(message => (
-            <li key={message._id}>
+          {messages.map((message, index) => (
+            <li key={index}>
               {message.message} - {message.timestamp}
             </li>
           ))}
@@ -54,3 +66,9 @@ const ChatMessagesStudent = () => {
 };
 
 export default ChatMessagesStudent;
+
+
+
+
+
+
