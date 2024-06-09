@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import StudentCard from '../TutorComponents/StudentCard';
-import '../../Shared/SharedStyling/Dashboard.css';
+import '../TutorStyling/TutorDashboard.css';
 
 const TutorDashboard = () => {
   const [students, setStudents] = useState([]);
@@ -9,8 +9,8 @@ const TutorDashboard = () => {
   const [filters, setFilters] = useState({
     subjects: '',
     class: '',
-    minRating: '',
-    location: ''
+    location: '',
+    minRating: ''
   });
   const tutorId = localStorage.getItem('userId');
 
@@ -45,29 +45,33 @@ const TutorDashboard = () => {
   };
 
   return (
-    <div className="dashboard-container">
+    <div className="tutor-dashboard-container">
       <div className="filter-container">
-        <label htmlFor="subjects">Subjects:</label>
-        <input type="text" id="subjects" value={filters.subjects} onChange={(e) => handleFilterChange('subjects', e.target.value)} />
+        <label htmlFor="tutor-subjects">Subjects:</label>
+        <input type="text" id="tutor-subjects" value={filters.subjects} onChange={(e) => handleFilterChange('subjects', e.target.value)} />
         
-        <label htmlFor="class">Class:</label>
-        <input type="text" id="class" value={filters.class} onChange={(e) => handleFilterChange('class', e.target.value)} />
+        <label htmlFor="tutor-class">Class:</label>
+        <input type="text" id="tutor-class" value={filters.class} onChange={(e) => handleFilterChange('class', e.target.value)} />
         
-        <label htmlFor="location">Location:</label>
-        <input type="text" id="location" value={filters.location} onChange={(e) => handleFilterChange('location', e.target.value)} />
+        <label htmlFor="tutor-location">Location:</label>
+        <input type="text" id="tutor-location" value={filters.location} onChange={(e) => handleFilterChange('location', e.target.value)} />
         
-        <button onClick={applyFilters} className="filter-button">Apply Filters</button>
+        <label htmlFor="tutor-minRating">Minimum Rating:</label>
+        <input type="number" id="tutor-minRating" value={filters.minRating} onChange={(e) => handleFilterChange('minRating', e.target.value)} />
+        
+        <button onClick={applyFilters} className="tutor-filter-button">Apply Filters</button>
       </div>
-      <h2>Students</h2>
-
-      <div className="list-container">
-        {loading ? (
-          <p className="loading-message">Loading...</p>
-        ) : (
-          students.map(student => (
-            <StudentCard key={student._id} student={student} />
-          ))
-        )}
+      <h2 className="tutor-students-heading">Students</h2>
+      <div className="tutor-student-container">
+        <div className="tutor-student-list">
+          {loading ? (
+            <p className="tutor-loading-message">Loading...</p>
+          ) : (
+            students.map(student => (
+              <StudentCard key={student._id} student={student} />
+            ))
+          )}
+        </div>
       </div>
     </div>
   );

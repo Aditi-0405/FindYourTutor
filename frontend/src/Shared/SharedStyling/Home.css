@@ -38,27 +38,25 @@
   background-color: #0056b3;
 }
 
-.tutor-container {
+.tutor-container-home {
   width: 100%;
   max-width: 1200px;
   justify-content: center;
   align-items: center;
 }
 
-.tutor-container h2 {
+.tutor-container-home h2 {
   margin-bottom: 20px;
   text-align: center;
 }
 
-.tutor-list {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  align-items: center;
+.tutor-list-home {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
   gap: 20px;
 }
 
-.tutor-card {
+.tutor-card-home {
   flex: 1 0 250px;
 }
 @media screen and (max-width: 600px) {

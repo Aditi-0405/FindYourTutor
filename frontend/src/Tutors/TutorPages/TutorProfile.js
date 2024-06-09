@@ -65,27 +65,29 @@ const TutorProfile = () => {
     }
   };
 
-  if (loading) return <p>Loading...</p>;
-  if (error) return <p>{error}</p>;
+  if (loading) return <p className="tutor-profile__loading">Loading...</p>;
+  if (error) return <p className="tutor-profile__error">{error}</p>;
 
   return (
-    <div className="profile-container">
+    <div className="tutor-profile__container">
       {!isEditing ? (
         <>
-          <h2>{profile.name}'s Profile</h2>
-          <p><strong>Bio:</strong> {profile.bio}</p>
-          <p><strong>Subjects Taught:</strong> {Object.entries(profile.subjectsTaught).map(([subject, details]) => (
+          <h2 className="tutor-profile__heading">{profile.name}'s Profile</h2>
+          <p className="tutor-profile__info"><strong>Bio:</strong> {profile.bio}</p>
+          <p className="tutor-profile__info"><strong>Subjects Taught:</strong> {Object.entries(profile.subjectsTaught).map(([subject, details]) => (
             <span key={subject}>{subject} ({details.join(', ')})</span>
           )).reduce((prev, curr) => prev.length === 0 ? [curr] : [...prev, ', ', curr], [])}</p>
-          <p><strong>Rate:</strong> ${profile.rate} per hour</p>
-          <p><strong>Location:</strong> {profile.location}</p>
-          <p><strong>Contact Info:</strong> {profile.contactInfo}</p>
-          <button onClick={handleEditToggle}>Edit Profile</button>
+          <p className="tutor-profile__info"><strong>Rate:</strong> ${profile.rate} per hour</p>
+          <p className="tutor-profile__info"><strong>Location:</strong> {profile.location}</p>
+          <p className="tutor-profile__info"><strong>Contact Info:</strong> {profile.contactInfo}</p>
+          <div className="tutor-profile__buttons">
+            <button className="tutor-profile__edit-button" onClick={handleEditToggle}>Edit Profile</button>
+          </div>
         </>
       ) : (
-        <form onSubmit={handleFormSubmit}>
-          <h2>Edit Profile</h2>
-          <div className="form-group">
+        <form className="tutor-profile__form" onSubmit={handleFormSubmit}>
+          <h2 className="tutor-profile__heading">Edit Profile</h2>
+          <div className="tutor-profile__form-group">
             <label htmlFor="bio">Bio:</label>
             <input
               type="text"
@@ -95,7 +97,7 @@ const TutorProfile = () => {
               onChange={handleInputChange}
             />
           </div>
-          <div className="form-group">
+          <div className="tutor-profile__form-group">
             <label htmlFor="subjectsTaught">Subjects Taught:</label>
             <input
               type="text"
@@ -105,7 +107,7 @@ const TutorProfile = () => {
               onChange={handleInputChange}
             />
           </div>
-          <div className="form-group">
+          <div className="tutor-profile__form-group">
             <label htmlFor="rate">Rate:</label>
             <input
               type="number"
@@ -115,7 +117,7 @@ const TutorProfile = () => {
               onChange={handleInputChange}
             />
           </div>
-          <div className="form-group">
+          <div className="tutor-profile__form-group">
             <label htmlFor="location">Location:</label>
             <input
               type="text"
@@ -125,7 +127,7 @@ const TutorProfile = () => {
               onChange={handleInputChange}
             />
           </div>
-          <div className="form-group">
+          <div className="tutor-profile__form-group">
             <label htmlFor="contactInfo">Contact Info:</label>
             <input
               type="text"
@@ -135,8 +137,10 @@ const TutorProfile = () => {
               onChange={handleInputChange}
             />
           </div>
-          <button type="submit">Save</button>
-          <button type="button" onClick={handleEditToggle}>Cancel</button>
+          <div className="tutor-profile__buttons">
+            <button className="tutor-profile__save-button" type="submit">Save</button>
+            <button className="tutor-profile__cancel-button" type="button" onClick={handleEditToggle}>Cancel</button>
+          </div>
         </form>
       )}
     </div>

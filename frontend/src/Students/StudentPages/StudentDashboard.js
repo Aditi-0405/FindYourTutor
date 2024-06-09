@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import TutorCard from '../StudentComponents/TutorCard';
-import '../../Shared/SharedStyling/Dashboard.css';
+import '../StudentStyling/StudentDashboard.css';
 
 const StudentDashboard = () => {
   const [tutors, setTutors] = useState([]);
@@ -44,29 +44,30 @@ const StudentDashboard = () => {
   };
 
   return (
-    <div className="dashboard-container">
+    <div className="student-dashboard-container">
       <div className="filter-container">
-        <label htmlFor="subjects">Subjects:</label>
-        <input type="text" id="subjects" value={filters.subjects} onChange={(e) => handleFilterChange('subjects', e.target.value)} />
-        
-        <label htmlFor="location">Location:</label>
-        <input type="text" id="location" value={filters.location} onChange={(e) => handleFilterChange('location', e.target.value)} />
-        
-        <label htmlFor="minRating">Minimum Rating:</label>
-        <input type="number" id="minRating" value={filters.minRating} onChange={(e) => handleFilterChange('minRating', e.target.value)} />
-        
-        <button onClick={applyFilters} className="filter-button">Apply Filters</button>
-      </div>
-      <h2>Tutors</h2>
+        <label htmlFor="student-subjects">Subjects:</label>
+        <input type="text" id="student-subjects" value={filters.subjects} onChange={(e) => handleFilterChange('subjects', e.target.value)} />
 
-      <div className="list-container">
+        <label htmlFor="student-location">Location:</label>
+        <input type="text" id="student-location" value={filters.location} onChange={(e) => handleFilterChange('location', e.target.value)} />
+
+        <label htmlFor="student-minRating">Minimum Rating:</label>
+        <input type="number" id="student-minRating" value={filters.minRating} onChange={(e) => handleFilterChange('minRating', e.target.value)} />
+
+        <button onClick={applyFilters} className="student-filter-button">Apply Filters</button>
+      </div>
+      <h2 className="student-tutors-heading">Tutors</h2>
+      <div className="student-tutor-container">
+      <div className="student-tutor-list">
         {loading ? (
-          <p className="loading-message">Loading...</p>
+          <p className="student-loading-message">Loading...</p>
         ) : (
           tutors.map(tutor => (
             <TutorCard key={tutor._id} tutor={tutor} />
           ))
         )}
+      </div>
       </div>
     </div>
   );

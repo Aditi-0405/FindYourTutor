@@ -63,12 +63,12 @@ const Home = () => {
         <button onClick={applyFilters}>Apply Filters</button>
       </div>
 
-      <div className="tutor-container">
+      <div className="tutor-container-home">
         <h2>Tutors</h2>
         {loading ? (
           <p>Loading...</p>
         ) : (
-          <div className="tutor-list">
+          <div className="tutor-list-home">
             {tutors.map(tutor => (
               <TutorCard key={tutor._id} tutor={tutor} />
             ))}
