@@ -72,7 +72,7 @@ const TutorProfile = () => {
     <div className="tutor-profile__container">
       {!isEditing ? (
         <>
-          <h2 className="tutor-profile__heading">{profile.name}'s Profile</h2>
+          <h2 className="tutor-profile__heading">{profile.name}</h2>
           <p className="tutor-profile__info"><strong>Bio:</strong> {profile.bio}</p>
           <p className="tutor-profile__info"><strong>Subjects Taught:</strong> {Object.entries(profile.subjectsTaught).map(([subject, details]) => (
             <span key={subject}>{subject} ({details.join(', ')})</span>

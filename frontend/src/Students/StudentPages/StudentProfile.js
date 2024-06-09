@@ -25,7 +25,7 @@ const StudentProfile = () => {
         setFormData({
           bio: response.data.bio,
           class: response.data.class,
-          subjectsInterested: response.data.subjectsInterested.join(', '), 
+          subjectsInterested: response.data.subjectsInterested.join(', '),
           location: response.data.location,
           contactInfo: response.data.contactInfo
         });
@@ -54,7 +54,7 @@ const StudentProfile = () => {
     try {
       const updatedProfile = {
         ...formData,
-        subjectsInterested: formData.subjectsInterested.split(',').map(subject => subject.trim()) 
+        subjectsInterested: formData.subjectsInterested.split(',').map(subject => subject.trim())
       };
       const response = await axios.patch(`http://localhost:5000/api/student/updateStudentProfile/${studentId}`, updatedProfile);
       setProfile(response.data);
@@ -65,14 +65,27 @@ const StudentProfile = () => {
     }
   };
 
-  if (loading) return <p>Loading...</p>;
-  if (error) return <p>{error}</p>;
+  if (loading) return <p className="student-profile__loading">Loading...</p>;
+  if (error) return <p className="student-profile__error">{error}</p>;
 
   return (
-    <div className="profile-container">
-      {isEditing ? (
-        <form onSubmit={handleFormSubmit} className="edit-form">
-          <div className="form-group">
+    <div className="student-profile__container">
+      {!isEditing ? (
+        <>
+          <h2 className="student-profile__heading">{profile.name}</h2>
+          <p className="student-profile__info"><strong>Bio:</strong> {profile.bio}</p>
+          <p className="student-profile__info"><strong>Class:</strong> {profile.class}</p>
+          <p className="student-profile__info"><strong>Subjects Interested:</strong> {profile.subjectsInterested.join(', ')}</p>
+          <p className="student-profile__info"><strong>Location:</strong> {profile.location}</p>
+          <p className="student-profile__info"><strong>Contact Info:</strong> {profile.contactInfo}</p>
+          <div className="student-profile__buttons">
+            <button className="student-profile__edit-button" onClick={handleEditToggle}>Edit Profile</button>
+          </div>
+        </>
+      ) : (
+        <form className="student-profile__form" onSubmit={handleFormSubmit}>
+          <h2 className="student-profile__heading">Edit Profile</h2>
+          <div className="student-profile__form-group">
             <label htmlFor="bio">Bio:</label>
             <input
               type="text"
@@ -82,7 +95,7 @@ const StudentProfile = () => {
               onChange={handleInputChange}
             />
           </div>
-          <div className="form-group">
+          <div className="student-profile__form-group">
             <label htmlFor="class">Class:</label>
             <input
               type="text"
@@ -90,10 +103,9 @@ const StudentProfile = () => {
               name="class"
               value={formData.class}
               onChange={handleInputChange}
-
             />
           </div>
-          <div className="form-group">
+          <div className="student-profile__form-group">
             <label htmlFor="subjectsInterested">Subjects Interested:</label>
             <input
               type="text"
@@ -101,10 +113,9 @@ const StudentProfile = () => {
               name="subjectsInterested"
               value={formData.subjectsInterested}
               onChange={handleInputChange}
-
             />
           </div>
-          <div className="form-group">
+          <div className="student-profile__form-group">
             <label htmlFor="location">Location:</label>
             <input
               type="text"
@@ -114,7 +125,7 @@ const StudentProfile = () => {
               onChange={handleInputChange}
             />
           </div>
-          <div className="form-group">
+          <div className="student-profile__form-group">
             <label htmlFor="contactInfo">Contact Info:</label>
             <input
               type="text"
@@ -124,21 +135,11 @@ const StudentProfile = () => {
               onChange={handleInputChange}
             />
           </div>
-          <div className="form-buttons">
-            <button type="submit">Save</button>
-            <button type="button" onClick={handleEditToggle}>Cancel</button>
+          <div className="student-profile__buttons">
+            <button className="student-profile__save-button" type="submit">Save</button>
+            <button className="student-profile__cancel-button" type="button" onClick={handleEditToggle}>Cancel</button>
           </div>
         </form>
-      ) : (
-        <div>
-          <h2>{profile.name}'s Profile</h2>
-          <p><strong>Bio:</strong> {profile.bio}</p>
-          <p><strong>Class:</strong> {profile.class}</p>
-          <p><strong>Subjects Interested:</strong> {profile.subjectsInterested.join(', ')}</p>
-          <p><strong>Location:</strong> {profile.location}</p>
-          <p><strong>Contact Info:</strong> {profile.contactInfo}</p>
-          <button onClick={handleEditToggle}>Edit Profile</button>
-        </div>
       )}
     </div>
   );
