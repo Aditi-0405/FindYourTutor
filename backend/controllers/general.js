@@ -142,6 +142,7 @@ const filterTutors = async (req, res) => {
       if (!notification) {
         notification = new studentNotifications({ studentId });
       }
+      notification.count = notification.count+1;
       await notification.save();
       res.status(200).json(notification);
 
