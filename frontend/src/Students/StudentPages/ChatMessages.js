@@ -27,7 +27,6 @@ const ChatMessagesStudent = () => {
     socket.emit('joinRoom', { studentId, tutorId });
 
     socket.on('receiveMessage', async (messageData) => {
-      const response = await axios.patch(`http://localhost:5000/incrementNotifications/tutor/${tutorId}`);
       setMessages((prevMessages) => [...prevMessages, messageData]);
     });
 
@@ -39,6 +38,8 @@ const ChatMessagesStudent = () => {
   const handleMessageSend = async () => {
     try {
       await axios.patch(`http://localhost:5000/api/student/sendMessageFromStudentToTutor/${studentId}/tutor/${tutorId}`, { message: newMessage });
+      await axios.patch(`http://localhost:5000/incrementNotifications/tutor/${tutorId}`);
+      await axios.patch(`http://localhost:5000/updateTutorNotifications/${tutorId}/student/${studentId}`);
       socket.emit('sendMessage', { studentId, tutorId, message: newMessage });
       setNewMessage('');
     } catch (error) {
