@@ -5,7 +5,7 @@ import io from 'socket.io-client';
 
 const socket = io('http://localhost:5000');
 
-const ChatMessagesStudent = () => {
+const ChatMessagesStudent = ({setUnread}) => {
   const [messages, setMessages] = useState([]);
   const [newMessage, setNewMessage] = useState('');
   const studentId = localStorage.getItem('userId');
@@ -16,7 +16,9 @@ const ChatMessagesStudent = () => {
       try {
         const response = await axios.get(`http://localhost:5000/api/student/getMessages/${studentId}/tutor/${tutorId}`);
         setMessages(response.data);
+        const res = await axios.patch(`http://localhost:5000/updateNotifications/student/${studentId}/tutor/${tutorId}`);
         await axios.patch(`http://localhost:5000/resetStudentNotifications/${studentId}/tutor/${tutorId}`);
+        setUnread(res.data.count)
       } catch (error) {
         console.error(error);
       }
@@ -33,6 +35,7 @@ const ChatMessagesStudent = () => {
     return () => {
       socket.off('receiveMessage');
     };
+
   }, [studentId, tutorId]);
 
   const handleMessageSend = async () => {

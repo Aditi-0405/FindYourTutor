@@ -3,7 +3,7 @@ import axios from 'axios';
 import { Link } from 'react-router-dom';
 import '../../Shared/SharedStyling/ChatList.css'; 
 
-const ChatsListTutor = ({ setUnread }) => {
+const ChatsListTutor = () => {
   const [students, setStudents] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -21,9 +21,6 @@ const ChatsListTutor = ({ setUnread }) => {
         }));
         
         setStudents(studentsWithUnreadCounts);
-        await axios.patch(`http://localhost:5000/updateNotifications/tutor/${tutorId}`);
-        
-        setUnread(0);
         setLoading(false);
       } catch (error) {
         console.error(error);
@@ -33,7 +30,7 @@ const ChatsListTutor = ({ setUnread }) => {
     };
 
     fetchChats();
-  }, [tutorId, setUnread]);
+  }, [tutorId]);
 
   return (
     <div className="chats-list-container"> 

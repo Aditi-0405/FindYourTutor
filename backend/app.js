@@ -39,12 +39,12 @@ connectDB().then(() => {
 });
 
 io.on('connection', (socket) => {
-  console.log('A user connected: ', socket.id);
+  // console.log('A user connected: ', socket.id);
 
   socket.on('joinRoom', ({ studentId, tutorId }) => {
     const room = `${studentId}-${tutorId}`;
     socket.join(room);
-    console.log(`User joined room: ${room}`);
+    // console.log(`User joined room: ${room}`);
   });
 
   socket.on('sendMessage', ({ studentId, tutorId, message }) => {
@@ -53,9 +53,10 @@ io.on('connection', (socket) => {
   });
 
   socket.on('disconnect', () => {
-    console.log('User disconnected: ', socket.id);
+    // console.log('User disconnected: ', socket.id);
   });
 });
+
 
 app.post('/api/register/tutor', registerTutor);
 app.post('/api/register/student', registerStudent);
@@ -83,8 +84,8 @@ app.get('/api/tutor/my-profile/:tutorId', myProfileTutor);
 app.get('/api/student/my-profile/:studentId', myProfileStudent);
 app.get('/notifications/student/:studentId',getNotificationsStudent )
 app.get('/notifications/tutor/:tutorId',getNotificationsTutor )
-app.patch('/updateNotifications/student/:studentId',updateNotificationsStudent )
-app.patch('/updateNotifications/tutor/:tutorId',updateNotificationsTutor )
+app.patch('/updateNotifications/student/:studentId/tutor/:tutorId',updateNotificationsStudent )
+app.patch('/updateNotifications/tutor/:tutorId/student/:studentId',updateNotificationsTutor )
 app.patch('/incrementNotifications/student/:studentId',incrementNotificationsStudent )
 app.patch('/incrementNotifications/tutor/:tutorId',incrementNotificationsTutor )
 app.get('/getIndividualNotificationsTutor/:tutorId/student/:studentId',getIndividualNotificationsTutor )

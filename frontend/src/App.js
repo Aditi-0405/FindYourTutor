@@ -27,11 +27,9 @@ const App = () => {
 
       if (userId && role) {
         try {
-          console.log(userId)
           const response = await fetch(`http://localhost:5000/notifications/${role === 'student' ? 'student' : 'tutor'}/${userId}`);
           if (response.ok) {
             const data = await response.json();
-            console.log("here", data)
             setUnread(data.count);
           } else {
             console.error('Error fetching unread count:', response.statusText);
@@ -63,10 +61,10 @@ const App = () => {
           <Route path="/student-dashboard" element={<StudentDashboard />} />
           <Route path="/tutor-profile" element={<TutorProfile />} />
           <Route path="/student-profile" element={<StudentProfile />} />
-          <Route path="/chat-list-student" element={<ChatsListStudent setUnread={setUnread} />} />
-          <Route path="/chat-list-tutor" element={<ChatsListTutor setUnread={setUnread} />} />
-          <Route path="/chat-messages-student/:tutorId" element={<ChatMessagesStudent />} />
-          <Route path="/chat-messages-tutor/:studentId" element={<ChatMessagesTutor />} />
+          <Route path="/chat-list-student" element={<ChatsListStudent />} />
+          <Route path="/chat-list-tutor" element={<ChatsListTutor />} />
+          <Route path="/chat-messages-student/:tutorId" element={<ChatMessagesStudent setUnread={setUnread}/>} />
+          <Route path="/chat-messages-tutor/:studentId" element={<ChatMessagesTutor setUnread={setUnread}/>} />
         </Routes>
       </div>
     </div>
