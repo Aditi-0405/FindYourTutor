@@ -1,8 +1,10 @@
-import React, { useState, useEffect, useRef } from 'react'; 
+import React, { useState, useEffect, useRef } from 'react';
 import axios from 'axios';
 import { useParams } from 'react-router-dom';
 import io from 'socket.io-client';
-import '../../Shared/SharedStyling/ChatMessages.css'; 
+import '../../Shared/SharedStyling/ChatMessages.css';
+import { formatDistanceToNow, format } from 'date-fns';
+
 
 const socket = io('http://localhost:5000');
 
@@ -12,12 +14,13 @@ const ChatMessagesTutor = ({ setUnread }) => {
   const tutorId = localStorage.getItem('userId');
   const { studentId } = useParams();
 
-  const messagesEndRef = useRef(null); 
+  const messagesEndRef = useRef(null);
 
   useEffect(() => {
     const fetchMessages = async () => {
       try {
         const response = await axios.get(`http://localhost:5000/api/tutor/getMessages/${tutorId}/student/${studentId}`);
+        console.log(response.data)
         setMessages(response.data);
         const res = await axios.patch(`http://localhost:5000/updateNotifications/tutor/${tutorId}/student/${studentId}`);
         await axios.patch(`http://localhost:5000/resetTutorNotifications/${tutorId}/student/${studentId}`);
@@ -38,7 +41,7 @@ const ChatMessagesTutor = ({ setUnread }) => {
     return () => {
       socket.off('receiveMessage');
     };
-  }, [studentId, tutorId, setUnread]); 
+  }, [studentId, tutorId, setUnread]);
 
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
@@ -62,18 +65,24 @@ const ChatMessagesTutor = ({ setUnread }) => {
         <h2>Messages</h2>
         <ul className="message-list">
           {messages.map((message, index) => (
-            <li key={index}>
-              <span className="message-text">{message.message}</span> - {message.timestamp}
+            <li key={index} className={message.isSentBySelf ? 'sent-by-self' : 'received'}>
+              {message.isSentBySelf ? 'You : ' : ''}
+              <span className="message-text">{message.message}</span>
+              <span className="message-time">
+                {format(new Date(message.timestamp), "HH:mm")}
+                ({formatDistanceToNow(new Date(message.timestamp))} ago)
+              </span>
             </li>
           ))}
+
           <div ref={messagesEndRef} />
         </ul>
       </div>
       <div className="message-input">
-        <input 
-          type="text" 
-          value={newMessage} 
-          onChange={e => setNewMessage(e.target.value)} 
+        <input
+          type="text"
+          value={newMessage}
+          onChange={e => setNewMessage(e.target.value)}
           placeholder="Type your message here..."
           className="message-input-text"
         />

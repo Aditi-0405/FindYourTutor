@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import axios from 'axios';
 import { useParams } from 'react-router-dom';
 import io from 'socket.io-client';
+import { formatDistanceToNow, format } from 'date-fns';
 
 const socket = io('http://localhost:5000');
 
@@ -60,8 +61,13 @@ const ChatMessagesStudent = ({ setUnread }) => {
         <h2>Messages</h2>
         <ul className="message-list">
           {messages.map((message, index) => (
-            <li key={index}>
-              <span className="message-text">{message.message}</span> - {message.timestamp}
+            <li key={index} className={message.isSentBySelf ? 'sent-by-self' : 'received'}>
+              {message.isSentBySelf ? 'You : ' : ''}
+              <span className="message-text">{message.message}</span>
+              <span className="message-time">
+                {format(new Date(message.timestamp), "HH:mm")}
+                ({formatDistanceToNow(new Date(message.timestamp))} ago)
+              </span>
             </li>
           ))}
           <div ref={messagesEndRef} />
