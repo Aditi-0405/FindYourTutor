@@ -38,9 +38,6 @@ const Navbar = ({ isLoggedIn, setIsLoggedIn, unread }) => {
             <li className="nav-item">
               <Link className="nav-link" to="/">Home</Link>
             </li>
-            <li className="nav-item">
-              <Link className="nav-link" to="/search">Search</Link>
-            </li>
             {isLoggedIn ? (
               <>
                 {role === 'student' && (
@@ -52,7 +49,7 @@ const Navbar = ({ isLoggedIn, setIsLoggedIn, unread }) => {
                       <Link className="nav-link" to="/student-profile">Student Profile</Link>
                     </li>
                     <li className="nav-item">
-                      <Link className="nav-link" to="/chat-list-student">Chats {unread >= 0 && <span className="badge badge-pill badge-danger">{unread}</span>}</Link>
+                      <Link className="nav-link" to="/chat-list-student">Chats{unread >= 0 && <span className="badge badge-pill badge-danger unread-count">({unread})</span>}</Link>
                     </li>
                   </>
                 )}
@@ -69,9 +66,6 @@ const Navbar = ({ isLoggedIn, setIsLoggedIn, unread }) => {
                     </li>
                   </>
                 )}
-                <li className="nav-item">
-                  <Link className="nav-link" to="/help">Help</Link>
-                </li>
                 <li className="nav-item">
                   <button onClick={handleLogout} className="nav-link logout-btn">Logout</button>
                 </li>
