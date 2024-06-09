@@ -15,7 +15,6 @@ import ChatsListTutor from './Tutors/TutorPages/ChatList';
 import ChatMessagesStudent from './Students/StudentPages/ChatMessages';
 import ChatMessagesTutor from './Tutors/TutorPages/ChatMessages';
 
-
 const App = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(localStorage.getItem('userId') !== null);
   const [unread, setUnread] = useState(null);
@@ -42,10 +41,6 @@ const App = () => {
 
     fetchUnreadCount();
   }, [isLoggedIn]);
-
-  // if (isLoggedIn && unread === null) {
-  //   return <div>Loading...</div>;
-  // }
 
   return (
     <div>

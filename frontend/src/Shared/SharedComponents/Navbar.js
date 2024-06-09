@@ -1,5 +1,10 @@
+
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+
+import 'bootstrap/dist/js/bootstrap.bundle.min.js'; 
+import 'bootstrap/dist/css/bootstrap.min.css';
+
 import '../SharedStyling/Navbar.css';
 
 const Navbar = ({ isLoggedIn, setIsLoggedIn, unread }) => {
@@ -26,7 +31,7 @@ const Navbar = ({ isLoggedIn, setIsLoggedIn, unread }) => {
       <div className="container">
         <Link className="navbar-brand" to="/">Tutor-Student Connect</Link>
         <button className="navbar-toggler" type="button" onClick={toggleNavbar}>
-          <span className="navbar-toggler-icon">&#9776;</span>
+          <span className="navbar-toggler-icon"></span>
         </button>
         <div className={`collapse navbar-collapse ${isCollapsed ? '' : 'show'}`} id="navbarNav">
           <ul className="navbar-nav ml-auto">
@@ -74,22 +79,22 @@ const Navbar = ({ isLoggedIn, setIsLoggedIn, unread }) => {
             ) : (
               <>
                 <li className="nav-item dropdown">
-                  <Link className="nav-link dropdown-toggle" to="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                  <Link className="nav-link dropdown-toggle" to="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     Login
                   </Link>
-                  <div className="dropdown-menu" aria-labelledby="navbarDropdown">
-                    <Link className="dropdown-item" to="/login-student">Login as Student</Link>
-                    <Link className="dropdown-item" to="/login-tutor">Login as Tutor</Link>
-                  </div>
+                  <ul className="dropdown-menu" aria-labelledby="navbarDropdown">
+                    <li><Link className="dropdown-item" to="/login-student">Login as Student</Link></li>
+                    <li><Link className="dropdown-item" to="/login-tutor">Login as Tutor</Link></li>
+                  </ul>
                 </li>
                 <li className="nav-item dropdown">
-                  <Link className="nav-link dropdown-toggle" to="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                  <Link className="nav-link dropdown-toggle" to="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     Register
                   </Link>
-                  <div className="dropdown-menu" aria-labelledby="navbarDropdown">
-                    <Link className="dropdown-item" to="/register-student">Register as Student</Link>
-                    <Link className="dropdown-item" to="/register-tutor">Register as Tutor</Link>
-                  </div>
+                  <ul className="dropdown-menu" aria-labelledby="navbarDropdown">
+                    <li><Link className="dropdown-item" to="/register-student">Register as Student</Link></li>
+                    <li><Link className="dropdown-item" to="/register-tutor">Register as Tutor</Link></li>
+                  </ul>
                 </li>
               </>
             )}
