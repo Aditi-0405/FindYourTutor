@@ -1,33 +1,58 @@
 .chats-list-container {
-    margin-top: 20px;
-    padding: 20px;
-    background-color: #f9f9f9;
-    border-radius: 8px;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-    font-family: Arial, sans-serif;
-  }
-  
-  .chats-list-container h2 {
-    color: #333333;
-    margin-bottom: 20px;
-  }
-  
-  .chats-list-container ul {
-    list-style: none;
-    padding: 0;
-  }
-  
-  .chats-list-container li {
-    margin-bottom: 10px;
-  }
-  
-  .chats-list-container a {
-    color: #007bff;
-    text-decoration: none;
-    transition: color 0.3s ease;
-  }
-  
-  .chats-list-container a:hover {
-    color: #0056b3;
-  }
-  
+  max-width: 600px;
+  margin: 20px auto;
+  padding: 20px;
+  background-color: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  font-family: 'Arial', sans-serif;
+}
+
+.chats-list-container h2 {
+  color: #333333;
+  margin-bottom: 20px;
+  font-size: 24px;
+  text-align: center;
+  font-weight: bold;
+}
+
+.chats-list-container ul {
+  list-style: none;
+  padding: 0;
+}
+
+.chats-list-container li {
+  margin-bottom: 10px;
+  padding: 10px 15px;
+  background-color: #f1f1f1;
+  border-radius: 8px;
+  transition: background-color 0.3s ease;
+}
+
+.chats-list-container li:hover {
+  background-color: #e2e6ea;
+}
+
+.chats-list-container a {
+  color: #007bff;
+  text-decoration: none;
+  font-size: 16px;
+  transition: color 0.3s ease;
+}
+
+.chats-list-container a:hover {
+  color: #0056b3;
+}
+
+.chats-list-container p {
+  text-align: center;
+  color: #d9534f;
+  font-size: 18px;
+  margin-top: 20px;
+}
+
+.unread-count {
+  color: #28a745; 
+  font-weight: bold;
+  margin-left: 8px;
+}

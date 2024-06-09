@@ -41,7 +41,7 @@ const ChatsListStudent = () => {
         <ul>
           {tutors.map(tutor => (
             <li key={tutor.tutorId}>
-              <Link to={`/chat-messages-student/${tutor.tutorId}`}>{tutor.name} ({tutor.unreadCount})</Link>
+              <Link to={`/chat-messages-student/${tutor.tutorId}`}>{tutor.name} <span className="unread-count">({tutor.unreadCount})</span></Link>
             </li>
           ))}
         </ul>
