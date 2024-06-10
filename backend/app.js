@@ -11,6 +11,7 @@ const registerRoutes = require('./routes/register-routes')
 const loginRoutes = require('./routes/login-routes')
 const studentRoutes = require('./routes/student-routes')
 const tutorRoutes = require('./routes/tutor-routes')
+const generalRoutes = require('./routes/general-routes')
 
 const { isAuthenticated } = require('./auth/authenticate')
 
@@ -23,8 +24,6 @@ const io = new Server(server, {
     methods: ['GET', 'POST', 'PATCH']
   }
 });
-
-const { getAllTutors, filterTutors } = require('./controllers/general');
 
 connectDB().then(() => {
   server.listen(5000, () => {
@@ -44,12 +43,11 @@ io.on('connection', (socket) => {
   });
 });
 
-
 app.use('/api/register', registerRoutes);
 app.use('/api/login', loginRoutes);
 app.use('/api/student', studentRoutes)
 app.use('/api/tutor', tutorRoutes)
-app.get('/api/general/getAllTutors', getAllTutors);
-app.get('/api/general/filterTutors', filterTutors);
+app.use('/api/general', generalRoutes);
+
 
 
