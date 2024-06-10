@@ -205,7 +205,7 @@ const updateNotifications = async (req, res) => {
     res.status(500).json({ message: 'Internal Server Error' });
   }
 };
-const incrementNotifications = async (req, res) => {
+const incrementTutorNotifications = async (req, res) => {
   const { tutorId } = req.params;
 
   try {
@@ -308,6 +308,6 @@ const resetNotifications = async (req, res) => {
 module.exports = {
   updateStudentProfile, getSubjectsTaughtByTutor, sendMessageFromStudentToTutor, getMyChatsStudent,
   getMessagesStudent, getTutorsTeachingSubjects, myProfileStudent, getNotifications, updateNotifications,
-  incrementNotifications, getIndividualNotifications,
+  incrementTutorNotifications, getIndividualNotifications,
   updateTutorNotifications, resetNotifications,
 };

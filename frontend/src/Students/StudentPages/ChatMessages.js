@@ -50,7 +50,7 @@ const ChatMessagesStudent = ({ setUnread }) => {
   const handleMessageSend = async () => {
     try {
       await axios.patch(`http://localhost:5000/api/student/sendMessageFromStudentToTutor/${studentId}/tutor/${tutorId}`, { message: newMessage });
-      await axios.patch(`http://localhost:5000/api/student/incrementNotifications/tutor/${tutorId}`);
+      await axios.patch(`http://localhost:5000/api/student/incrementTutorNotifications/tutor/${tutorId}`);
       await axios.patch(`http://localhost:5000/api/student/updateTutorNotifications/${tutorId}/student/${studentId}`);
       socket.emit('sendMessage', { studentId, tutorId, message: newMessage });
       setNewMessage('');

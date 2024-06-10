@@ -5,7 +5,7 @@ const router = express.Router();
 const {
     updateStudentProfile, getSubjectsTaughtByTutor, sendMessageFromStudentToTutor,
     getMyChatsStudent, getMessagesStudent, getTutorsTeachingSubjects, myProfileStudent, getNotifications,
-    updateNotifications, incrementNotifications,
+    updateNotifications, incrementTutorNotifications,
     getIndividualNotifications,
     updateTutorNotifications, resetNotifications,
 } = require('../controllers/studentControllers');
@@ -19,7 +19,7 @@ router.get('/getTutorsTeachingSubjects/:studentId', getTutorsTeachingSubjects);
 router.get('/my-profile/:studentId', myProfileStudent);
 router.get('/notifications/:studentId', getNotifications)
 router.patch('/updateNotifications/:studentId/tutor/:tutorId', updateNotifications)
-router.patch('/incrementNotifications/tutor/:tutorId', incrementNotifications)
+router.patch('/incrementTutorNotifications/tutor/:tutorId', incrementTutorNotifications)
 router.get('/getIndividualNotifications/:studentId/tutor/:tutorId', getIndividualNotifications)
 router.patch('/updateTutorNotifications/:tutorId/student/:studentId', updateTutorNotifications)
 router.patch('/resetNotifications/:studentId/tutor/:tutorId', resetNotifications)
