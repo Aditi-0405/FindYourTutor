@@ -33,6 +33,9 @@ const ChatMessagesStudent = ({ setUnread }) => {
     socket.on('receiveMessage', async (messageData) => {
       const response = await axios.get(`http://localhost:5000/api/student/getMessages/${studentId}/tutor/${tutorId}`);
       setMessages(response.data);
+      const res = await axios.patch(`http://localhost:5000/updateNotifications/student/${studentId}/tutor/${tutorId}`);
+      await axios.patch(`http://localhost:5000/resetStudentNotifications/${studentId}/tutor/${tutorId}`);
+      setUnread(res.data.count);
     });
 
     return () => {

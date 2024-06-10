@@ -13,6 +13,7 @@ const ChatMessagesTutor = ({ setUnread }) => {
   const [newMessage, setNewMessage] = useState('');
   const tutorId = localStorage.getItem('userId');
   const { studentId } = useParams();
+  const role = localStorage.getItem('role');
 
   const messagesEndRef = useRef(null);
 
@@ -36,6 +37,9 @@ const ChatMessagesTutor = ({ setUnread }) => {
     socket.on('receiveMessage', async (messageData) => {
       const response = await axios.get(`http://localhost:5000/api/tutor/getMessages/${tutorId}/student/${studentId}`);
       setMessages(response.data);
+      const res = await axios.patch(`http://localhost:5000/updateNotifications/tutor/${tutorId}/student/${studentId}`);
+      await axios.patch(`http://localhost:5000/resetTutorNotifications/${tutorId}/student/${studentId}`);
+      setUnread(res.data.count);
     });
 
     return () => {
