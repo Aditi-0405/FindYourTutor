@@ -24,10 +24,7 @@ const io = new Server(server, {
   }
 });
 
-const { getAllTutors, filterTutors, getNotificationsTutor,
-  updateNotificationsTutor,
-  incrementNotificationsStudent, getIndividualNotificationsTutor, updateStudentNotifications,
-  resetTutorNotifications } = require('./controllers/general');
+const { getAllTutors, filterTutors } = require('./controllers/general');
 
 connectDB().then(() => {
   server.listen(5000, () => {
@@ -52,14 +49,7 @@ app.use('/api/register', registerRoutes);
 app.use('/api/login', loginRoutes);
 app.use('/api/student', studentRoutes)
 app.use('/api/tutor', tutorRoutes)
-
-
 app.get('/api/general/getAllTutors', getAllTutors);
 app.get('/api/general/filterTutors', filterTutors);
-app.get('/tutor/notifications/:tutorId', getNotificationsTutor)
-app.patch('/tutor/updateNotifications/:tutorId/student/:studentId', updateNotificationsTutor)
-app.patch('/tutor/incrementNotifications/:studentId', incrementNotificationsStudent)
-app.get('/tutor/getIndividualNotifications/:tutorId/student/:studentId', getIndividualNotificationsTutor)
-app.patch('/tutor/updateStudentNotifications/:studentId/tutor/:tutorId', updateStudentNotifications)
-app.patch('/tutor/resetTutorNotifications/:tutorId/student/:studentId', resetTutorNotifications)
+
 

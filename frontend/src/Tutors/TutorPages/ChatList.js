@@ -16,7 +16,7 @@ const ChatsListTutor = () => {
         const response = await axios.get(`http://localhost:5000/api/tutor/getMyChats/${tutorId}`);
         
         const studentsWithUnreadCounts = await Promise.all(response.data.map(async (student) => {
-          const unreadResponse = await axios.get(`http://localhost:5000/getIndividualNotificationsTutor/${tutorId}/student/${student.studentId}`);
+          const unreadResponse = await axios.get(`http://localhost:5000/api/tutor/getIndividualNotifications/${tutorId}/student/${student.studentId}`);
           return { ...student, unreadCount: unreadResponse.data.unreadCount };
         }));
         

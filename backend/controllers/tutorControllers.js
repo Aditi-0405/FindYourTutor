@@ -2,6 +2,8 @@ const TutorProfile = require('../models/Profile/Tutor-profile');
 const StudentProfile = require('../models/Profile/Student-profile');
 const TutorChat = require('../models/Chats/Tutor-chat');
 const StudentChat = require('../models/Chats/Student-chat');
+const tutorNotifications = require('../models/Notifications/TutorNotifications');
+const studentNotifications = require('../models/Notifications/StudentNotifications');
 
 
 const updateTutorProfile = async (req, res) => {
@@ -200,7 +202,142 @@ const myProfileTutor = async (req, res) => {
   }
 }
 
+const getNotifications = async (req, res) => {
+  const { tutorId } = req.params;
+
+  try {
+    let notification = await tutorNotifications.findOne({ tutorId });
+    if (!notification) {
+      notification = new tutorNotifications({ tutorId })
+    }
+    await notification.save()
+    res.status(200).json(notification);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'Internal Server Error' });
+  }
+};
+const updateNotifications = async (req, res) => {
+  const { tutorId, studentId } = req.params;
+
+  try {
+    let notification = await tutorNotifications.findOne({ tutorId });
+    if (!notification) {
+      notification = new tutorNotifications({ tutorId })
+    }
+    else {
+      const individualChatCounts = notification.individualChatCount;
+      const mapKeys = Array.from(individualChatCounts.keys());
+      const countForStudent = mapKeys.includes(studentId) ? individualChatCounts.get(studentId).count : 0;
+      notification.count = notification.count - countForStudent;
+    }
+    await notification.save();
+    res.status(200).json(notification);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'Internal Server Error' });
+  }
+};
+
+const incrementStudentNotifications = async (req, res) => {
+  const { studentId } = req.params;
+
+  try {
+    let notification = await studentNotifications.findOne({ studentId });
+    if (!notification) {
+      notification = new studentNotifications({ studentId });
+    }
+    notification.count = notification.count + 1;
+    await notification.save();
+    res.status(200).json(notification);
+
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'Internal Server Error' });
+  }
+};
+
+const getIndividualNotifications = async (req, res) => {
+  const { tutorId, studentId } = req.params;
+
+  try {
+    console.log(tutorId);
+    const notifications = await tutorNotifications.findOne({ tutorId });
+
+    if (!notifications) {
+      return res.status(404).json({ message: 'Tutor notifications not found' });
+    }
+
+    const individualChatCounts = notifications.individualChatCount;
+    const mapKeys = Array.from(individualChatCounts.keys());
+
+    const countForStudent = mapKeys.includes(studentId) ? individualChatCounts.get(studentId).count : 0;
+
+    const response = {
+      tutorId: notifications.tutorId,
+      studentId,
+      unreadCount: countForStudent
+    };
+
+    res.status(200).json(response);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'Internal Server Error' });
+  }
+};
+
+const updateStudentNotifications = async (req, res) => {
+  const { studentId, tutorId } = req.params;
+
+  try {
+    let notification = await studentNotifications.findOne({ studentId });
+    if (!notification) {
+      notification = new studentNotifications({
+        studentId,
+        count: 0
+      });
+    }
+    if (!notification.individualChatCount.has(tutorId)) {
+      notification.individualChatCount.set(tutorId, { count: 1 });
+    } else {
+      notification.individualChatCount.get(tutorId).count++;
+    }
+    await notification.save();
+    res.status(200).json({ success: true, message: 'Student notifications updated successfully.', count: notification.individualChatCount.get(tutorId).count });
+  } catch (error) {
+    console.error('Error updating student notifications:', error);
+    res.status(500).json({ success: false, message: 'Failed to update student notifications.' });
+  }
+};
+
+const resetNotifications = async (req, res) => {
+  const { tutorId, studentId } = req.params;
+
+  try {
+    let notification = await tutorNotifications.findOne({ tutorId });
+    if (!notification) {
+      notification = new tutorNotifications({
+        tutorId,
+        count: 0,
+      });
+    }
+    if (!notification.individualChatCount.has(studentId)) {
+      notification.individualChatCount.set(studentId, { count: 0 });
+    } else {
+      notification.individualChatCount.get(studentId).count = 0;
+    }
+    await notification.save();
+
+    res.status(200).json({ success: true, message: 'Tutor notifications reset successfully.', count: notification.individualChatCount.get(studentId).count });
+  } catch (error) {
+    console.error('Error updating tutor notifications:', error);
+    res.status(500).json({ success: false, message: 'Failed to reset tutor notifications.' });
+  }
+};
+
 module.exports = {
   updateTutorProfile, subjectsInterested, sendMessageFromTutorToStudent, getMyChatsTutor, getMessagesTutor,
-  getStudentsInterestedInSubjects, getAllStudents, filterStudents, myProfileTutor
+  getStudentsInterestedInSubjects, getAllStudents, filterStudents, myProfileTutor, getNotifications, updateNotifications,
+  incrementStudentNotifications, getIndividualNotifications, updateStudentNotifications,
+  resetNotifications
 };
