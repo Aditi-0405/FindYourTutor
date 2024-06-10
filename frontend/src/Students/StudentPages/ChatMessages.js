@@ -31,7 +31,8 @@ const ChatMessagesStudent = ({ setUnread }) => {
     socket.emit('joinRoom', { studentId, tutorId });
 
     socket.on('receiveMessage', async (messageData) => {
-      setMessages((prevMessages) => [...prevMessages, messageData]);
+      const response = await axios.get(`http://localhost:5000/api/student/getMessages/${studentId}/tutor/${tutorId}`);
+      setMessages(response.data);
     });
 
     return () => {

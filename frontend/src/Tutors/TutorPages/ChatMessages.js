@@ -20,7 +20,6 @@ const ChatMessagesTutor = ({ setUnread }) => {
     const fetchMessages = async () => {
       try {
         const response = await axios.get(`http://localhost:5000/api/tutor/getMessages/${tutorId}/student/${studentId}`);
-        console.log(response.data)
         setMessages(response.data);
         const res = await axios.patch(`http://localhost:5000/updateNotifications/tutor/${tutorId}/student/${studentId}`);
         await axios.patch(`http://localhost:5000/resetTutorNotifications/${tutorId}/student/${studentId}`);
@@ -35,7 +34,8 @@ const ChatMessagesTutor = ({ setUnread }) => {
     socket.emit('joinRoom', { studentId, tutorId });
 
     socket.on('receiveMessage', async (messageData) => {
-      setMessages((prevMessages) => [...prevMessages, messageData]);
+      const response = await axios.get(`http://localhost:5000/api/tutor/getMessages/${tutorId}/student/${studentId}`);
+      setMessages(response.data);
     });
 
     return () => {
