@@ -27,7 +27,7 @@ const App = () => {
 
       if (userId && role) {
         try {
-          const response = await fetch(`http://localhost:5000/notifications/${role === 'student' ? 'student' : 'tutor'}/${userId}`);
+          const response = await fetch(`http://localhost:5000/api/${role === 'student' ? 'student' : 'tutor'}/notifications/${userId}`);
           if (response.ok) {
             const data = await response.json();
             setUnread(data.count);
