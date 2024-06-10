@@ -18,8 +18,8 @@ const ChatMessagesStudent = ({ setUnread }) => {
       try {
         const response = await axios.get(`http://localhost:5000/api/student/getMessages/${studentId}/tutor/${tutorId}`);
         setMessages(response.data);
-        const res = await axios.patch(`http://localhost:5000/updateNotifications/student/${studentId}/tutor/${tutorId}`);
-        await axios.patch(`http://localhost:5000/resetStudentNotifications/${studentId}/tutor/${tutorId}`);
+        const res = await axios.patch(`http://localhost:5000/api/student/updateNotifications/${studentId}/tutor/${tutorId}`);
+        await axios.patch(`http://localhost:5000/api/student/resetNotifications/${studentId}/tutor/${tutorId}`);
         setUnread(res.data.count);
       } catch (error) {
         console.error(error);
@@ -33,8 +33,8 @@ const ChatMessagesStudent = ({ setUnread }) => {
     socket.on('receiveMessage', async (messageData) => {
       const response = await axios.get(`http://localhost:5000/api/student/getMessages/${studentId}/tutor/${tutorId}`);
       setMessages(response.data);
-      const res = await axios.patch(`http://localhost:5000/updateNotifications/student/${studentId}/tutor/${tutorId}`);
-      await axios.patch(`http://localhost:5000/resetStudentNotifications/${studentId}/tutor/${tutorId}`);
+      const res = await axios.patch(`http://localhost:5000/api/student/updateNotifications/${studentId}/tutor/${tutorId}`);
+      await axios.patch(`http://localhost:5000/api/student/resetNotifications/${studentId}/tutor/${tutorId}`);
       setUnread(res.data.count);
     });
 
@@ -50,8 +50,8 @@ const ChatMessagesStudent = ({ setUnread }) => {
   const handleMessageSend = async () => {
     try {
       await axios.patch(`http://localhost:5000/api/student/sendMessageFromStudentToTutor/${studentId}/tutor/${tutorId}`, { message: newMessage });
-      await axios.patch(`http://localhost:5000/incrementNotifications/tutor/${tutorId}`);
-      await axios.patch(`http://localhost:5000/updateTutorNotifications/${tutorId}/student/${studentId}`);
+      await axios.patch(`http://localhost:5000/api/student/incrementNotifications/tutor/${tutorId}`);
+      await axios.patch(`http://localhost:5000/api/student/updateTutorNotifications/${tutorId}/student/${studentId}`);
       socket.emit('sendMessage', { studentId, tutorId, message: newMessage });
       setNewMessage('');
     } catch (error) {

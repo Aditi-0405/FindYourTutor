@@ -12,22 +12,22 @@ const loginRoutes = require('./routes/login-routes')
 const studentRoutes = require('./routes/student-routes')
 const tutorRoutes = require('./routes/tutor-routes')
 
-const {isAuthenticated} = require('./auth/authenticate')
+const { isAuthenticated } = require('./auth/authenticate')
 
 app.use(bodyParser.json());
 app.use(cors());
 
 const io = new Server(server, {
   cors: {
-    origin: '*', 
+    origin: '*',
     methods: ['GET', 'POST', 'PATCH']
   }
 });
 
-const { getAllTutors, filterTutors, getNotificationsTutor, getNotificationsStudent,
-   updateNotificationsStudent, updateNotificationsTutor , incrementNotificationsStudent,
-    incrementNotificationsTutor, getIndividualNotificationsTutor, getIndividualNotificationsStudent,updateStudentNotifications,
-    updateTutorNotifications, resetStudentNotifications, resetTutorNotifications} = require('./controllers/general');
+const { getAllTutors, filterTutors, getNotificationsTutor,
+  updateNotificationsTutor,
+  incrementNotificationsStudent, getIndividualNotificationsTutor, updateStudentNotifications,
+  resetTutorNotifications } = require('./controllers/general');
 
 connectDB().then(() => {
   server.listen(5000, () => {
@@ -55,17 +55,11 @@ app.use('/api/tutor', tutorRoutes)
 
 
 app.get('/api/general/getAllTutors', getAllTutors);
-app.get('/api/general/getAllTutors', getAllTutors);
 app.get('/api/general/filterTutors', filterTutors);
-app.get('/notifications/student/:studentId',getNotificationsStudent )
-app.get('/notifications/tutor/:tutorId',getNotificationsTutor )
-app.patch('/updateNotifications/student/:studentId/tutor/:tutorId',updateNotificationsStudent )
-app.patch('/updateNotifications/tutor/:tutorId/student/:studentId',updateNotificationsTutor )
-app.patch('/incrementNotifications/student/:studentId',incrementNotificationsStudent )
-app.patch('/incrementNotifications/tutor/:tutorId',incrementNotificationsTutor )
-app.get('/getIndividualNotificationsTutor/:tutorId/student/:studentId',getIndividualNotificationsTutor )
-app.get('/getIndividualNotificationsStudent/:studentId/tutor/:tutorId',getIndividualNotificationsStudent )
-app.patch('/updateStudentNotifications/:studentId/tutor/:tutorId',updateStudentNotifications )
-app.patch('/updateTutorNotifications/:tutorId/student/:studentId',updateTutorNotifications )
-app.patch('/resetTutorNotifications/:tutorId/student/:studentId',resetTutorNotifications )
-app.patch('/resetStudentNotifications/:studentId/tutor/:tutorId',resetStudentNotifications )
+app.get('/tutor/notifications/:tutorId', getNotificationsTutor)
+app.patch('/tutor/updateNotifications/:tutorId/student/:studentId', updateNotificationsTutor)
+app.patch('/tutor/incrementNotifications/:studentId', incrementNotificationsStudent)
+app.get('/tutor/getIndividualNotifications/:tutorId/student/:studentId', getIndividualNotificationsTutor)
+app.patch('/tutor/updateStudentNotifications/:studentId/tutor/:tutorId', updateStudentNotifications)
+app.patch('/tutor/resetTutorNotifications/:tutorId/student/:studentId', resetTutorNotifications)
+
