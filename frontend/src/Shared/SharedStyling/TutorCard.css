@@ -30,7 +30,8 @@
   
   .tutor-actions-home {
     display: flex;
-    justify-content: flex-end;
+    justify-content: space-evenly;
+
   }
   
   .view-details-btn-home {

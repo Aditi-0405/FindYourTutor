@@ -1,8 +1,20 @@
 
 import React from 'react';
+import { useParams , useNavigate } from 'react-router-dom';
 import '../SharedStyling/TutorCard.css';
 
-const TutorCard = ({ tutor }) => {
+const TutorCard = ({ tutor, isLoggedIn }) => {
+
+  const navigate = useNavigate();
+  const role = localStorage.getItem('role')
+
+  const handleViewDetailsClick = () => {
+    navigate(`/view-tutor-profile/${tutor.tutorId}`);
+  };
+  const handleChatClick = () => {
+    navigate(`/chat-messages-student/${tutor.tutorId}`);
+};
+
   return (
     <div className="tutor-card-home">
       <div className="tutor-header-home">
@@ -14,7 +26,8 @@ const TutorCard = ({ tutor }) => {
         <p><strong>Rating:</strong> {tutor.rating}</p>
       </div>
       <div className="tutor-actions-home">
-        <button className="view-details-btn-home">View Details</button>
+        <button className="view-details-btn-home" onClick={handleViewDetailsClick}>View Details</button>
+        {isLoggedIn && role === 'student' && <button className="view-details-btn-home" onClick={handleChatClick}>Chat</button>}
       </div>
     </div>
   );

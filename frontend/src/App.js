@@ -14,6 +14,7 @@ import ChatsListStudent from './Students/StudentPages/ChatList';
 import ChatsListTutor from './Tutors/TutorPages/ChatList';
 import ChatMessagesStudent from './Students/StudentPages/ChatMessages';
 import ChatMessagesTutor from './Tutors/TutorPages/ChatMessages';
+import TutorDetails from './Shared/SharedPages/TutorDetails';
 
 const App = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(localStorage.getItem('userId') !== null);
@@ -47,7 +48,7 @@ const App = () => {
       <Navbar isLoggedIn={isLoggedIn} setIsLoggedIn={setIsLoggedIn} unread={unread} />
       <div className="content">
         <Routes>
-          <Route path="/" element={<Home />} />
+          <Route path="/" element={<Home isLoggedIn={isLoggedIn}/>} />
           <Route path="/register-student" element={<RegisterStudent />} />
           <Route path="/register-tutor" element={<RegisterTutor />} />
           <Route path="/login-student" element={<LoginStudent setIsLoggedIn={setIsLoggedIn} />} />
@@ -60,6 +61,7 @@ const App = () => {
           <Route path="/chat-list-tutor" element={<ChatsListTutor />} />
           <Route path="/chat-messages-student/:tutorId" element={<ChatMessagesStudent setUnread={setUnread}/>} />
           <Route path="/chat-messages-tutor/:studentId" element={<ChatMessagesTutor setUnread={setUnread}/>} />
+          <Route path="/view-tutor-profile/:tutorId" element={<TutorDetails isLoggedIn={isLoggedIn}/>} />
         </Routes>
       </div>
     </div>

@@ -4,7 +4,7 @@ import axios from 'axios';
 import TutorCard from '../SharedComponents/TutorCard'; 
 import '../../Shared/SharedStyling/Home.css'; 
 
-const Home = () => {
+const Home = ({isLoggedIn}) => {
   const [tutors, setTutors] = useState([]);
   const [loading, setLoading] = useState(true);
   const [filters, setFilters] = useState({
@@ -70,7 +70,7 @@ const Home = () => {
         ) : (
           <div className="tutor-list-home">
             {tutors.map(tutor => (
-              <TutorCard key={tutor._id} tutor={tutor} />
+              <TutorCard key={tutor._id} tutor={tutor} isLoggedIn={isLoggedIn}/>
             ))}
           </div>
         )}
