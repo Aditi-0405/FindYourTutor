@@ -34,7 +34,7 @@ const StudentDashboard = () => {
 
   const applyFilters = async () => {
     try {
-      const response = await axios.get('http://localhost:5000/api/student/filterTutors', {
+      const response = await axios.get('http://localhost:5000/api/general/filterTutors', {
         params: filters
       });
       setTutors(response.data);

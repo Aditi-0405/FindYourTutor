@@ -55,7 +55,6 @@ app.use('/api/tutor', tutorRoutes)
 
 
 app.get('/api/general/getAllTutors', getAllTutors);
-app.get('/api/student/filterTutors', filterTutors);
 app.get('/api/general/getAllTutors', getAllTutors);
 app.get('/api/general/filterTutors', filterTutors);
 app.get('/notifications/student/:studentId',getNotificationsStudent )
