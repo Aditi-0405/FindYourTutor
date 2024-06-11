@@ -20,7 +20,7 @@ const TutorProfile = () => {
   useEffect(() => {
     const fetchProfile = async () => {
       try {
-        const response = await axios.get(`http://localhost:5000/api/tutor/my-profile/${tutorId}`);
+        const response = await axios.get(`http://localhost:5000/api/tutor/my-profile`);
         setProfile(response.data);
         setFormData({
           bio: response.data.bio,
@@ -56,7 +56,7 @@ const TutorProfile = () => {
         ...formData,
         subjectsTaught: JSON.parse(formData.subjectsTaught)
       };
-      const response = await axios.patch(`http://localhost:5000/api/tutor/updateTutorProfile/${tutorId}`, updatedProfile);
+      const response = await axios.patch(`http://localhost:5000/api/tutor/updateTutorProfile`, updatedProfile);
       setProfile(response.data);
       setIsEditing(false);
     } catch (error) {

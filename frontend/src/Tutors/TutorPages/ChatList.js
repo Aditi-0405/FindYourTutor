@@ -13,10 +13,10 @@ const ChatsListTutor = () => {
   useEffect(() => {
     const fetchChats = async () => {
       try {
-        const response = await axios.get(`http://localhost:5000/api/tutor/getMyChats/${tutorId}`);
+        const response = await axios.get(`http://localhost:5000/api/tutor/getMyChats`);
         
         const studentsWithUnreadCounts = await Promise.all(response.data.map(async (student) => {
-          const unreadResponse = await axios.get(`http://localhost:5000/api/tutor/getIndividualNotifications/${tutorId}/student/${student.studentId}`);
+          const unreadResponse = await axios.get(`http://localhost:5000/api/tutor/getIndividualNotifications/${student.studentId}`);
           return { ...student, unreadCount: unreadResponse.data.unreadCount };
         }));
         

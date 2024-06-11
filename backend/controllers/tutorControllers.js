@@ -54,7 +54,7 @@ const subjectsInterested = async (req, res) => {
 
 
 
-const sendMessageFromTutorToStudent = async (req, res) => {
+const sendMessageToStudent = async (req, res) => {
   const { studentId } = req.params;
   const tutorId = req.user.userId
   const { message } = req.body;
@@ -91,7 +91,7 @@ const sendMessageFromTutorToStudent = async (req, res) => {
   }
 };
 
-const getMyChatsTutor = async (req, res) => {
+const getMyChats = async (req, res) => {
   const tutorId = req.user.userId
 
   try {
@@ -108,7 +108,7 @@ const getMyChatsTutor = async (req, res) => {
     res.status(500).json({ message: 'Internal Server Error' });
   }
 };
-const getMessagesTutor = async (req, res) => {
+const getMessages = async (req, res) => {
   const { studentId } = req.params;
   const tutorId = req.user.userId
 
@@ -342,7 +342,7 @@ const resetNotifications = async (req, res) => {
 };
 
 module.exports = {
-  updateTutorProfile, subjectsInterested, sendMessageFromTutorToStudent, getMyChatsTutor, getMessagesTutor,
+  updateTutorProfile, subjectsInterested, sendMessageToStudent, getMyChats, getMessages,
   getStudentsInterestedInSubjects, getAllStudents, filterStudents, myProfileTutor, getNotifications, updateNotifications,
   incrementStudentNotifications, getIndividualNotifications, updateStudentNotifications,
   resetNotifications

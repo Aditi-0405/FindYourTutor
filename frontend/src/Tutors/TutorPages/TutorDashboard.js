@@ -17,7 +17,7 @@ const TutorDashboard = () => {
   useEffect(() => {
     const fetchStudents = async () => {
       try {
-        const response = await axios.get(`http://localhost:5000/api/tutor/getStudentsInterestedInSubjects/${tutorId}`);
+        const response = await axios.get(`http://localhost:5000/api/tutor/getStudentsInterestedInSubjects`);
         setStudents(response.data);
         setLoading(false);
       } catch (error) {
