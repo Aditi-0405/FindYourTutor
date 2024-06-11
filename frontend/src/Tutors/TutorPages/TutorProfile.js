@@ -21,7 +21,12 @@ const TutorProfile = () => {
   useEffect(() => {
     const fetchProfile = async () => {
       try {
-        const response = await axios.get(`http://localhost:5000/api/tutor/my-profile`);
+        const response = await axios.get(`http://localhost:5000/api/tutor/my-profile`, {
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`,
+          },
+        });
         setProfile(response.data);
         setFormData({
           bio: response.data.bio,

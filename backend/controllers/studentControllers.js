@@ -94,7 +94,7 @@ const getMyChats = async (req, res) => {
   try {
     const studentChats = await StudentChat.findOne({ studentId: studentId });
     if (!studentChats) {
-      return res.status(404).json({ message: 'No chats found for the tutor' });
+      return res.status(200).json([]);
     }
     const chatsArray = Array.from(studentChats.chats, ([tutorId, messages]) => ({ tutorId, messages }));
     const tutorIds = chatsArray.map(chat => chat.tutorId);

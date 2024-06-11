@@ -8,7 +8,6 @@ const ChatsListTutor = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  const tutorId = localStorage.getItem('userId');
   const token = localStorage.getItem('token')
 
   useEffect(() => {
@@ -41,7 +40,7 @@ const ChatsListTutor = () => {
     };
 
     fetchChats();
-  }, [tutorId]);
+  }, []);
 
   return (
     <div className="chats-list-container">
@@ -49,7 +48,9 @@ const ChatsListTutor = () => {
       {loading ? (
         <p>Loading...</p>
       ) : error ? (
-        <p>{error}</p>
+        <p className='error-message'>{error}</p>
+      ) : students.length === 0 ? (
+        <p >No chats yet.</p>
       ) : (
         <ul>
           {students.map(student => (

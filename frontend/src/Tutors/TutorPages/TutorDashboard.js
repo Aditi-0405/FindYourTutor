@@ -12,7 +12,6 @@ const TutorDashboard = () => {
     location: '',
     minRating: ''
   });
-  const tutorId = localStorage.getItem('userId');
   const token = localStorage.getItem('token')
 
   useEffect(() => {
@@ -33,7 +32,7 @@ const TutorDashboard = () => {
     };
 
     fetchStudents();
-  }, [tutorId]);
+  }, []);
 
   const handleFilterChange = (filterName, value) => {
     setFilters({ ...filters, [filterName]: value });
@@ -42,7 +41,12 @@ const TutorDashboard = () => {
   const applyFilters = async () => {
     try {
       const response = await axios.get('http://localhost:5000/api/tutor/filterStudents', {
-        params: filters
+        params: filters, 
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`,
+          },
+        
       });
       setStudents(response.data);
     } catch (error) {
@@ -72,6 +76,8 @@ const TutorDashboard = () => {
         <div className="tutor-student-list">
           {loading ? (
             <p className="tutor-loading-message">Loading...</p>
+          ) : students.length === 0 ? (
+            <p className="tutor-no-matches-message">Oops! No matches found.</p>
           ) : (
             students.map(student => (
               <StudentCard key={student._id} student={student} />

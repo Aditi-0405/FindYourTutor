@@ -48,6 +48,8 @@ const ChatsListStudent = () => {
         <p>Loading...</p>
       ) : error ? (
         <p>{error}</p>
+      ) : tutors.length === 0 ? (
+        <p>No chats available.</p>
       ) : (
         <ul>
           {tutors.map(tutor => (
@@ -59,6 +61,7 @@ const ChatsListStudent = () => {
       )}
     </div>
   );
+  
 };
 
 export default ChatsListStudent;

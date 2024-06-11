@@ -54,29 +54,32 @@ const StudentDashboard = () => {
       <div className="filter-container">
         <label htmlFor="student-subjects">Subjects:</label>
         <input type="text" id="student-subjects" value={filters.subjects} onChange={(e) => handleFilterChange('subjects', e.target.value)} />
-
+  
         <label htmlFor="student-location">Location:</label>
         <input type="text" id="student-location" value={filters.location} onChange={(e) => handleFilterChange('location', e.target.value)} />
-
+  
         <label htmlFor="student-minRating">Minimum Rating:</label>
         <input type="number" id="student-minRating" value={filters.minRating} onChange={(e) => handleFilterChange('minRating', e.target.value)} />
-
+  
         <button onClick={applyFilters} className="student-filter-button">Apply Filters</button>
       </div>
       <h2 className="student-tutors-heading">Tutors</h2>
       <div className="student-tutor-container">
-      <div className="student-tutor-list">
         {loading ? (
           <p className="student-loading-message">Loading...</p>
+        ) : tutors.length === 0 ? (
+          <p className='tutor-no-matches-message'>No matches found.</p>
         ) : (
-          tutors.map(tutor => (
-            <TutorCard key={tutor._id} tutor={tutor} />
-          ))
+          <div className="student-tutor-list">
+            {tutors.map(tutor => (
+              <TutorCard key={tutor._id} tutor={tutor} />
+            ))}
+          </div>
         )}
-      </div>
       </div>
     </div>
   );
+  
 };
 
 export default StudentDashboard;
