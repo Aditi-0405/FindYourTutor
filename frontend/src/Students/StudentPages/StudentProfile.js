@@ -20,7 +20,7 @@ const StudentProfile = () => {
   useEffect(() => {
     const fetchProfile = async () => {
       try {
-        const response = await axios.get(`http://localhost:5000/api/student/my-profile/${studentId}`);
+        const response = await axios.get(`http://localhost:5000/api/student/my-profile`);
         setProfile(response.data);
         setFormData({
           bio: response.data.bio,
@@ -56,7 +56,7 @@ const StudentProfile = () => {
         ...formData,
         subjectsInterested: formData.subjectsInterested.split(',').map(subject => subject.trim())
       };
-      const response = await axios.patch(`http://localhost:5000/api/student/updateStudentProfile/${studentId}`, updatedProfile);
+      const response = await axios.patch(`http://localhost:5000/api/student/updateStudentProfile`, updatedProfile);
       setProfile(response.data);
       setIsEditing(false);
     } catch (error) {

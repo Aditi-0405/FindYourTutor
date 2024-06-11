@@ -3,25 +3,25 @@ const express = require('express');
 const router = express.Router();
 
 const {
-    updateStudentProfile, getSubjectsTaughtByTutor, sendMessageFromStudentToTutor,
-    getMyChatsStudent, getMessagesStudent, getTutorsTeachingSubjects, myProfileStudent, getNotifications,
+    updateStudentProfile, getSubjectsTaughtByTutor, sendMessageToTutor,
+    getMyChats, getMessages, getTutorsTeachingSubjects, myProfileStudent, getNotifications,
     updateNotifications, incrementTutorNotifications,
     getIndividualNotifications,
     updateTutorNotifications, resetNotifications,
 } = require('../controllers/studentControllers');
 
-router.patch('/updateStudentProfile/:studentId', updateStudentProfile);
+router.patch('/updateStudentProfile', updateStudentProfile);
 router.get('/getSubjectsTaughtByTutor/:tutorId', getSubjectsTaughtByTutor);
-router.patch('/sendMessageFromStudentToTutor/:studentId/tutor/:tutorId', sendMessageFromStudentToTutor);
-router.get('/getMyChats/:studentId', getMyChatsStudent);
-router.get('/getMessages/:studentId/tutor/:tutorId', getMessagesStudent);
-router.get('/getTutorsTeachingSubjects/:studentId', getTutorsTeachingSubjects);
-router.get('/my-profile/:studentId', myProfileStudent);
-router.get('/notifications/:studentId', getNotifications)
-router.patch('/updateNotifications/:studentId/tutor/:tutorId', updateNotifications)
-router.patch('/incrementTutorNotifications/tutor/:tutorId', incrementTutorNotifications)
-router.get('/getIndividualNotifications/:studentId/tutor/:tutorId', getIndividualNotifications)
-router.patch('/updateTutorNotifications/:tutorId/student/:studentId', updateTutorNotifications)
-router.patch('/resetNotifications/:studentId/tutor/:tutorId', resetNotifications)
+router.patch('/sendMessageToTutor/:tutorId', sendMessageToTutor);
+router.get('/getMyChats', getMyChats);
+router.get('/getMessages/:tutorId', getMessages);
+router.get('/getTutorsTeachingSubjects', getTutorsTeachingSubjects);
+router.get('/my-profile', myProfileStudent);
+router.get('/notifications', getNotifications)
+router.patch('/updateNotifications/:tutorId', updateNotifications)
+router.patch('/incrementTutorNotifications/:tutorId', incrementTutorNotifications)
+router.get('/getIndividualNotifications/:tutorId', getIndividualNotifications)
+router.patch('/updateTutorNotifications/:tutorId', updateTutorNotifications)
+router.patch('/resetNotifications/:tutorId', resetNotifications)
 
 module.exports = router;

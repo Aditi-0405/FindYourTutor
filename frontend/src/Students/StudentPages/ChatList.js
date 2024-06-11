@@ -13,9 +13,9 @@ const ChatsListStudent = () => {
   useEffect(() => {
     const fetchChats = async () => {
       try {
-        const response = await axios.get(`http://localhost:5000/api/student/getMyChats/${studentId}`);
+        const response = await axios.get(`http://localhost:5000/api/student/getMyChats`);
         const updatedTutors = await Promise.all(response.data.map(async tutor => {
-          const unreadResponse = await axios.get(`http://localhost:5000/api/student/getIndividualNotifications/${studentId}/tutor/${tutor.tutorId}`);
+          const unreadResponse = await axios.get(`http://localhost:5000/api/student/getIndividualNotifications/${tutor.tutorId}`);
           return { ...tutor, unreadCount: unreadResponse.data.unreadCount };
         }));
         setTutors(updatedTutors);
