@@ -45,8 +45,8 @@ io.on('connection', (socket) => {
 
 app.use('/api/register', registerRoutes);
 app.use('/api/login', loginRoutes);
-app.use('/api/student', studentRoutes)
-app.use('/api/tutor', tutorRoutes)
+app.use('/api/student',isAuthenticated, studentRoutes)
+app.use('/api/tutor', isAuthenticated, tutorRoutes)
 app.use('/api/general', generalRoutes);
 
 

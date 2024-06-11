@@ -7,7 +7,7 @@ const studentNotifications = require('../models/Notifications/StudentNotificatio
 
 
 const updateTutorProfile = async (req, res) => {
-  const { tutorId } = req.params;
+  const tutorId = req.user.userId
   const { bio, subjectsTaught, rate, location, contactInfo } = req.body;
 
   try {
@@ -55,7 +55,8 @@ const subjectsInterested = async (req, res) => {
 
 
 const sendMessageFromTutorToStudent = async (req, res) => {
-  const { tutorId, studentId } = req.params;
+  const { studentId } = req.params;
+  const tutorId = req.user.userId
   const { message } = req.body;
 
   try {
@@ -91,7 +92,7 @@ const sendMessageFromTutorToStudent = async (req, res) => {
 };
 
 const getMyChatsTutor = async (req, res) => {
-  const { tutorId } = req.params;
+  const tutorId = req.user.userId
 
   try {
     const tutorChats = await TutorChat.findOne({ tutorId });
@@ -108,7 +109,8 @@ const getMyChatsTutor = async (req, res) => {
   }
 };
 const getMessagesTutor = async (req, res) => {
-  const { tutorId, studentId } = req.params;
+  const { studentId } = req.params;
+  const tutorId = req.user.userId
 
   try {
     let tutorChat = await TutorChat.findOne({ tutorId });
@@ -130,7 +132,7 @@ const getMessagesTutor = async (req, res) => {
 };
 
 const getStudentsInterestedInSubjects = async (req, res) => {
-  const { tutorId } = req.params;
+  const tutorId = req.user.userId
 
   try {
     const tutorProfile = await TutorProfile.findOne({ tutorId });
@@ -190,7 +192,7 @@ const filterStudents = async (req, res) => {
 
 const myProfileTutor = async (req, res) => {
   try {
-    const { tutorId } = req.params;
+    const tutorId = req.user.userId
     const tutor = await TutorProfile.findOne({ tutorId });
     if (!tutor) {
       return res.status(404).json({ message: 'Tutor not found' });
@@ -203,7 +205,7 @@ const myProfileTutor = async (req, res) => {
 }
 
 const getNotifications = async (req, res) => {
-  const { tutorId } = req.params;
+  const tutorId = req.user.userId
 
   try {
     let notification = await tutorNotifications.findOne({ tutorId });
@@ -218,7 +220,8 @@ const getNotifications = async (req, res) => {
   }
 };
 const updateNotifications = async (req, res) => {
-  const { tutorId, studentId } = req.params;
+  const { studentId } = req.params;
+  const tutorId = req.user.userId
 
   try {
     let notification = await tutorNotifications.findOne({ tutorId });
@@ -258,7 +261,8 @@ const incrementStudentNotifications = async (req, res) => {
 };
 
 const getIndividualNotifications = async (req, res) => {
-  const { tutorId, studentId } = req.params;
+  const { studentId } = req.params;
+  const tutorId = req.user.userId
 
   try {
     console.log(tutorId);
@@ -287,7 +291,8 @@ const getIndividualNotifications = async (req, res) => {
 };
 
 const updateStudentNotifications = async (req, res) => {
-  const { studentId, tutorId } = req.params;
+  const { studentId } = req.params;
+  const tutorId = req.user.userId
 
   try {
     let notification = await studentNotifications.findOne({ studentId });
@@ -311,7 +316,8 @@ const updateStudentNotifications = async (req, res) => {
 };
 
 const resetNotifications = async (req, res) => {
-  const { tutorId, studentId } = req.params;
+  const { studentId } = req.params;
+  const tutorId = req.user.userId
 
   try {
     let notification = await tutorNotifications.findOne({ tutorId });

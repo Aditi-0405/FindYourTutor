@@ -6,7 +6,8 @@ const studentNotifications = require('../models/Notifications/StudentNotificatio
 const tutorNotifications = require('../models/Notifications/TutorNotifications');
 
 const updateStudentProfile = async (req, res) => {
-  const { studentId } = req.params;
+  const studentId = req.user.userId
+
   const { bio, subjectsInterested, class: studentClass, location, contactInfo } = req.body;
 
   try {
@@ -47,7 +48,9 @@ const getSubjectsTaughtByTutor = async (req, res) => {
 
 
 const sendMessageFromStudentToTutor = async (req, res) => {
-  const { tutorId, studentId } = req.params;
+  const { tutorId } = req.params;
+  const studentId = req.user.userId
+
   const { message } = req.body;
 
   try {
@@ -86,7 +89,7 @@ const sendMessageFromStudentToTutor = async (req, res) => {
   }
 };
 const getMyChatsStudent = async (req, res) => {
-  const { studentId } = req.params;
+  const studentId = req.user.userId
 
   try {
     const studentChats = await StudentChat.findOne({ studentId: studentId });
@@ -104,7 +107,9 @@ const getMyChatsStudent = async (req, res) => {
 };
 
 const getMessagesStudent = async (req, res) => {
-  const { studentId, tutorId } = req.params;
+  const { tutorId } = req.params;
+  const studentId = req.user.userId
+
   try {
     let studentChat = await StudentChat.findOne({ studentId });
     if (!studentChat) {
@@ -125,7 +130,7 @@ const getMessagesStudent = async (req, res) => {
 };
 
 const getTutorsTeachingSubjects = async (req, res) => {
-  const { studentId } = req.params;
+  const studentId = req.user.userId
 
   try {
     const studentProfile = await StudentProfile.findOne({ studentId: studentId });
@@ -148,7 +153,8 @@ const getTutorsTeachingSubjects = async (req, res) => {
 
 const myProfileStudent = async (req, res) => {
   try {
-    const { studentId } = req.params;
+    const studentId = req.user.userId
+
     const student = await StudentProfile.findOne({ studentId });
     if (!student) {
       return res.status(404).json({ message: 'Student not found' });
@@ -162,7 +168,7 @@ const myProfileStudent = async (req, res) => {
 
 
 const getNotifications = async (req, res) => {
-  const { studentId } = req.params;
+  const studentId = req.user.userId
 
   try {
     let notification = await studentNotifications.findOne({ studentId });
@@ -179,7 +185,8 @@ const getNotifications = async (req, res) => {
 
 
 const updateNotifications = async (req, res) => {
-  const { studentId, tutorId } = req.params;
+  const { tutorId } = req.params;
+  const studentId = req.user.userId
 
   try {
     let notification = await studentNotifications.findOne({ studentId });
@@ -225,7 +232,8 @@ const incrementTutorNotifications = async (req, res) => {
 
 
 const getIndividualNotifications = async (req, res) => {
-  const { tutorId, studentId } = req.params;
+  const { tutorId } = req.params;
+  const studentId = req.user.userId
 
   try {
     const notifications = await studentNotifications.findOne({ studentId });
@@ -255,7 +263,8 @@ const getIndividualNotifications = async (req, res) => {
 };
 
 const updateTutorNotifications = async (req, res) => {
-  const { tutorId, studentId } = req.params;
+  const { tutorId } = req.params;
+  const studentId = req.user.userId
 
   try {
     let notification = await tutorNotifications.findOne({ tutorId });
@@ -281,7 +290,8 @@ const updateTutorNotifications = async (req, res) => {
 
 
 const resetNotifications = async (req, res) => {
-  const { studentId, tutorId } = req.params;
+  const { tutorId } = req.params;
+  const studentId = req.user.userId
 
   try {
     let notification = await studentNotifications.findOne({ studentId });
