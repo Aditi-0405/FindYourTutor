@@ -16,11 +16,17 @@ const StudentProfile = () => {
   });
 
   const studentId = localStorage.getItem('userId');
+  const token = localStorage.getItem('token')
 
   useEffect(() => {
     const fetchProfile = async () => {
       try {
-        const response = await axios.get(`http://localhost:5000/api/student/my-profile`);
+        const response = await axios.get(`http://localhost:5000/api/student/my-profile`, {
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`,
+          },
+        });
         setProfile(response.data);
         setFormData({
           bio: response.data.bio,
@@ -56,7 +62,12 @@ const StudentProfile = () => {
         ...formData,
         subjectsInterested: formData.subjectsInterested.split(',').map(subject => subject.trim())
       };
-      const response = await axios.patch(`http://localhost:5000/api/student/updateStudentProfile`, updatedProfile);
+      const response = await axios.patch(`http://localhost:5000/api/student/updateStudentProfile`, updatedProfile, {
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`,
+        },
+      });
       setProfile(response.data);
       setIsEditing(false);
     } catch (error) {

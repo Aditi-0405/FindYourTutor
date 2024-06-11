@@ -16,6 +16,7 @@ const TutorProfile = () => {
   });
 
   const tutorId = localStorage.getItem('userId');
+  const token = localStorage.getItem('token')
 
   useEffect(() => {
     const fetchProfile = async () => {
@@ -24,7 +25,7 @@ const TutorProfile = () => {
         setProfile(response.data);
         setFormData({
           bio: response.data.bio,
-          subjectsTaught: JSON.stringify(response.data.subjectsTaught), 
+          subjectsTaught: JSON.stringify(response.data.subjectsTaught),
           rate: response.data.rate,
           location: response.data.location,
           contactInfo: response.data.contactInfo
@@ -56,7 +57,12 @@ const TutorProfile = () => {
         ...formData,
         subjectsTaught: JSON.parse(formData.subjectsTaught)
       };
-      const response = await axios.patch(`http://localhost:5000/api/tutor/updateTutorProfile`, updatedProfile);
+      const response = await axios.patch(`http://localhost:5000/api/tutor/updateTutorProfile`, updatedProfile, {
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`,
+        },
+      });
       setProfile(response.data);
       setIsEditing(false);
     } catch (error) {

@@ -12,14 +12,29 @@ const ChatMessagesStudent = ({ setUnread }) => {
   const studentId = localStorage.getItem('userId');
   const { tutorId } = useParams();
   const messagesEndRef = useRef(null);
-
+  const token = localStorage.getItem('token')
   useEffect(() => {
     const fetchMessages = async () => {
       try {
-        const response = await axios.get(`http://localhost:5000/api/student/getMessages/${tutorId}`);
+        const response = await axios.get(`http://localhost:5000/api/student/getMessages/${tutorId}`, {
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`,
+          },
+        });
         setMessages(response.data);
-        const res = await axios.patch(`http://localhost:5000/api/student/updateNotifications/${tutorId}`);
-        await axios.patch(`http://localhost:5000/api/student/resetNotifications/${tutorId}`);
+        const res = await axios.patch(`http://localhost:5000/api/student/updateNotifications/${tutorId}`, {}, {
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`,
+          },
+        });
+        await axios.patch(`http://localhost:5000/api/student/resetNotifications/${tutorId}`, {}, {
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`,
+          },
+        });
         setUnread(res.data.count);
       } catch (error) {
         console.error(error);
@@ -31,10 +46,25 @@ const ChatMessagesStudent = ({ setUnread }) => {
     socket.emit('joinRoom', { studentId, tutorId });
 
     socket.on('receiveMessage', async (messageData) => {
-      const response = await axios.get(`http://localhost:5000/api/student/getMessages/${tutorId}`);
+      const response = await axios.get(`http://localhost:5000/api/student/getMessages/${tutorId}`, {
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`,
+        },
+      });
       setMessages(response.data);
-      const res = await axios.patch(`http://localhost:5000/api/student/updateNotifications/${tutorId}`);
-      await axios.patch(`http://localhost:5000/api/student/resetNotifications/${tutorId}`);
+      const res = await axios.patch(`http://localhost:5000/api/student/updateNotifications/${tutorId}`, {}, {
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`,
+        },
+      });
+      await axios.patch(`http://localhost:5000/api/student/resetNotifications/${tutorId}`, {}, {
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`,
+        },
+      });
       setUnread(res.data.count);
     });
 
@@ -49,9 +79,26 @@ const ChatMessagesStudent = ({ setUnread }) => {
 
   const handleMessageSend = async () => {
     try {
-      await axios.patch(`http://localhost:5000/api/student/sendMessageToTutor/${tutorId}`, { message: newMessage });
-      await axios.patch(`http://localhost:5000/api/student/incrementTutorNotifications/${tutorId}`);
-      await axios.patch(`http://localhost:5000/api/student/updateTutorNotifications/${tutorId}`);
+      await axios.patch(`http://localhost:5000/api/student/sendMessageToTutor/${tutorId}`, {
+        message: newMessage,
+      }, {
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`,
+        }
+      },);
+      await axios.patch(`http://localhost:5000/api/student/incrementTutorNotifications/${tutorId}`, {}, {
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`,
+        },
+      });
+      await axios.patch(`http://localhost:5000/api/student/updateTutorNotifications/${tutorId}`, {}, {
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`,
+        },
+      });
       socket.emit('sendMessage', { studentId, tutorId, message: newMessage });
       setNewMessage('');
     } catch (error) {

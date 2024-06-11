@@ -12,11 +12,16 @@ const TutorDetails = ({ isLoggedIn }) => {
         navigate(`/chat-messages-student/${tutorId}`);
     };
     const role = localStorage.getItem('role')
-    console.log(role)
+    const token = localStorage.getItem('token')
     useEffect(() => {
         const fetchProfile = async () => {
             try {
-                const response = await axios.get(`http://localhost:5000/api/tutor/my-profile/${tutorId}`);
+                const response = await axios.get(`http://localhost:5000/api/tutor/my-profile/${tutorId}`, {
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}`,
+                    },
+                });
                 setProfile(response.data);
                 setLoading(false);
             } catch (error) {

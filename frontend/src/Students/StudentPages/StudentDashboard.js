@@ -12,11 +12,17 @@ const StudentDashboard = () => {
     minRating: ''
   });
   const studentId = localStorage.getItem('userId');
+  const token = localStorage.getItem('token')
 
   useEffect(() => {
     const fetchTutors = async () => {
       try {
-        const response = await axios.get(`http://localhost:5000/api/student/getTutorsTeachingSubjects`);
+        const response = await axios.get(`http://localhost:5000/api/student/getTutorsTeachingSubjects`, {
+          headers: {
+              'Content-Type': 'application/json',
+              'Authorization': `Bearer ${token}`,
+          },
+      });
         setTutors(response.data);
         setLoading(false);
       } catch (error) {

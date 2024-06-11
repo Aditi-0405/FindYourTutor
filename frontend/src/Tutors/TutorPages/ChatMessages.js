@@ -16,14 +16,30 @@ const ChatMessagesTutor = ({ setUnread }) => {
   const role = localStorage.getItem('role');
 
   const messagesEndRef = useRef(null);
+  const token = localStorage.getItem('token')
 
   useEffect(() => {
     const fetchMessages = async () => {
       try {
-        const response = await axios.get(`http://localhost:5000/api/tutor/getMessages/${studentId}`);
+        const response = await axios.get(`http://localhost:5000/api/tutor/getMessages/${studentId}`, {
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`,
+          },
+        });
         setMessages(response.data);
-        const res = await axios.patch(`http://localhost:5000/api/tutor/updateNotifications/${studentId}`);
-        await axios.patch(`http://localhost:5000/api/tutor/resetNotifications/${studentId}`);
+        const res = await axios.patch(`http://localhost:5000/api/tutor/updateNotifications/${studentId}`, {}, {
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`,
+          },
+        });
+        await axios.patch(`http://localhost:5000/api/tutor/resetNotifications/${studentId}`,{}, {
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`,
+          },
+        });
         setUnread(res.data.count);
       } catch (error) {
         console.error(error);
@@ -35,10 +51,25 @@ const ChatMessagesTutor = ({ setUnread }) => {
     socket.emit('joinRoom', { studentId, tutorId });
 
     socket.on('receiveMessage', async (messageData) => {
-      const response = await axios.get(`http://localhost:5000/api/tutor/getMessages/${studentId}`);
+      const response = await axios.get(`http://localhost:5000/api/tutor/getMessages/${studentId}`, {
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`,
+        },
+      });
       setMessages(response.data);
-      const res = await axios.patch(`http://localhost:5000/api/tutor/updateNotifications/${studentId}`);
-      await axios.patch(`http://localhost:5000/api/tutor/resetNotifications/${studentId}`);
+      const res = await axios.patch(`http://localhost:5000/api/tutor/updateNotifications/${studentId}`,{}, {
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`,
+        },
+      });
+      await axios.patch(`http://localhost:5000/api/tutor/resetNotifications/${studentId}`,{}, {
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`,
+        },
+      });
       setUnread(res.data.count);
     });
 
@@ -53,9 +84,27 @@ const ChatMessagesTutor = ({ setUnread }) => {
 
   const handleMessageSend = async () => {
     try {
-      await axios.patch(`http://localhost:5000/api/tutor/sendMessageToStudent/${studentId}`, { message: newMessage });
-      await axios.patch(`http://localhost:5000/api/tutor/incrementStudentNotifications/${studentId}`);
-      await axios.patch(`http://localhost:5000/api/tutor/updateStudentNotifications/${studentId}`);
+      await axios.patch(`http://localhost:5000/api/tutor/sendMessageToStudent/${studentId}`,
+        { message: newMessage },
+        {
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`,
+          },
+        }
+      );
+      await axios.patch(`http://localhost:5000/api/tutor/incrementStudentNotifications/${studentId}`, {}, {
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`,
+        },
+      });
+      await axios.patch(`http://localhost:5000/api/tutor/updateStudentNotifications/${studentId}`, {}, {
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`,
+        },
+      });
       socket.emit('sendMessage', { studentId, tutorId, message: newMessage });
       setNewMessage('');
     } catch (error) {

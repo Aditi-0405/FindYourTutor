@@ -9,13 +9,24 @@ const ChatsListStudent = () => {
   const [error, setError] = useState(null);
 
   const studentId = localStorage.getItem('userId');
+  const token = localStorage.getItem('token')
 
   useEffect(() => {
     const fetchChats = async () => {
       try {
-        const response = await axios.get(`http://localhost:5000/api/student/getMyChats`);
+        const response = await axios.get(`http://localhost:5000/api/student/getMyChats`, {
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`,
+          },
+        });
         const updatedTutors = await Promise.all(response.data.map(async tutor => {
-          const unreadResponse = await axios.get(`http://localhost:5000/api/student/getIndividualNotifications/${tutor.tutorId}`);
+          const unreadResponse = await axios.get(`http://localhost:5000/api/student/getIndividualNotifications/${tutor.tutorId}`, {
+            headers: {
+              'Content-Type': 'application/json',
+              'Authorization': `Bearer ${token}`,
+            },
+          });
           return { ...tutor, unreadCount: unreadResponse.data.unreadCount };
         }));
         setTutors(updatedTutors);
@@ -31,7 +42,7 @@ const ChatsListStudent = () => {
   }, [studentId]);
 
   return (
-    <div className="chats-list-container"> 
+    <div className="chats-list-container">
       <h2>Chats</h2>
       {loading ? (
         <p>Loading...</p>
