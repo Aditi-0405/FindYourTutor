@@ -19,6 +19,7 @@ import TutorDetails from './Shared/SharedPages/TutorDetails';
 const App = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(localStorage.getItem('userId') !== null);
   const [unread, setUnread] = useState(null);
+  const role = localStorage.getItem('role')
 
   useEffect(() => {
     const fetchUnreadCount = async () => {
@@ -55,19 +56,19 @@ const App = () => {
       <div className="content">
         <Routes>
           <Route path="/" element={<Home isLoggedIn={isLoggedIn} />} />
-          <Route path="/register-student" element={<RegisterStudent />} />
-          <Route path="/register-tutor" element={<RegisterTutor />} />
-          <Route path="/login-student" element={<LoginStudent setIsLoggedIn={setIsLoggedIn} />} />
-          <Route path="/login-tutor" element={<LoginTutor setIsLoggedIn={setIsLoggedIn} />} />
-          <Route path="/tutor-dashboard" element={<TutorDashboard />} />
-          <Route path="/student-dashboard" element={<StudentDashboard />} />
-          <Route path="/tutor-profile" element={<TutorProfile />} />
-          <Route path="/student-profile" element={<StudentProfile />} />
-          <Route path="/chat-list-student" element={<ChatsListStudent />} />
-          <Route path="/chat-list-tutor" element={<ChatsListTutor />} />
-          <Route path="/chat-messages-student/:tutorId" element={<ChatMessagesStudent setUnread={setUnread} />} />
-          <Route path="/chat-messages-tutor/:studentId" element={<ChatMessagesTutor setUnread={setUnread} />} />
-          <Route path="/view-tutor-profile/:tutorId" element={<TutorDetails isLoggedIn={isLoggedIn} />} />
+          <Route path="/register-student" element={!isLoggedIn && <RegisterStudent />} />
+          <Route path="/register-tutor" element={ !isLoggedIn && <RegisterTutor />} />
+          <Route path="/login-student" element={!isLoggedIn && <LoginStudent setIsLoggedIn={setIsLoggedIn} />} />
+          <Route path="/login-tutor" element={!isLoggedIn && <LoginTutor setIsLoggedIn={setIsLoggedIn} />} />
+          <Route path="/tutor-dashboard" element={isLoggedIn && role === 'tutor' && <TutorDashboard />} />
+          <Route path="/student-dashboard" element={isLoggedIn && role === 'student' && <StudentDashboard />} />
+          <Route path="/tutor-profile" element={isLoggedIn && role ==='tutor' && <TutorProfile />} />
+          <Route path="/student-profile" element={isLoggedIn && role === 'student' && <StudentProfile />} />
+          <Route path="/chat-list-student" element={isLoggedIn && role === 'student' && <ChatsListStudent />} />
+          <Route path="/chat-list-tutor" element={isLoggedIn && role === 'tutor' && <ChatsListTutor />} />
+          <Route path="/chat-messages-student/:tutorId" element={isLoggedIn && role === 'student' && <ChatMessagesStudent setUnread={setUnread} />} />
+          <Route path="/chat-messages-tutor/:studentId" element={isLoggedIn && role === 'tutor' && <ChatMessagesTutor setUnread={setUnread} />} />
+          <Route path="/view-tutor-profile/:tutorId" element={isLoggedIn && role === 'tutor' && <TutorDetails isLoggedIn={isLoggedIn} />} />
         </Routes>
       </div>
     </div>
