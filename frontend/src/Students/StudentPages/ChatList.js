@@ -14,14 +14,14 @@ const ChatsListStudent = () => {
   useEffect(() => {
     const fetchChats = async () => {
       try {
-        const response = await axios.get(`http://localhost:5000/api/student/getMyChats`, {
+        const response = await axios.get(`http://${process.env.REACT_APP_BACKEND_BASE_URL}/api/student/getMyChats`, {
           headers: {
             'Content-Type': 'application/json',
             'Authorization': `Bearer ${token}`,
           },
         });
         const updatedTutors = await Promise.all(response.data.map(async tutor => {
-          const unreadResponse = await axios.get(`http://localhost:5000/api/student/getIndividualNotifications/${tutor.tutorId}`, {
+          const unreadResponse = await axios.get(`http://${process.env.REACT_APP_BACKEND_BASE_URL}/api/student/getIndividualNotifications/${tutor.tutorId}`, {
             headers: {
               'Content-Type': 'application/json',
               'Authorization': `Bearer ${token}`,
