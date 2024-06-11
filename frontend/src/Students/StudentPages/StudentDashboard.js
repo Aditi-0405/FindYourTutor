@@ -17,7 +17,7 @@ const StudentDashboard = () => {
   useEffect(() => {
     const fetchTutors = async () => {
       try {
-        const response = await axios.get(`http://localhost:5000/api/student/getTutorsTeachingSubjects`, {
+        const response = await axios.get(`https://${process.env.REACT_APP_BACKEND_BASE_URL}/api/student/getTutorsTeachingSubjects`, {
           headers: {
               'Content-Type': 'application/json',
               'Authorization': `Bearer ${token}`,
@@ -40,7 +40,7 @@ const StudentDashboard = () => {
 
   const applyFilters = async () => {
     try {
-      const response = await axios.get('http://localhost:5000/api/general/filterTutors', {
+      const response = await axios.get('https://${process.env.REACT_APP_BACKEND_BASE_URL}/api/general/filterTutors', {
         params: filters
       });
       setTutors(response.data);

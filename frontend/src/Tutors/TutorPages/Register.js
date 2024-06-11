@@ -17,7 +17,7 @@ const RegisterTutor = () => {
   const onSubmit = async e => {
     e.preventDefault();
     try {
-      const res = await fetch('http://localhost:5000/api/register/tutor', {
+      const res = await fetch(`https://${process.env.REACT_APP_BACKEND_BASE_URL}/api/register/tutor`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
