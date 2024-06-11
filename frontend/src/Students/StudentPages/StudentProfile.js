@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
+import CreatableSelect from 'react-select/creatable';
 import '../StudentStyling/StudentProfile.css';
 
 const StudentProfile = () => {
@@ -10,13 +11,21 @@ const StudentProfile = () => {
   const [formData, setFormData] = useState({
     bio: '',
     class: '',
-    subjectsInterested: '',
+    subjectsInterested: [],
     location: '',
     contactInfo: ''
   });
 
   const studentId = localStorage.getItem('userId');
-  const token = localStorage.getItem('token')
+  const token = localStorage.getItem('token');
+
+  const subjectOptions = [
+    { value: 'Math', label: 'Math' },
+    { value: 'Science', label: 'Science' },
+    { value: 'History', label: 'History' },
+    { value: 'English', label: 'English' },
+    { value: 'Art', label: 'Art' },
+  ];
 
   useEffect(() => {
     const fetchProfile = async () => {
@@ -31,7 +40,7 @@ const StudentProfile = () => {
         setFormData({
           bio: response.data.bio,
           class: response.data.class,
-          subjectsInterested: response.data.subjectsInterested.join(', '),
+          subjectsInterested: response.data.subjectsInterested.map(subject => ({ value: subject, label: subject })),
           location: response.data.location,
           contactInfo: response.data.contactInfo
         });
@@ -44,7 +53,7 @@ const StudentProfile = () => {
     };
 
     fetchProfile();
-  }, [studentId]);
+  }, [studentId, token]);
 
   const handleEditToggle = () => {
     setIsEditing(!isEditing);
@@ -55,12 +64,16 @@ const StudentProfile = () => {
     setFormData({ ...formData, [name]: value });
   };
 
+  const handleSubjectChange = (selectedOptions) => {
+    setFormData({ ...formData, subjectsInterested: selectedOptions });
+  };
+
   const handleFormSubmit = async (e) => {
     e.preventDefault();
     try {
       const updatedProfile = {
         ...formData,
-        subjectsInterested: formData.subjectsInterested.split(',').map(subject => subject.trim())
+        subjectsInterested: formData.subjectsInterested.map(subject => subject.value)
       };
       const response = await axios.patch(`http://localhost:5000/api/student/updateStudentProfile`, updatedProfile, {
         headers: {
@@ -118,12 +131,13 @@ const StudentProfile = () => {
           </div>
           <div className="student-profile__form-group">
             <label htmlFor="subjectsInterested">Subjects Interested:</label>
-            <input
-              type="text"
+            <CreatableSelect
               id="subjectsInterested"
               name="subjectsInterested"
+              isMulti
               value={formData.subjectsInterested}
-              onChange={handleInputChange}
+              options={subjectOptions}
+              onChange={handleSubjectChange}
             />
           </div>
           <div className="student-profile__form-group">
