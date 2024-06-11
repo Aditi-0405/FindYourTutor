@@ -1,7 +1,7 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require('cors');
-const { createServer } = require('https');
+const { createServer } = require('http');
 const { Server } = require('socket.io');
 const connectDB = require('./db/connect');
 const app = express();

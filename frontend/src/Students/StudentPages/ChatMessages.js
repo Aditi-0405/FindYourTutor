@@ -4,7 +4,7 @@ import { useParams } from 'react-router-dom';
 import io from 'socket.io-client';
 import { formatDistanceToNow, format } from 'date-fns';
 
-const socket = io(`https://${process.env.REACT_APP_BACKEND_BASE_URL}`);
+const socket = io('http://localhost:5000');
 
 const ChatMessagesStudent = ({ setUnread }) => {
   const [messages, setMessages] = useState([]);
@@ -16,20 +16,20 @@ const ChatMessagesStudent = ({ setUnread }) => {
   useEffect(() => {
     const fetchMessages = async () => {
       try {
-        const response = await axios.get(`https://${process.env.REACT_APP_BACKEND_BASE_URL}/api/student/getMessages/${tutorId}`, {
+        const response = await axios.get(`http://localhost:5000/api/student/getMessages/${tutorId}`, {
           headers: {
             'Content-Type': 'application/json',
             'Authorization': `Bearer ${token}`,
           },
         });
         setMessages(response.data);
-        const res = await axios.patch(`https://${process.env.REACT_APP_BACKEND_BASE_URL}/api/student/updateNotifications/${tutorId}`, {}, {
+        const res = await axios.patch(`http://localhost:5000/api/student/updateNotifications/${tutorId}`, {}, {
           headers: {
             'Content-Type': 'application/json',
             'Authorization': `Bearer ${token}`,
           },
         });
-        await axios.patch(`https://${process.env.REACT_APP_BACKEND_BASE_URL}/api/student/resetNotifications/${tutorId}`, {}, {
+        await axios.patch(`http://localhost:5000/api/student/resetNotifications/${tutorId}`, {}, {
           headers: {
             'Content-Type': 'application/json',
             'Authorization': `Bearer ${token}`,
@@ -46,20 +46,20 @@ const ChatMessagesStudent = ({ setUnread }) => {
     socket.emit('joinRoom', { studentId, tutorId });
 
     socket.on('receiveMessage', async (messageData) => {
-      const response = await axios.get(`https://${process.env.REACT_APP_BACKEND_BASE_URL}/api/student/getMessages/${tutorId}`, {
+      const response = await axios.get(`http://localhost:5000/api/student/getMessages/${tutorId}`, {
         headers: {
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${token}`,
         },
       });
       setMessages(response.data);
-      const res = await axios.patch(`https://${process.env.REACT_APP_BACKEND_BASE_URL}/api/student/updateNotifications/${tutorId}`, {}, {
+      const res = await axios.patch(`http://localhost:5000/api/student/updateNotifications/${tutorId}`, {}, {
         headers: {
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${token}`,
         },
       });
-      await axios.patch(`https://${process.env.REACT_APP_BACKEND_BASE_URL}/api/student/resetNotifications/${tutorId}`, {}, {
+      await axios.patch(`http://localhost:5000/api/student/resetNotifications/${tutorId}`, {}, {
         headers: {
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${token}`,
@@ -79,7 +79,7 @@ const ChatMessagesStudent = ({ setUnread }) => {
 
   const handleMessageSend = async () => {
     try {
-      await axios.patch(`https://${process.env.REACT_APP_BACKEND_BASE_URL}/api/student/sendMessageToTutor/${tutorId}`, {
+      await axios.patch(`http://localhost:5000/api/student/sendMessageToTutor/${tutorId}`, {
         message: newMessage,
       }, {
         headers: {
@@ -87,13 +87,13 @@ const ChatMessagesStudent = ({ setUnread }) => {
           'Authorization': `Bearer ${token}`,
         }
       },);
-      await axios.patch(`https://${process.env.REACT_APP_BACKEND_BASE_URL}/api/student/incrementTutorNotifications/${tutorId}`, {}, {
+      await axios.patch(`http://localhost:5000/api/student/incrementTutorNotifications/${tutorId}`, {}, {
         headers: {
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${token}`,
         },
       });
-      await axios.patch(`https://${process.env.REACT_APP_BACKEND_BASE_URL}/api/student/updateTutorNotifications/${tutorId}`, {}, {
+      await axios.patch(`http://localhost:5000/api/student/updateTutorNotifications/${tutorId}`, {}, {
         headers: {
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${token}`,

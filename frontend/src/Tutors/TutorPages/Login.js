@@ -12,7 +12,7 @@ const LoginTutor = ({ setIsLoggedIn }) => {
 
   const handleLogin = async () => {
     try {
-      const response = await axios.post( `https://${process.env.REACT_APP_BACKEND_BASE_URL}/api/login/tutor`, { email, password });
+      const response = await axios.post( `http://localhost:5000/api/login/tutor`, { email, password });
       localStorage.setItem('token', response.data.token);
       localStorage.setItem('userId', response.data.userId);
       localStorage.setItem('tutorEmail', `${response.data.email}`);

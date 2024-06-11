@@ -17,7 +17,7 @@ const Home = ({isLoggedIn}) => {
   useEffect(() => {
     const fetchTutors = async () => {
       try {
-        const response = await axios.get(`https://${process.env.REACT_APP_BACKEND_BASE_URL}/api/general/getAllTutors`);
+        const response = await axios.get('http://localhost:5000/api/general/getAllTutors');
         setTutors(response.data);
         setLoading(false);
       } catch (error) {
@@ -35,7 +35,7 @@ const Home = ({isLoggedIn}) => {
 
   const applyFilters = async () => {
     try {
-      const response = await axios.get(`https://${process.env.REACT_APP_BACKEND_BASE_URL}/api/general/filterTutors`, {
+      const response = await axios.get('http://localhost:5000/api/general/filterTutors', {
         params: filters
       });
       setTutors(response.data);
