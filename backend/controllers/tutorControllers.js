@@ -18,6 +18,7 @@ const updateTutorProfile = async (req, res) => {
 
     tutorProfile.bio = bio !== undefined ? bio : tutorProfile.bio;
     tutorProfile.location = location !== undefined ? location : tutorProfile.location;
+    tutorProfile.rate = rate !== undefined ? rate : tutorProfile.rate;
     tutorProfile.contactInfo = contactInfo !== undefined ? contactInfo : tutorProfile.contactInfo;
     if (subjectsTaught) {
       tutorProfile.subjectsTaught={}
