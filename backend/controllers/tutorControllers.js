@@ -265,7 +265,6 @@ const getIndividualNotifications = async (req, res) => {
   const tutorId = req.user.userId
 
   try {
-    console.log(tutorId);
     const notifications = await tutorNotifications.findOne({ tutorId });
 
     if (!notifications) {
