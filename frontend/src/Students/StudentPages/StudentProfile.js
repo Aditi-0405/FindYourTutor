@@ -30,7 +30,7 @@ const StudentProfile = () => {
   useEffect(() => {
     const fetchProfile = async () => {
       try {
-        const response = await axios.get(`http://${process.env.REACT_APP_BACKEND_BASE_URL}/api/student/my-profile`, {
+        const response = await axios.get(`https://${process.env.REACT_APP_BACKEND_BASE_URL}/api/student/my-profile`, {
           headers: {
             'Content-Type': 'application/json',
             'Authorization': `Bearer ${token}`,
@@ -75,7 +75,7 @@ const StudentProfile = () => {
         ...formData,
         subjectsInterested: formData.subjectsInterested.map(subject => subject.value)
       };
-      const response = await axios.patch(`http://${process.env.REACT_APP_BACKEND_BASE_URL}/api/student/updateStudentProfile`, updatedProfile, {
+      const response = await axios.patch(`https://${process.env.REACT_APP_BACKEND_BASE_URL}/api/student/updateStudentProfile`, updatedProfile, {
         headers: {
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${token}`,

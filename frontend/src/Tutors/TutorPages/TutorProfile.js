@@ -21,7 +21,7 @@ const TutorProfile = () => {
   useEffect(() => {
     const fetchProfile = async () => {
       try {
-        const response = await axios.get(`http://${process.env.REACT_APP_BACKEND_BASE_URL}/api/tutor/my-profile`, {
+        const response = await axios.get(`https://${process.env.REACT_APP_BACKEND_BASE_URL}/api/tutor/my-profile`, {
           headers: {
             'Content-Type': 'application/json',
             'Authorization': `Bearer ${token}`,
@@ -62,7 +62,7 @@ const TutorProfile = () => {
         ...formData,
         subjectsTaught: JSON.parse(formData.subjectsTaught)
       };
-      const response = await axios.patch(`http://${process.env.REACT_APP_BACKEND_BASE_URL}/api/tutor/updateTutorProfile`, updatedProfile, {
+      const response = await axios.patch(`https://${process.env.REACT_APP_BACKEND_BASE_URL}/api/tutor/updateTutorProfile`, updatedProfile, {
         headers: {
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${token}`,

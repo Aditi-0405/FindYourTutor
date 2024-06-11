@@ -29,7 +29,7 @@ const App = () => {
 
       if (userId && role) {
         try {
-          const response = await fetch(`http://${process.env.REACT_APP_BACKEND_BASE_URL}/api/${role === 'student' ? 'student' : 'tutor'}/notifications`, {
+          const response = await fetch(`https://${process.env.REACT_APP_BACKEND_BASE_URL}/api/${role === 'student' ? 'student' : 'tutor'}/notifications`, {
             headers: {
               'Content-Type': 'application/json',
               'Authorization': `Bearer ${token}`,
