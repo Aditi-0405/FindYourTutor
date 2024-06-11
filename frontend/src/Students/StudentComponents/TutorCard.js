@@ -11,12 +11,12 @@ const TutorCard = ({ tutor }) => {
 
   return (
     <div className="tutor-card-student">
-      <h3>{tutor.name}</h3>
-      <p>Location: {tutor.location}</p>
-      <p>Subjects Taught: {Object.keys(tutor.subjectsTaught).join(', ')}</p>
-      <p>Rating: {tutor.rating}</p>
-      <p>Rate: ${tutor.rate} per hour</p>
-      <p>Contact Info: {tutor.contactInfo}</p>
+      <h3>{tutor.name.toUpperCase()}</h3>
+      <p>Location: {tutor.location.toUpperCase() || 'N/A'}</p>
+      <p>Subjects Taught: {Object.keys(tutor.subjectsTaught).length ? Object.keys(tutor.subjectsTaught).join(', ').toUpperCase() : 'N/A'}</p>
+      <p>Rating: {tutor.rating || 'N/A'}</p>
+      <p>Rate: {tutor.rate ? `Rs. ${tutor.rate} per hour` : 'N/A'}</p>
+      <p>Contact Info: {tutor.contactInfo || 'N/A'}</p>
       <button className="chat-button" onClick={handleChatClick}>Chat</button>
     </div>
   );

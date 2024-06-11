@@ -84,11 +84,11 @@ const StudentProfile = () => {
       {!isEditing ? (
         <>
           <h2 className="student-profile__heading">{profile.name}</h2>
-          <p className="student-profile__info"><strong>Bio:</strong> {profile.bio}</p>
-          <p className="student-profile__info"><strong>Class:</strong> {profile.class}</p>
-          <p className="student-profile__info"><strong>Subjects Interested:</strong> {profile.subjectsInterested.join(', ')}</p>
-          <p className="student-profile__info"><strong>Location:</strong> {profile.location}</p>
-          <p className="student-profile__info"><strong>Contact Info:</strong> {profile.contactInfo}</p>
+          <p className="student-profile__info"><strong>Bio:</strong> {profile.bio || 'N/A'}</p>
+          <p className="student-profile__info"><strong>Class:</strong> {profile.class || 'N/A'}</p>
+          <p className="student-profile__info"><strong>Subjects Interested:</strong> {profile.subjectsInterested.join(', ').toUpperCase()}</p>
+          <p className="student-profile__info"><strong>Location:</strong> {profile.location || 'N/A'}</p>
+          <p className="student-profile__info"><strong>Contact Info:</strong> {profile.contactInfo || 'N/A'}</p>
           <div className="student-profile__buttons">
             <button className="student-profile__edit-button" onClick={handleEditToggle}>Edit Profile</button>
           </div>

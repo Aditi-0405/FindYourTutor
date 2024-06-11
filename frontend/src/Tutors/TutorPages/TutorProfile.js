@@ -83,14 +83,19 @@ const TutorProfile = () => {
     <div className="tutor-profile__container">
       {!isEditing ? (
         <>
-          <h2 className="tutor-profile__heading">{profile.name}</h2>
-          <p className="tutor-profile__info"><strong>Bio:</strong> {profile.bio}</p>
-          <p className="tutor-profile__info"><strong>Subjects Taught:</strong> {Object.entries(profile.subjectsTaught).map(([subject, details]) => (
-            <span key={subject}>{subject} ({details.join(', ')})</span>
-          )).reduce((prev, curr) => prev.length === 0 ? [curr] : [...prev, ', ', curr], [])}</p>
-          <p className="tutor-profile__info"><strong>Rate:</strong> ${profile.rate} per hour</p>
-          <p className="tutor-profile__info"><strong>Location:</strong> {profile.location}</p>
-          <p className="tutor-profile__info"><strong>Contact Info:</strong> {profile.contactInfo}</p>
+          <h2 className="tutor-profile__heading">{profile.name.toUpperCase()}</h2>
+          <p className="tutor-profile__info"><strong>Bio:</strong> {profile.bio || 'N/A'}</p>
+          <p className="tutor-profile__info">
+                <strong>Subjects Taught:</strong> {profile.subjectsTaught ? Object.entries(profile.subjectsTaught).length > 0 ? Object.entries(profile.subjectsTaught).map(([subject, details]) => (
+                    <span key={subject}>{subject.toUpperCase()} ({details.length > 0 ? details.join(', ').toUpperCase() : 'N/A'})</span>
+                )).reduce((prev, curr) => prev.length === 0 ? [curr] : [...prev, ', ', curr], []) : 'N/A' : 'N/A'}
+            </p>
+          <p className="tutor-profile__info">
+            <strong>Rate:</strong>
+            {profile.rate ? `Rs.${profile.rate} per hour` : 'N/A'}
+          </p>
+          <p className="tutor-profile__info"><strong>Location:</strong> {profile.location.toUpperCase() || 'N/A'}</p>
+          <p className="tutor-profile__info"><strong>Contact Info:</strong> {profile.contactInfo || 'N/A'}</p>
           <div className="tutor-profile__buttons">
             <button className="tutor-profile__edit-button" onClick={handleEditToggle}>Edit Profile</button>
           </div>
