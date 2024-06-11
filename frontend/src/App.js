@@ -68,7 +68,7 @@ const App = () => {
           <Route path="/chat-list-tutor" element={isLoggedIn && role === 'tutor' && <ChatsListTutor />} />
           <Route path="/chat-messages-student/:tutorId" element={isLoggedIn && role === 'student' && <ChatMessagesStudent setUnread={setUnread} />} />
           <Route path="/chat-messages-tutor/:studentId" element={isLoggedIn && role === 'tutor' && <ChatMessagesTutor setUnread={setUnread} />} />
-          <Route path="/view-tutor-profile/:tutorId" element={isLoggedIn && role === 'tutor' && <TutorDetails isLoggedIn={isLoggedIn} />} />
+          <Route path="/view-tutor-profile/:tutorId" element={<TutorDetails isLoggedIn={isLoggedIn} />} />
         </Routes>
       </div>
     </div>

@@ -16,12 +16,7 @@ const TutorDetails = ({ isLoggedIn }) => {
     useEffect(() => {
         const fetchProfile = async () => {
             try {
-                const response = await axios.get(`http://localhost:5000/api/tutor/my-profile/${tutorId}`, {
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': `Bearer ${token}`,
-                    },
-                });
+                const response = await axios.get(`http://localhost:5000/api/general/tutorProfile/${tutorId}`);
                 setProfile(response.data);
                 setLoading(false);
             } catch (error) {
