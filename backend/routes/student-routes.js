@@ -7,7 +7,7 @@ const {
     getMyChats, getMessages, getTutorsTeachingSubjects, myProfileStudent, getNotifications,
     updateNotifications, incrementTutorNotifications,
     getIndividualNotifications,
-    updateTutorNotifications, resetNotifications,
+    updateTutorNotifications, resetNotifications,rateTutor
 } = require('../controllers/studentControllers');
 
 router.patch('/updateStudentProfile', updateStudentProfile);
@@ -23,5 +23,6 @@ router.patch('/incrementTutorNotifications/:tutorId', incrementTutorNotification
 router.get('/getIndividualNotifications/:tutorId', getIndividualNotifications)
 router.patch('/updateTutorNotifications/:tutorId', updateTutorNotifications)
 router.patch('/resetNotifications/:tutorId', resetNotifications)
+router.patch('/rateTutor/:tutorId', rateTutor)
 
 module.exports = router;

@@ -314,10 +314,45 @@ const resetNotifications = async (req, res) => {
     res.status(500).json({ success: false, message: 'Failed to reset student notifications.' });
   }
 };
+const rateTutor = async (req, res) => {
+  const { tutorId } = req.params;
+  const studentId = req.user.userId;
+  const { rating, comment } = req.body;
+
+  if (!rating || !comment) {
+    return res.status(400).json({ message: 'Rating and comment are required' });
+  }
+
+  try {
+    const tutor = await TutorProfile.findOne({ tutorId });
+
+    if (!tutor) {
+      return res.status(404).json({ message: 'Tutor profile not found' });
+    } else {
+      if (!tutor.reviews.has(studentId)) {
+        tutor.reviews.set(studentId, { rating, comment });
+        tutor.rating = ((tutor.rating * tutor.review_cnt) + rating) / (tutor.review_cnt + 1);
+        tutor.review_cnt++;
+      } else {
+        const initial_rating = tutor.reviews.get(studentId).rating;
+        tutor.rating = ((tutor.review_cnt * tutor.rating) - initial_rating + rating) / tutor.review_cnt;
+        tutor.reviews.get(studentId).rating = rating;
+        tutor.reviews.get(studentId).comment = comment;
+      }
+
+      await tutor.save();
+      return res.status(200).json({ message: 'Review added successfully' });
+    }
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ message: 'Server error' });
+  }
+};
+
 
 module.exports = {
   updateStudentProfile, getSubjectsTaughtByTutor, sendMessageToTutor, getMyChats,
   getMessages, getTutorsTeachingSubjects, myProfileStudent, getNotifications, updateNotifications,
   incrementTutorNotifications, getIndividualNotifications,
-  updateTutorNotifications, resetNotifications,
+  updateTutorNotifications, resetNotifications, rateTutor
 };
