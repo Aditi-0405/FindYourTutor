@@ -86,10 +86,10 @@ const TutorProfile = () => {
           <h2 className="tutor-profile__heading">{profile.name.toUpperCase()}</h2>
           <p className="tutor-profile__info"><strong>Bio:</strong> {profile.bio || 'N/A'}</p>
           <p className="tutor-profile__info">
-                <strong>Subjects Taught:</strong> {profile.subjectsTaught ? Object.entries(profile.subjectsTaught).length > 0 ? Object.entries(profile.subjectsTaught).map(([subject, details]) => (
-                    <span key={subject}>{subject.toUpperCase()} ({details.length > 0 ? details.join(', ').toUpperCase() : 'N/A'})</span>
-                )).reduce((prev, curr) => prev.length === 0 ? [curr] : [...prev, ', ', curr], []) : 'N/A' : 'N/A'}
-            </p>
+            <strong>Subjects Taught:</strong> {profile.subjectsTaught ? Object.entries(profile.subjectsTaught).length > 0 ? Object.entries(profile.subjectsTaught).map(([subject, details]) => (
+              <span key={subject}>{subject.toUpperCase()} ({details.length > 0 ? details.join(', ').toUpperCase() : 'N/A'})</span>
+            )).reduce((prev, curr) => prev.length === 0 ? [curr] : [...prev, ', ', curr], []) : 'N/A' : 'N/A'}
+          </p>
           <p className="tutor-profile__info">
             <strong>Rate:</strong>
             {profile.rate ? `Rs.${profile.rate} per hour` : 'N/A'}
@@ -114,7 +114,7 @@ const TutorProfile = () => {
             />
           </div>
           <div className="tutor-profile__form-group">
-            <label htmlFor="subjectsTaught">Subjects Taught:</label>
+            <label htmlFor="subjectsTaught">Subjects Taught: {'( eg : {"Maths": [1, 2], "English": [3, 4]} )'}</label>
             <input
               type="text"
               id="subjectsTaught"

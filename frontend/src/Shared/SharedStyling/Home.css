@@ -18,7 +18,7 @@
 }
 
 .filter-container input {
-  margin-right: 10px;
+  margin-right: 5px;
   padding: 8px;
   border: 1px solid #ccc;
   border-radius: 5px;
@@ -26,7 +26,7 @@
 }
 
 .filter-container button {
-  padding: 8px 16px;
+  padding: 4px 8px;
   background-color: #007bff;
   color: #fff;
   border: none;

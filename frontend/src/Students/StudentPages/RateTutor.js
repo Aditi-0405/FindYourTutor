@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import '../StudentStyling/RateTutor.css';
@@ -11,6 +11,24 @@ const RateTutor = () => {
     const [message, setMessage] = useState('');
     const [error, setError] = useState('');
     const token = localStorage.getItem('token');
+    const [profile, setProfile] = useState('')
+    const [loading, setLoading] = useState('')
+    useEffect(() => {
+        const fetchProfile = async () => {
+            try {
+                const response = await axios.get(`https://${process.env.REACT_APP_BACKEND_BASE_URL}/api/general/tutorProfile/${tutorId}`);
+                setProfile(response.data);
+                setLoading(false);
+            } catch (error) {
+                console.error(error);
+                setError('Failed to fetch profile');
+                setLoading(false);
+            }
+        };
+
+        fetchProfile();
+  
+    }, [tutorId]);
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -55,6 +73,7 @@ const RateTutor = () => {
     return (
         <div className="rate-tutor-container">
             <h2>Rate Tutor</h2>
+            <h3>{profile.name}</h3>
             <form onSubmit={handleSubmit}>
                 <div className="star-rating">
                     {[...Array(5)].map((star, index) => (

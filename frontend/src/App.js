@@ -62,7 +62,7 @@ const App = () => {
           <Route path="/login-student" element={!isLoggedIn && <LoginStudent setIsLoggedIn={setIsLoggedIn} />} />
           <Route path="/login-tutor" element={!isLoggedIn && <LoginTutor setIsLoggedIn={setIsLoggedIn} />} />
           <Route path="/tutor-dashboard" element={isLoggedIn && role === 'tutor' && <TutorDashboard />} />
-          <Route path="/student-dashboard" element={isLoggedIn && role === 'student' && <StudentDashboard />} />
+          <Route path="/student-dashboard" element={isLoggedIn && role === 'student' && <StudentDashboard isLoggedIn={isLoggedIn}/>} />
           <Route path="/tutor-profile" element={isLoggedIn && role ==='tutor' && <TutorProfile />} />
           <Route path="/student-profile" element={isLoggedIn && role === 'student' && <StudentProfile />} />
           <Route path="/chat-list-student" element={isLoggedIn && role === 'student' && <ChatsListStudent />} />

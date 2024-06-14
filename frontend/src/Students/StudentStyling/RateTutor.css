@@ -9,9 +9,12 @@
   background-color: #f9f9f9;
 }
 
-.rate-tutor-container h2 {
+.rate-tutor-container h2, .rate-tutor-container h3{
   text-align: center;
   margin-bottom: 20px;
+}
+.rate-tutor-container h3{
+    color: #0056b3;
 }
 
 .rate-tutor-container form {

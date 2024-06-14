@@ -5,6 +5,7 @@ import '../SharedStyling/TutorCard.css';
 const TutorCard = ({ tutor, isLoggedIn }) => {
   const navigate = useNavigate();
   const role = localStorage.getItem('role');
+  console.log(role, isLoggedIn)
 
   const handleViewDetailsClick = () => {
     navigate(`/view-tutor-profile/${tutor.tutorId}`);
@@ -24,10 +25,16 @@ const TutorCard = ({ tutor, isLoggedIn }) => {
       </div>
       <div className="tutor-details-home">
         <p>
-          <strong>Subjects Taught:</strong> {Object.keys(tutor.subjectsTaught).length ? Object.keys(tutor.subjectsTaught).join(', ').toUpperCase() : 'N/A'}
+          <strong>Subjects Taught:</strong> {tutor.subjectsTaught ? Object.entries(tutor.subjectsTaught).length > 0 ? Object.entries(tutor.subjectsTaught).map(([subject, details]) => (
+            <span key={subject}>{subject.toUpperCase()} ({details.length > 0 ? details.join(', ').toUpperCase() : 'N/A'})</span>
+          )).reduce((prev, curr) => prev.length === 0 ? [curr] : [...prev, ', ', curr], []) : 'N/A' : 'N/A'}
         </p>
         <p>
           <strong>Rating:</strong> {tutor.rating ? <span>{tutor.rating} <span className='star-profile'>&#9733;</span></span> : 'N/A'}
+        </p>
+        <p>
+          <strong>Rate:</strong>
+          {tutor.rate ? `Rs.${tutor.rate} per hour` : 'N/A'}
         </p>
       </div>
 

@@ -13,7 +13,7 @@ const getAllTutors = async (req, res) => {
 };
 
 const filterTutors = async (req, res) => {
-  const { subjects, class: studentClass, minRating, location } = req.query;
+  const { subjects, class: studentClass, minRating, location, rate } = req.query;
 
   try {
     let query = {};
@@ -47,6 +47,7 @@ const filterTutors = async (req, res) => {
         }))
       }
     }
+
     if (minRating) {
       query.rating = { $gte: parseInt(minRating) };
     }
@@ -54,7 +55,9 @@ const filterTutors = async (req, res) => {
     if (location) {
       query.location = { $regex: location, $options: 'i' };
     }
-
+    if (rate) {
+      query.rate = { $lte: parseInt(rate) };
+    }
     const tutors = await TutorProfile.find(query).sort({ rating: -1 });
     res.status(200).json(tutors);
   } catch (error) {
