@@ -1,4 +1,4 @@
-import React, { useState} from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import '../../Shared/SharedStyling/FormStyles.css';
 
@@ -9,6 +9,7 @@ const RegisterStudent = () => {
     password: ''
   });
   const [message, setMessage] = useState('');
+  const [error, setError] = useState('');
 
   const { username, email, password } = formData;
 
@@ -26,13 +27,20 @@ const RegisterStudent = () => {
       });
       const data = await res.json();
       if (res.status === 201) {
+        setError('');
         setMessage('Student registered successfully');
+        setTimeout(() => {
+          setMessage('');
+          setFormData({ username: '', email: '', password: '' });
+        }, 5000);
       } else {
-        setMessage(data.message);
+        setMessage('');
+        setError(data.message);
       }
     } catch (error) {
       console.error(error);
-      setMessage('Internal Server Error');
+      setMessage('')
+      setError('Could not register. Try after some time.');
     }
   };
 
@@ -56,6 +64,7 @@ const RegisterStudent = () => {
       </form>
       <div className='switch'><Link to={'/login-student'}>Login</Link></div>
       {message && <p className="success-message">{message}</p>}
+      {error && <p className="error-message">{error}</p>}
     </div>
   );
 };

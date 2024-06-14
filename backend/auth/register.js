@@ -10,13 +10,15 @@ const registerStudent = async (req, res) => {
     const student = new Student({ username, email, password });
     await student.save();
 
-    const studentProfile = new StudentProfile({ studentId: student._id, name:student.username });
+    const studentProfile = new StudentProfile({ studentId: student._id, name: student.username });
     await studentProfile.save();
 
     res.status(201).json({ message: 'Student registered successfully', student });
   } catch (error) {
-    console.error(error);
-    res.status(500).json({ message: 'Internal Server Error' });
+    if (error.code === 11000 && error.keyPattern && error.keyPattern.email) {
+      return res.status(400).json({ message: 'Email address is already in use' });
+    }
+    res.status(500).json({ message: 'Could not register. Try after some time!' });
   }
 };
 
@@ -27,16 +29,19 @@ const registerTutor = async (req, res) => {
     const tutor = new Tutor({ username, email, password });
     await tutor.save();
 
-    const tutorProfile = new TutorProfile({ tutorId: tutor._id, name:tutor.username });
+    const tutorProfile = new TutorProfile({ tutorId: tutor._id, name: tutor.username });
     await tutorProfile.save();
 
     res.status(201).json({ message: 'Tutor registered successfully', tutor });
   } catch (error) {
-    console.error(error);
-    res.status(500).json({ message: 'Internal Server Error' });
+    console.log(error);
+    if (error.code === 11000 && error.keyPattern && error.keyPattern.email) {
+      return res.status(400).json({ message: 'Email address is already in use' });
+    }
+    res.status(500).json({ message: 'Could not register. Try after some time' });
   }
 };
 
 module.exports = {
-  registerStudent,registerTutor
+  registerStudent, registerTutor
 };
