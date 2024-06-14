@@ -9,6 +9,13 @@ const TutorCard = ({ tutor }) => {
     navigate(`/chat-messages-student/${tutor.tutorId}`);
   };
 
+  const handleRateClick = () => {
+    navigate(`/rate-tutor/${tutor.tutorId}`);
+  };
+  const handleViewDetailsClick = () => {
+    navigate(`/view-tutor-profile/${tutor.tutorId}`);
+  };
+
   return (
     <div className="tutor-card-student">
       <h3>{tutor.name.toUpperCase()}</h3>
@@ -17,7 +24,11 @@ const TutorCard = ({ tutor }) => {
       <p>Rating: {tutor.rating || 'N/A'}</p>
       <p>Rate: {tutor.rate ? `Rs. ${tutor.rate} per hour` : 'N/A'}</p>
       <p>Contact Info: {tutor.contactInfo || 'N/A'}</p>
-      <button className="chat-button" onClick={handleChatClick}>Chat</button>
+      <div className='tutor-actions'>
+        <button className="view-details-button" onClick={handleViewDetailsClick}>View Details</button>
+        <button className="chat-button" onClick={handleChatClick}>Chat</button>
+        <button className="rate-button" onClick={handleRateClick}>Rate</button>
+      </div>
     </div>
   );
 };

@@ -16,16 +16,18 @@
   margin: 5px 0;
 }
 
-.chat-button {
-  padding: 8px 16px;
+.tutor-actions Button {
+  padding: 4px 6px;
   background-color: #007bff;
   color: #fff;
   border: none;
   border-radius: 4px;
   cursor: pointer;
   transition: background-color 0.3s ease;
+  margin: 4px;
 }
 
-.chat-button:hover {
+.tutor-actions Button:hover{
   background-color: #0056b3;
 }
+

@@ -28,21 +28,12 @@
     margin-bottom: 10px;
   }
   
-  .tutor-actions-home {
+  .tutor-actions {
     display: flex;
     justify-content: space-evenly;
 
   }
   
-  .view-details-btn-home {
-    padding: 8px 16px;
-    background-color: #007bff;
-    color: #fff;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-  }
   
   .view-details-btn:hover {
     background-color: #0056b3;

@@ -1,0 +1,71 @@
+.rate-tutor-container {
+  display: flex;
+  flex-direction: column;
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 20px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  background-color: #f9f9f9;
+}
+
+.rate-tutor-container h2 {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.rate-tutor-container form {
+  display: flex;
+  flex-direction: column;
+}
+
+.rate-tutor-container label {
+  margin-bottom: 15px;
+}
+
+.star-rating {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  margin-bottom: 15px;
+}
+
+.star {
+  font-size: 2rem;
+  cursor: pointer;
+}
+
+.star.filled {
+  color: gold;
+}
+
+.rate-tutor-container textarea {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.rate-tutor-container button {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  background-color: #007bff;
+  color: #fff;
+  cursor: pointer;
+}
+
+.rate-tutor-container button:hover {
+  background-color: #0056b3;
+}
+
+.rating-error {
+  text-align: center;
+  color: red;
+  margin-top: 20px;
+}
+.rating-message {
+  text-align: center;
+  color: green;
+  margin-top: 20px;
+}

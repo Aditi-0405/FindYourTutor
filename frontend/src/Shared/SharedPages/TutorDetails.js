@@ -48,7 +48,7 @@ const TutorDetails = ({ isLoggedIn }) => {
             </p>
             <p className="tutor-profile__info"><strong>Location:</strong> {profile.location.toUpperCase() || 'N/A'}</p>
             <p className="tutor-profile__info"><strong>Contact Info:</strong> {profile.contactInfo || 'N/A'}</p>
-            {isLoggedIn && role === 'student' && <button className="view-details-btn-home" onClick={handleChatClick}>Chat</button>}
+            {isLoggedIn && role === 'student' && <button className="btn" onClick={handleChatClick}>Chat</button>}
         </div>
     );
 };

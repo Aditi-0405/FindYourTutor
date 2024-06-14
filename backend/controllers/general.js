@@ -24,15 +24,15 @@ const filterTutors = async (req, res) => {
       if (subjectsArray.length > 0 && classArray.length > 0) {
         query.$or = subjectsArray.map(subject => ({
           $and: [
-            { [`subjectsTaught.${subject}`]: { $exists: true } },
-            { [`subjectsTaught.${subject}`]: { $in: classArray } }
+            { [`subjectsTaught.${subject.toLowerCase()}`]: { $exists: true } },
+            { [`subjectsTaught.${subject.toLowerCase()}`]: { $in: classArray } }
           ]
         }));
       }
       else if (subjectsArray.length > 0) {
         query.$or = subjectsArray.map(subject => ({
           $and: [
-            { [`subjectsTaught.${subject}`]: { $exists: true } },
+            { [`subjectsTaught.${subject.toLowerCase()}`]: { $exists: true } },
           ]
         }));
       }
@@ -41,7 +41,7 @@ const filterTutors = async (req, res) => {
         const allSubjectsTaught = allTutors.map(tutor => Array.from(tutor.subjectsTaught.keys())).flat();
         query.$or = allSubjectsTaught.map(subject => ({
           $and: [
-            { [`subjectsTaught.${subject}`]: { $in: classArray } }
+            { [`subjectsTaught.${subject.toLowerCase()}`]: { $in: classArray } }
           ]
         }))
       }

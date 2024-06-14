@@ -15,6 +15,7 @@ import ChatsListTutor from './Tutors/TutorPages/ChatList';
 import ChatMessagesStudent from './Students/StudentPages/ChatMessages';
 import ChatMessagesTutor from './Tutors/TutorPages/ChatMessages';
 import TutorDetails from './Shared/SharedPages/TutorDetails';
+import RateTutor from './Students/StudentPages/RateTutor';
 
 const App = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(localStorage.getItem('userId') !== null);
@@ -69,6 +70,7 @@ const App = () => {
           <Route path="/chat-messages-student/:tutorId" element={isLoggedIn && role === 'student' && <ChatMessagesStudent setUnread={setUnread} />} />
           <Route path="/chat-messages-tutor/:studentId" element={isLoggedIn && role === 'tutor' && <ChatMessagesTutor setUnread={setUnread} />} />
           <Route path="/view-tutor-profile/:tutorId" element={<TutorDetails isLoggedIn={isLoggedIn} />} />
+          <Route path="/rate-tutor/:tutorId" element={<RateTutor isLoggedIn={isLoggedIn} />} />
         </Routes>
       </div>
     </div>

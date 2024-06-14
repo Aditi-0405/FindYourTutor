@@ -317,15 +317,14 @@ const resetNotifications = async (req, res) => {
 const rateTutor = async (req, res) => {
   const { tutorId } = req.params;
   const studentId = req.user.userId;
-  const { rating, comment } = req.body;
-
+  let { rating, comment } = req.body;
   if (!rating || !comment) {
     return res.status(400).json({ message: 'Rating and comment are required' });
   }
 
   try {
+    rating = parseInt(rating)
     const tutor = await TutorProfile.findOne({ tutorId });
-
     if (!tutor) {
       return res.status(404).json({ message: 'Tutor profile not found' });
     } else {
