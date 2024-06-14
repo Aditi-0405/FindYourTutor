@@ -138,7 +138,7 @@ const getTutorsTeachingSubjects = async (req, res) => {
       return res.status(404).json({ message: 'Student profile not found' });
     }
     const subjectsInterested = studentProfile.subjectsInterested
-    const tutors = await TutorProfile.find();
+    const tutors = await TutorProfile.find().sort({ rating: -1 });;
     const matchingTutors = tutors.filter(tutor => {
       const subjectsTaught = Array.from(tutor.subjectsTaught.keys());
       return subjectsTaught.some(subject => subjectsInterested.includes(subject));

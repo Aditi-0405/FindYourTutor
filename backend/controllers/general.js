@@ -3,7 +3,7 @@ const TutorProfile = require('../models/Profile/Tutor-profile');
 const getAllTutors = async (req, res) => {
 
   try {
-    const tutors = await TutorProfile.find();
+    const tutors = await TutorProfile.find().sort({ rating: -1 });;
     res.status(200).json(tutors);
   } catch (error) {
     console.error(error);
@@ -47,14 +47,14 @@ const filterTutors = async (req, res) => {
       }
     }
     if (minRating) {
-      query.rate = { $gte: parseInt(minRating) };
+      query.rating = { $gte: parseInt(minRating) };
     }
 
     if (location) {
       query.location = { $regex: location, $options: 'i' };
     }
 
-    const tutors = await TutorProfile.find(query);
+    const tutors = await TutorProfile.find(query).sort({ rating: -1 });
     res.status(200).json(tutors);
   } catch (error) {
     console.error(error);
