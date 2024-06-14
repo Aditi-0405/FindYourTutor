@@ -1,4 +1,5 @@
 const TutorProfile = require('../models/Profile/Tutor-profile');
+const StudentProfile = require('../models/Profile/Student-profile')
 
 const getAllTutors = async (req, res) => {
 
@@ -63,7 +64,7 @@ const filterTutors = async (req, res) => {
 };
 const tutorProfile = async (req, res) => {
   try {
-    const {tutorId} = req.params
+    const { tutorId } = req.params
     const tutor = await TutorProfile.findOne({ tutorId });
     if (!tutor) {
       return res.status(404).json({ message: 'Tutor not found' });
@@ -75,6 +76,35 @@ const tutorProfile = async (req, res) => {
   }
 }
 
+const getTutorReviews = async (req, res) => {
+  const { tutorId } = req.params;
+
+  try {
+    const tutor = await TutorProfile.findOne({ tutorId });
+
+    if (!tutor) {
+      return res.status(404).json({ message: 'Tutor profile not found' });
+    }
+    let reviews = []
+    reviews = await Promise.all(
+      Array.from(tutor.reviews.entries()).map(async ([studentId, review]) => {
+        const student = await StudentProfile.findOne({ studentId });
+        return {
+          username: student ? student.name : 'Unknown',
+          rating: review.rating,
+          comment: review.comment
+        };
+      })
+    );
+
+    res.status(200).json({ reviews });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'Internal Server Error' });
+  }
+};
+
+
 module.exports = {
-  getAllTutors, filterTutors, tutorProfile
+  getAllTutors, filterTutors, tutorProfile, getTutorReviews
 };

@@ -1,5 +1,5 @@
 import React from 'react';
-import { useParams , useNavigate } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import '../SharedStyling/TutorCard.css';
 
 const TutorCard = ({ tutor, isLoggedIn }) => {
@@ -23,13 +23,19 @@ const TutorCard = ({ tutor, isLoggedIn }) => {
         <p className="tutor-location-home">{tutor.location || 'N/A'}</p>
       </div>
       <div className="tutor-details-home">
-        <p><strong>Subjects Taught:</strong> {Object.keys(tutor.subjectsTaught).length ? Object.keys(tutor.subjectsTaught).join(', ').toUpperCase() : 'N/A'}</p>
-        <p><strong>Rating:</strong> {tutor.rating || 'N/A'}</p>
+        <p>
+          <strong>Subjects Taught:</strong> {Object.keys(tutor.subjectsTaught).length ? Object.keys(tutor.subjectsTaught).join(', ').toUpperCase() : 'N/A'}
+        </p>
+        <p>
+          <strong>Rating:</strong> {tutor.rating ? <span>{tutor.rating} <span className='star-profile'>&#9733;</span></span> : 'N/A'}
+        </p>
       </div>
+
+
       <div className="tutor-actions">
-        <button  onClick={handleViewDetailsClick}>View Details</button>
-        {isLoggedIn && role === 'student' && <button  onClick={handleChatClick}>Chat</button>}
-        {isLoggedIn && role === 'student' && <button  onClick={handleRateClick}>Rate</button>}
+        <button onClick={handleViewDetailsClick}>View Details</button>
+        {isLoggedIn && role === 'student' && <button onClick={handleChatClick}>Chat</button>}
+        {isLoggedIn && role === 'student' && <button onClick={handleRateClick}>Rate</button>}
       </div>
     </div>
   );

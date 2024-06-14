@@ -2,18 +2,22 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useParams, useNavigate } from 'react-router-dom';
 
+
 const TutorDetails = ({ isLoggedIn }) => {
     const [profile, setProfile] = useState(null);
+    const [reviews, setReviews] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState('');
     const { tutorId } = useParams();
     const navigate = useNavigate();
+    const role = localStorage.getItem('role');
+    const token = localStorage.getItem('token');
+    const handleRateClick = () => {
+        navigate(`/rate-tutor/${tutorId}`);
+    };
     const handleChatClick = () => {
         navigate(`/chat-messages-student/${tutorId}`);
     };
-    const role = localStorage.getItem('role');
-    const token = localStorage.getItem('token');
-    
     useEffect(() => {
         const fetchProfile = async () => {
             try {
@@ -27,9 +31,19 @@ const TutorDetails = ({ isLoggedIn }) => {
             }
         };
 
-        fetchProfile();
-    }, [tutorId]);
+        const fetchReviews = async () => {
+            try {
+                const response = await axios.get(`https://${process.env.REACT_APP_BACKEND_BASE_URL}/api/general/getTutorReviews/${tutorId}`);
+                setReviews(response.data.reviews);
+            } catch (error) {
+                console.error(error);
+                setError('Failed to fetch reviews');
+            }
+        };
 
+        fetchProfile();
+        fetchReviews();
+    }, [tutorId]);
 
     if (loading) return <p className="tutor-profile__loading">Loading...</p>;
     if (error) return <p className="tutor-profile__error">{error}</p>;
@@ -48,7 +62,25 @@ const TutorDetails = ({ isLoggedIn }) => {
             </p>
             <p className="tutor-profile__info"><strong>Location:</strong> {profile.location.toUpperCase() || 'N/A'}</p>
             <p className="tutor-profile__info"><strong>Contact Info:</strong> {profile.contactInfo || 'N/A'}</p>
-            {isLoggedIn && role === 'student' && <button className="btn" onClick={handleChatClick}>Chat</button>}
+            <div>
+                {isLoggedIn && role === 'student' && <button className = 'btn' onClick={handleChatClick}>Chat</button>}
+                {isLoggedIn && role === 'student' && <button className = 'btn' onClick={handleRateClick}>Rate</button>}
+            </div>
+
+            <div className="tutor-profile__reviews">
+                <h3>Reviews</h3>
+                {reviews.length > 0 ? (
+                    reviews.map((review, index) => (
+                        <div key={index} className="review">
+                            <p><strong>{review.username}:</strong></p>
+                            <p>{review.rating} <span className='star-profile' > &#9733;</span></p>
+                            <p>{review.comment}</p>
+                        </div>
+                    ))
+                ) : (
+                    <p>No reviews available</p>
+                )}
+            </div>
         </div>
     );
 };

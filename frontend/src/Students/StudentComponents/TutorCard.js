@@ -21,7 +21,15 @@ const TutorCard = ({ tutor }) => {
       <h3>{tutor.name.toUpperCase()}</h3>
       <p>Location: {tutor.location.toUpperCase() || 'N/A'}</p>
       <p>Subjects Taught: {Object.keys(tutor.subjectsTaught).length ? Object.keys(tutor.subjectsTaught).join(', ').toUpperCase() : 'N/A'}</p>
-      <p>Rating: {tutor.rating || 'N/A'}</p>
+      <div className="tutor-details-home">
+        <p>
+          <strong>Subjects Taught:</strong> {Object.keys(tutor.subjectsTaught).length ? Object.keys(tutor.subjectsTaught).join(', ').toUpperCase() : 'N/A'}
+        </p>
+        <p>
+          <strong>Rating:</strong> {tutor.rating ? <span>{tutor.rating} <span className='star-profile'>&#9733;</span></span> : 'N/A'}
+        </p>
+      </div>
+
       <p>Rate: {tutor.rate ? `Rs. ${tutor.rate} per hour` : 'N/A'}</p>
       <p>Contact Info: {tutor.contactInfo || 'N/A'}</p>
       <div className='tutor-actions'>
