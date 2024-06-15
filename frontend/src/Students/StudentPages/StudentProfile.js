@@ -27,6 +27,21 @@ const StudentProfile = () => {
     { value: 'Art', label: 'Art' },
   ];
 
+  const classOptions = [
+    { value: '1', label: '1' },
+    { value: '2', label: '2' },
+    { value: '3', label: '3' },
+    { value: '4', label: '4' },
+    { value: '5', label: '5' },
+    { value: '6', label: '6' },
+    { value: '7', label: '7' },
+    { value: '8', label: '8' },
+    { value: '9', label: '9' },
+    { value: '10', label: '10' },
+    { value: '11', label: '11' },
+    { value: '12', label: '12' },
+  ];
+
   useEffect(() => {
     const fetchProfile = async () => {
       try {
@@ -39,7 +54,7 @@ const StudentProfile = () => {
         setProfile(response.data);
         setFormData({
           bio: response.data.bio,
-          class: response.data.class,
+          class: { value: response.data.class, label: response.data.class },
           subjectsInterested: response.data.subjectsInterested.map(subject => ({ value: subject, label: subject })),
           location: response.data.location,
           contactInfo: response.data.contactInfo
@@ -68,11 +83,16 @@ const StudentProfile = () => {
     setFormData({ ...formData, subjectsInterested: selectedOptions });
   };
 
+  const handleClassChange = (selectedOption) => {
+    setFormData({ ...formData, class: selectedOption });
+  };
+
   const handleFormSubmit = async (e) => {
     e.preventDefault();
     try {
       const updatedProfile = {
         ...formData,
+        class: formData.class.value,
         subjectsInterested: formData.subjectsInterested.map(subject => subject.value)
       };
       const response = await axios.patch(`https://${process.env.REACT_APP_BACKEND_BASE_URL}/api/student/updateStudentProfile`, updatedProfile, {
@@ -121,12 +141,12 @@ const StudentProfile = () => {
           </div>
           <div className="student-profile__form-group">
             <label htmlFor="class">Class:</label>
-            <input
-              type="text"
+            <CreatableSelect
               id="class"
               name="class"
               value={formData.class}
-              onChange={handleInputChange}
+              options={classOptions}
+              onChange={handleClassChange}
             />
           </div>
           <div className="student-profile__form-group">

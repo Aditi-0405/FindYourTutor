@@ -61,10 +61,13 @@ const TutorDetails = ({ isLoggedIn }) => {
                 <strong>Rate:</strong> {profile.rate ? `Rs.${profile.rate} per hour` : 'N/A'}
             </p>
             <p className="tutor-profile__info"><strong>Location:</strong> {profile.location.toUpperCase() || 'N/A'}</p>
+            <p className="tutor-profile__info">
+                <strong>Rating:</strong> {profile.rating ? <span>{profile.rating} <span className='star-profile'>&#9733;</span></span> : 'N/A'}
+            </p>
             <p className="tutor-profile__info"><strong>Contact Info:</strong> {profile.contactInfo || 'N/A'}</p>
             <div>
-                {isLoggedIn && role === 'student' && <button className = 'btn' onClick={handleChatClick}>Chat</button>}
-                {isLoggedIn && role === 'student' && <button className = 'btn' onClick={handleRateClick}>Rate</button>}
+                {isLoggedIn && role === 'student' && <button className='btn' onClick={handleChatClick}>Chat</button>}
+                {isLoggedIn && role === 'student' && <button className='btn' onClick={handleRateClick}>Rate</button>}
             </div>
 
             <div className="tutor-profile__reviews">
