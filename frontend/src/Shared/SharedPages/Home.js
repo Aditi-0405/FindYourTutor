@@ -5,7 +5,7 @@ import '../../Shared/SharedStyling/Home.css';
 
 const Home = ({ isLoggedIn }) => {
   const [tutors, setTutors] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const [filters, setFilters] = useState({
     subjects: '',
@@ -14,38 +14,41 @@ const Home = ({ isLoggedIn }) => {
     location: '',
     rate: ''
   });
+  const [pagination, setPagination] = useState({
+    page: 1,
+    perPage: 10
+  });
 
   useEffect(() => {
-    const fetchTutors = async () => {
-      try {
-        const response = await axios.get(`https://${process.env.REACT_APP_BACKEND_BASE_URL}/api/general/getAllTutors`);
-        setTutors(response.data);
-        setLoading(false);
-      } catch (error) {
-        console.error(error);
-        setError('Failed to load tutors. Please try again later.');
-        setLoading(false);
-      }
-    };
-
     fetchTutors();
-  }, []);
+  }, [pagination]);
+
+  const fetchTutors = async () => {
+    setLoading(true);
+    try {
+      const response = await axios.get(`https://${process.env.REACT_APP_BACKEND_BASE_URL}/api/general/filterTutors`, {
+        params: { ...filters, ...pagination }
+      });
+      setTutors(response.data);
+      setLoading(false);
+    } catch (error) {
+      console.error('Error fetching tutors:', error);
+      setError('Failed to load tutors. Please try again later.');
+      setLoading(false);
+    }
+  };
 
   const handleFilterChange = (filterName, value) => {
     setFilters({ ...filters, [filterName]: value });
   };
 
-  const applyFilters = async () => {
-    setError('');
-    try {
-      const response = await axios.get(`https://${process.env.REACT_APP_BACKEND_BASE_URL}/api/general/filterTutors`, {
-        params: filters
-      });
-      setTutors(response.data);
-    } catch (error) {
-      console.error(error);
-      setError('Failed to apply filters. Please try again later.');
-    }
+  const applyFilters = () => {
+    setPagination({ ...pagination, page: 1 });
+    fetchTutors();
+  };
+
+  const handlePageChange = (newPage) => {
+    setPagination({ ...pagination, page: newPage });
   };
 
   return (
@@ -76,11 +79,24 @@ const Home = ({ isLoggedIn }) => {
         ) : error ? (
           <p className="error-message">{error}</p>
         ) : (
-          <div className="tutor-list-home">
-            {tutors.map(tutor => (
-              <TutorCard key={tutor._id} tutor={tutor} isLoggedIn={isLoggedIn} />
-            ))}
-          </div>
+          <>
+            <div className="tutor-list-home">
+              {tutors.map(tutor => (
+                <TutorCard key={tutor._id} tutor={tutor} isLoggedIn={isLoggedIn} />
+              ))}
+            </div>
+            <div className="pagination-container">
+              <button onClick={() => handlePageChange(pagination.page - 1)} disabled={pagination.page === 1}>
+                Previous
+              </button>
+              <span>{pagination.page}</span>
+              <button onClick={() => handlePageChange(pagination.page + 1)} disabled={tutors.length < pagination.perPage || tutors.length === 0}>
+                Next
+              </button>
+            </div>
+
+
+          </>
         )}
       </div>
     </div>

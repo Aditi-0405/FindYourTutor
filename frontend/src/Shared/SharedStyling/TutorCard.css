@@ -1,10 +1,14 @@
 
 .tutor-card-home {
+    width: 300px;
     background-color: #fff;
+    margin: 0 auto;
     border: 1px solid #eaeaea;
     border-radius: 5px;
     padding: 20px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    justify-content: center;
+    align-items: center;
   }
   
   .tutor-header-home {

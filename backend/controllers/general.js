@@ -2,22 +2,29 @@ const TutorProfile = require('../models/Profile/Tutor-profile');
 const StudentProfile = require('../models/Profile/Student-profile')
 
 const getAllTutors = async (req, res) => {
+  const { page, perPage } = req.query;
 
   try {
-    const tutors = await TutorProfile.find().sort({ rating: -1 });;
-    res.status(200).json(tutors);
+    const pageNumber = parseInt(page) || 1;
+    const limit = parseInt(perPage) || 10; 
+
+    const tutors = await TutorProfile.find()
+      .sort({ rating: -1 })
+      .skip((pageNumber - 1) * limit)
+      .limit(limit);
+
+    res.status(200).json(tutors, );
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: 'Internal Server Error' });
   }
 };
 
-const filterTutors = async (req, res) => {
-  const { subjects, class: studentClass, minRating, location, rate } = req.query;
 
+const filterTutors = async (req, res) => {
+  const { subjects, class: studentClass, minRating, location, rate, page, perPage } = req.query;
   try {
     let query = {};
-
     if (subjects || studentClass) {
       const subjectsArray = subjects ? subjects.split(',') : [];
       const classArray = studentClass ? studentClass.split(',') : [];
@@ -29,42 +36,47 @@ const filterTutors = async (req, res) => {
             { [`subjectsTaught.${subject.toLowerCase()}`]: { $in: classArray } }
           ]
         }));
-      }
-      else if (subjectsArray.length > 0) {
+      } else if (subjectsArray.length > 0) {
         query.$or = subjectsArray.map(subject => ({
-          $and: [
-            { [`subjectsTaught.${subject.toLowerCase()}`]: { $exists: true } },
-          ]
+          [`subjectsTaught.${subject.toLowerCase()}`]: { $exists: true }
         }));
-      }
-      else if (classArray.length > 0) {
+      } else if (classArray.length > 0) {
         const allTutors = await TutorProfile.find();
         const allSubjectsTaught = allTutors.map(tutor => Array.from(tutor.subjectsTaught.keys())).flat();
         query.$or = allSubjectsTaught.map(subject => ({
-          $and: [
-            { [`subjectsTaught.${subject.toLowerCase()}`]: { $in: classArray } }
-          ]
-        }))
+          [`subjectsTaught.${subject.toLowerCase()}`]: { $in: classArray }
+        }));
       }
     }
 
     if (minRating) {
-      query.rating = { $gte: parseInt(minRating) };
+      query.rating = { $gte: parseFloat(minRating) };
     }
 
     if (location) {
       query.location = { $regex: location, $options: 'i' };
     }
+
+
     if (rate) {
       query.rate = { $lte: parseInt(rate) };
     }
-    const tutors = await TutorProfile.find(query).sort({ rating: -1 });
+
+    const pageNumber = parseInt(page) || 1;
+    const limit = parseInt(perPage) || 10; 
+
+    const tutors = await TutorProfile.find(query)
+      .sort({ rating: -1 })
+      .skip((pageNumber - 1) * limit)
+      .limit(limit);
+
     res.status(200).json(tutors);
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: 'Internal Server Error' });
   }
 };
+
 const tutorProfile = async (req, res) => {
   try {
     const { tutorId } = req.params
