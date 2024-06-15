@@ -40,7 +40,7 @@ const TutorDashboard = () => {
 
   const applyFilters = async () => {
     try {
-      const response = await axios.get('https://${process.env.REACT_APP_BACKEND_BASE_URL}/api/tutor/filterStudents', {
+      const response = await axios.get(`https://${process.env.REACT_APP_BACKEND_BASE_URL}/api/tutor/filterStudents`, {
         params: filters, 
           headers: {
             'Content-Type': 'application/json',
@@ -48,6 +48,7 @@ const TutorDashboard = () => {
           },
         
       });
+      console.log("here", response)
       setStudents(response.data);
     } catch (error) {
       console.error(error);

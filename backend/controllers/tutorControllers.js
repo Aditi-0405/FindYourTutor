@@ -63,26 +63,26 @@ const sendMessageToStudent = async (req, res) => {
   try {
     let studentChat = await StudentChat.findOne({ studentId });
     if (!studentChat) {
-      studentChat = new StudentChat({ studentId, chats: {} });
+      studentChat = new StudentChat({ studentId, chats: new Map() });
     }
 
     if (!studentChat.chats.has(tutorId)) {
-      studentChat.chats.set(tutorId, []);
+      studentChat.chats.set(tutorId, {lastChatted: new Date(), messages: []});
     }
-
-    studentChat.chats.get(tutorId).push({ message, timestamp: new Date() });
+    studentChat.chats.get(tutorId).lastChatted= Date.now();
+    studentChat.chats.get(tutorId).messages.push({ message, timestamp: new Date() });
 
     await studentChat.save();
     let tutorChat = await TutorChat.findOne({ tutorId });
     if (!tutorChat) {
-      tutorChat = new TutorChat({ tutorId, chats: {} });
+      tutorChat = new TutorChat({ tutorId, chats: new Map() });
     }
 
     if (!tutorChat.chats.has(studentId)) {
-      tutorChat.chats.set(studentId, []);
+      tutorChat.chats.set(studentId, {lastChatted: new Date(), messages: []});
     }
-
-    tutorChat.chats.get(studentId).push({ message, timestamp: new Date(), isSentBySelf: true });
+    tutorChat.chats.get(studentId).messages.push({ message, timestamp: new Date(), isSentBySelf: true });
+    tutorChat.chats.get(studentId).lastChatted = Date.now()
     await tutorChat.save();
 
     res.status(200).json({ message: 'Message sent successfully' });
@@ -100,10 +100,22 @@ const getMyChats = async (req, res) => {
     if (!tutorChats) {
       return res.status(200).json([]);
     }
-    const chatsArray = Array.from(tutorChats.chats, ([studentId, messages]) => ({ studentId, messages }));
+    const chatsArray = Array.from(tutorChats.chats, ([studentId, chat]) => ({
+      studentId,
+      lastChatted: chat.lastChatted
+    }));
     const studentIds = chatsArray.map(chat => chat.studentId);
     const students = await StudentProfile.find({ studentId: { $in: studentIds } }, 'studentId name');
-    res.status(200).json(students);
+    const studentsWithChats = students.map(student => {
+      const chat = chatsArray.find(chat => chat.studentId === student.studentId.toString());
+      return {
+        studentId: student.studentId,
+        name: student.name,
+        lastChatted: chat ? chat.lastChatted : null
+      };
+    });
+    studentsWithChats.sort((a, b) => b.lastChatted - a.lastChatted);
+    res.status(200).json(studentsWithChats);
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: 'Internal Server Error' });
@@ -112,16 +124,16 @@ const getMyChats = async (req, res) => {
 const getMessages = async (req, res) => {
   const { studentId } = req.params;
   const tutorId = req.user.userId
+  let messages=[]
 
   try {
     let tutorChat = await TutorChat.findOne({ tutorId });
     if (!tutorChat) {
-      return res.status(404).json({ message: 'User Not Found' });
+      return res.status(200).json(messages);
     }
     else {
-      let messages = []
       if (tutorChat.chats.has(studentId)) {
-        messages = tutorChat.chats.get(studentId)
+        messages = tutorChat.chats.get(studentId).messages
       }
       res.status(200).json(messages);
     }
@@ -134,7 +146,6 @@ const getMessages = async (req, res) => {
 
 const getStudentsInterestedInSubjects = async (req, res) => {
   const tutorId = req.user.userId
-
   try {
     const tutorProfile = await TutorProfile.findOne({ tutorId });
     if (!tutorProfile) {
@@ -165,7 +176,6 @@ const getAllStudents = async (req, res) => {
 
 const filterStudents = async (req, res) => {
   const { subjects, class: studentClass, minRating, location } = req.query;
-
   try {
     let query = {};
 

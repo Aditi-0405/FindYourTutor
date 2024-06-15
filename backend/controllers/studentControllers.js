@@ -57,28 +57,28 @@ const sendMessageToTutor = async (req, res) => {
 
     let tutorChat = await TutorChat.findOne({ tutorId });
     if (!tutorChat) {
-      tutorChat = new TutorChat({ tutorId, chats: {} });
+      tutorChat = new TutorChat({ tutorId,  chats: new Map() });
     }
 
     if (!tutorChat.chats.has(studentId)) {
-      tutorChat.chats.set(studentId, []);
+      tutorChat.chats.set(studentId,  {lastChatted: new Date(), messages: []});
     }
-
-    tutorChat.chats.get(studentId).push({ message, timestamp: new Date() });
+    tutorChat.chats.get(studentId).messages.push({ message, timestamp: new Date() });
+    tutorChat.chats.get(studentId).lastChatted= Date.now();
 
     await tutorChat.save();
 
     let studentChat = await StudentChat.findOne({ studentId });
     if (!studentChat) {
-      studentChat = new StudentChat({ studentId, chats: {} });
+      studentChat = new StudentChat({ studentId, chats: new Map() });
     }
 
     if (!studentChat.chats.has(tutorId)) {
-      studentChat.chats.set(tutorId, []);
+      studentChat.chats.set(tutorId, {lastChatted: new Date(), messages: []});
     }
 
-    studentChat.chats.get(tutorId).push({ message, timestamp: new Date(), isSentBySelf: true });
-
+    studentChat.chats.get(tutorId).messages.push({ message, timestamp: new Date(), isSentBySelf: true });
+    studentChat.chats.get(tutorId).lastChatted=Date.now()
     await studentChat.save();
 
 
@@ -88,18 +88,35 @@ const sendMessageToTutor = async (req, res) => {
     res.status(500).json({ message: 'Internal Server Error' });
   }
 };
+
+
 const getMyChats = async (req, res) => {
-  const studentId = req.user.userId
+  const studentId = req.user.userId;
 
   try {
     const studentChats = await StudentChat.findOne({ studentId: studentId });
     if (!studentChats) {
       return res.status(200).json([]);
     }
-    const chatsArray = Array.from(studentChats.chats, ([tutorId, messages]) => ({ tutorId, messages }));
+    const chatsArray = Array.from(studentChats.chats, ([tutorId, chat]) => ({
+      tutorId,
+      lastChatted: chat.lastChatted
+    }));
+
     const tutorIds = chatsArray.map(chat => chat.tutorId);
-    const tutors = await TutorProfile.find({ tutorId: { $in: tutorIds } }, 'tutorId name');
-    res.status(200).json(tutors);
+
+    const tutors = await TutorProfile.find({ tutorId: { $in: tutorIds } }, 'tutorId name ');
+
+    const tutorsWithChats = tutors.map(tutor => {
+      const chat = chatsArray.find(chat => chat.tutorId === tutor.tutorId.toString());
+      return {
+        tutorId: tutor.tutorId,
+        name: tutor.name,
+        lastChatted: chat ? chat.lastChatted : null
+      };
+    });
+    tutorsWithChats.sort((a, b) => b.lastChatted - a.lastChatted);
+    res.status(200).json(tutorsWithChats);
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: 'Internal Server Error' });
@@ -109,16 +126,16 @@ const getMyChats = async (req, res) => {
 const getMessages = async (req, res) => {
   const { tutorId } = req.params;
   const studentId = req.user.userId
+  let messages=[];
 
   try {
     let studentChat = await StudentChat.findOne({ studentId });
     if (!studentChat) {
-      return res.status(404).json({ message: 'User Not Found' });
+      return res.status(200).json(messages);
     }
     else {
-      let messages = []
       if (studentChat.chats.has(tutorId)) {
-        messages = studentChat.chats.get(tutorId)
+        messages = studentChat.chats.get(tutorId).messages
       }
       res.status(200).json(messages);
     }
