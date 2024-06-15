@@ -94,8 +94,6 @@ const Home = ({ isLoggedIn }) => {
                 Next
               </button>
             </div>
-
-
           </>
         )}
       </div>

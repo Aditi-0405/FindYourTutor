@@ -60,6 +60,17 @@
 .tutor-card-home {
   flex: 1 0 250px;
 }
+.pagination-container{
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin-top: 20px;
+}
+.pagination-container Button{
+  color: #007bff;
+  border-radius: 4px;
+  margin: 3px;
+}
 @media screen and (max-width: 600px) {
   .filter-container {
     flex-direction: column;
