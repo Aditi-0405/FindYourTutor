@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import TutorCard from '../SharedComponents/TutorCard';
@@ -7,6 +6,7 @@ import '../../Shared/SharedStyling/Home.css';
 const Home = ({ isLoggedIn }) => {
   const [tutors, setTutors] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState('');
   const [filters, setFilters] = useState({
     subjects: '',
     class: '',
@@ -23,6 +23,7 @@ const Home = ({ isLoggedIn }) => {
         setLoading(false);
       } catch (error) {
         console.error(error);
+        setError('Failed to load tutors. Please try again later.');
         setLoading(false);
       }
     };
@@ -35,6 +36,7 @@ const Home = ({ isLoggedIn }) => {
   };
 
   const applyFilters = async () => {
+    setError(''); // Clear any previous errors
     try {
       const response = await axios.get(`https://${process.env.REACT_APP_BACKEND_BASE_URL}/api/general/filterTutors`, {
         params: filters
@@ -42,9 +44,9 @@ const Home = ({ isLoggedIn }) => {
       setTutors(response.data);
     } catch (error) {
       console.error(error);
+      setError('Failed to apply filters. Please try again later.');
     }
   };
-
 
   return (
     <div className="home-container">
@@ -58,8 +60,8 @@ const Home = ({ isLoggedIn }) => {
         <label htmlFor="minRating">Min Rating:</label>
         <input type="number" id="minRating" value={filters.minRating} onChange={(e) => handleFilterChange('minRating', e.target.value)} />
 
-        <label htmlFor="class">Rate</label>
-        <input type="number" id="class" value={filters.rate} onChange={(e) => handleFilterChange('rate', e.target.value)} />
+        <label htmlFor="rate">Rate</label>
+        <input type="number" id="rate" value={filters.rate} onChange={(e) => handleFilterChange('rate', e.target.value)} />
 
         <label htmlFor="location">Location:</label>
         <input type="text" id="location" value={filters.location} onChange={(e) => handleFilterChange('location', e.target.value)} />
@@ -70,7 +72,9 @@ const Home = ({ isLoggedIn }) => {
       <div className="tutor-container-home">
         <h2>Tutors</h2>
         {loading ? (
-          <p>Loading...</p>
+          <p className='loading-message'>Loading...</p>
+        ) : error ? (
+          <p className="error-message">{error}</p>
         ) : (
           <div className="tutor-list-home">
             {tutors.map(tutor => (

@@ -75,7 +75,7 @@ const StudentDashboard = ({isLoggedIn}) => {
       <h2 className="student-tutors-heading">Tutors</h2>
       <div className="student-tutor-container">
         {loading ? (
-          <p className="student-loading-message">Loading...</p>
+          <p className="loading-message">Loading...</p>
         ) : tutors.length === 0 ? (
           <p className='tutor-no-matches-message'>No matches found.</p>
         ) : (
