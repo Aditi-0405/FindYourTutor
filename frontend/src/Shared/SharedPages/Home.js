@@ -36,7 +36,7 @@ const Home = ({ isLoggedIn }) => {
   };
 
   const applyFilters = async () => {
-    setError(''); // Clear any previous errors
+    setError('');
     try {
       const response = await axios.get(`https://${process.env.REACT_APP_BACKEND_BASE_URL}/api/general/filterTutors`, {
         params: filters

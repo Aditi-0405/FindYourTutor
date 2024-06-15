@@ -88,4 +88,9 @@
     color: #999999; 
     font-size: 12px;
   }
-  
+  .unread {
+    background-color: #fff3cd !important;
+    border-left: 5px solid #ffc107;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    font-weight: bold;
+  }

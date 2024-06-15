@@ -11,6 +11,8 @@ const socket = io(`https://${process.env.REACT_APP_BACKEND_BASE_URL}`);
 const ChatMessagesTutor = ({ setUnread }) => {
   const [messages, setMessages] = useState([]);
   const [newMessage, setNewMessage] = useState('');
+  const [messLength, setMessLength] = useState(0);
+  const [unreadCount, setUnreadCount] = useState(0);
   const tutorId = localStorage.getItem('userId');
   const { studentId } = useParams();
   const role = localStorage.getItem('role');
@@ -27,6 +29,15 @@ const ChatMessagesTutor = ({ setUnread }) => {
             'Authorization': `Bearer ${token}`,
           },
         });
+        const unreadResponse = await axios.get(`https://${process.env.REACT_APP_BACKEND_BASE_URL}/api/tutor/getIndividualNotifications/${studentId}`, {
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`,
+          },
+        });
+
+        setMessLength(response.data.length);
+        setUnreadCount(unreadResponse.data.unreadCount);
         setMessages(response.data);
         const res = await axios.patch(`https://${process.env.REACT_APP_BACKEND_BASE_URL}/api/tutor/updateNotifications/${studentId}`, {}, {
           headers: {
@@ -34,7 +45,7 @@ const ChatMessagesTutor = ({ setUnread }) => {
             'Authorization': `Bearer ${token}`,
           },
         });
-        await axios.patch(`https://${process.env.REACT_APP_BACKEND_BASE_URL}/api/tutor/resetNotifications/${studentId}`,{}, {
+        await axios.patch(`https://${process.env.REACT_APP_BACKEND_BASE_URL}/api/tutor/resetNotifications/${studentId}`, {}, {
           headers: {
             'Content-Type': 'application/json',
             'Authorization': `Bearer ${token}`,
@@ -58,13 +69,13 @@ const ChatMessagesTutor = ({ setUnread }) => {
         },
       });
       setMessages(response.data);
-      const res = await axios.patch(`https://${process.env.REACT_APP_BACKEND_BASE_URL}/api/tutor/updateNotifications/${studentId}`,{}, {
+      const res = await axios.patch(`https://${process.env.REACT_APP_BACKEND_BASE_URL}/api/tutor/updateNotifications/${studentId}`, {}, {
         headers: {
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${token}`,
         },
       });
-      await axios.patch(`https://${process.env.REACT_APP_BACKEND_BASE_URL}/api/tutor/resetNotifications/${studentId}`,{}, {
+      await axios.patch(`https://${process.env.REACT_APP_BACKEND_BASE_URL}/api/tutor/resetNotifications/${studentId}`, {}, {
         headers: {
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${token}`,
@@ -118,7 +129,9 @@ const ChatMessagesTutor = ({ setUnread }) => {
         <h2>Messages</h2>
         <ul className="message-list">
           {messages.map((message, index) => (
-            <li key={index} className={message.isSentBySelf ? 'sent-by-self' : 'received'}>
+            <li
+              key={index}
+              className={`${message.isSentBySelf ? 'sent-by-self' : 'received'} ${(index >= (messLength - unreadCount)) ? 'unread' : 'read'}`}>
               {message.isSentBySelf ? 'You : ' : ''}
               <span className="message-text">{message.message}</span>
               <span className="message-time">
